@@ -1,0 +1,56 @@
+<div class="container">
+  <form [formGroup]="form">
+    <date-time-picker [dateNumber]="queryDate"
+      (onChange)="setFromDate($event)"></date-time-picker>
+    <mat-form-field *ngIf="user.isManager">
+      <mat-select placeholder="Người soạn"
+        formControlName="creatorId">
+        <mat-option value="ALLEDITOR">-- Tất cả --</mat-option>
+        <mat-option *ngFor="let editor of editorList$ | async"
+          [value]="editor.id">{{ editor.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="Trạng thái"
+        formControlName="status">
+        <mat-option [value]="null">--Bỏ chọn--</mat-option>
+        <mat-option value="draft">Đang soạn</mat-option>
+        <mat-option value="pending">Chờ duyệt</mat-option>
+        <mat-option value="published">Đã duyệt</mat-option>
+        <mat-option value="unpublished">Gở bỏ</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="Phạm vi tìm"
+        formControlName="range">
+        <mat-option value="day">1 ngày</mat-option>
+        <mat-option value="month">30 ngày</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-spinner *ngIf="articles.loading$ | async"
+      color="accent"
+      diameter="30"
+      strokeWidth="2"></mat-spinner>
+  </form>
+
+  <ng-container *ngIf="list && articlesList; else emptyBlock">
+    <mat-list>
+      <mat-list-item *ngFor="let article of list">
+        <article-list-item [article]="article"
+          (click)="preview(article)"></article-list-item>
+        <button mat-icon-button
+          (click)="edit(article)">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </mat-list-item>
+      <mat-paginator [length]="articlesList.length"
+        [pageSize]="20"
+        (page)="handlePageChange($event)"
+        hidePageSize></mat-paginator>
+    </mat-list>
+  </ng-container>
+</div>
+
+<ng-template #emptyBlock>
+  Không tìm thấy bài viết. Vui lòng thay đổi bộ lọc ở trên.
+</ng-template>

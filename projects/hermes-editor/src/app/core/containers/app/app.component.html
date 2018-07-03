@@ -1,0 +1,28 @@
+<div class="header">
+  <h1 (click)="navigate('/list')">Hermes Editor</h1>
+  <mat-icon (click)="fullscreen()">fullscreen</mat-icon>
+</div>
+<div class="container mat-typography">
+  <div *ngIf="user.isLoggedIn"
+    class="float-buttons">
+    <button mat-button
+      (click)="navigate('/list')">
+      <mat-icon>list</mat-icon>
+    </button>
+    <button mat-button
+      (click)="navigate('/profile')">
+      <mat-icon>account_circle</mat-icon>
+    </button>
+    <button mat-button
+      (click)="navigate('/create')">
+      <mat-icon>edit</mat-icon>
+    </button>
+  </div>
+  <ng-container *ngIf="!(user.loading$ | async); else loadingUser">
+    <router-outlet></router-outlet>
+  </ng-container>
+</div>
+
+<ng-template #loadingUser>
+  <login-loading></login-loading>
+</ng-template>

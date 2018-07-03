@@ -1,0 +1,83 @@
+.ql-editor {
+  padding: 1rem 1.5rem;
+  line-height: 1.3rem;
+  font-size: 0.9rem;
+  font-family: "Merriweather", serif;
+  text-align: justify;
+  h2 {
+    font-family: "Merriweather", serif;
+    margin-top: 2rem;
+    font-weight: bold;
+    grid-column: 1 / -1;
+  }
+  blockquote {
+    font-style: italic;
+    display: grid;
+    border-left: solid 2px #3f51b5;
+    padding: 0 1rem;
+    margin: 0 0 12px;
+    align-self: center;
+    background: rgba(255, 64, 128, 0.09);
+  }
+  img {
+    width: calc(100% + 3rem);
+    margin: 24px -24px;
+  }
+  .ql-align-center {
+    padding-bottom: 1rem;
+    border-bottom: solid 1px #ff4081;
+    font-style: italic;
+  }
+  .ql-align-right {
+    text-align: left;
+  }
+  li::before {
+    display: none;
+  }
+  ol,
+  ul {
+    padding: 0;
+    margin: 0;
+    li {
+      padding: 0 !important;
+      margin: 0 0 12px;
+    }
+  }
+}
+
+.picture-style {
+  @media (min-width: 600px) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 1rem;
+    img {
+      width: 100%;
+      margin: 0;
+      grid-column: 1 / -1;
+      grid-row: 1 / -1;
+      object-fit: cover;
+    }
+    .ql-align-right {
+      grid-column: 1 / -1;
+      padding: 0 1rem;
+    }
+  }
+}
+
+.article-style {
+  @media (min-width: 600px) {
+    img {
+      float: right;
+      margin: 0 0 0 2rem;
+      padding: 1rem 0;
+      width: 500px;
+    }
+    .ql-align-center {
+      float: right;
+      text-align: right;
+      margin: 0 0 0.5rem 2rem;
+      padding: 0 0 1rem 0;
+      width: 490px;
+    }
+  }
+}

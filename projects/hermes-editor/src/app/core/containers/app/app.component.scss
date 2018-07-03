@@ -1,0 +1,53 @@
+.header {
+  position: relative;
+  h1 {
+    padding: 2.5rem 0 0 0;
+    font-family: Play, "Courier New", Courier, monospace;
+    text-align: center;
+    cursor: pointer;
+  }
+  mat-icon {
+    display: none;
+    position: absolute;
+    top: 2.5rem;
+    right: 1.5rem;
+    widows: 2rem;
+    height: 2rem;
+    font-size: 2rem;
+    cursor: pointer;
+  }
+  @media (max-width: 599px) {
+    h1 {
+      text-align: left;
+      padding-left: 1rem;
+    }
+    mat-icon {
+      display: block;
+    }
+  }
+}
+
+.container {
+  padding: 0 0 3rem;
+}
+
+.float-buttons {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 2;
+  padding: 0 0.5rem;
+  color: white;
+  background: #ff4081;
+  border-radius: 0 0 0 1rem;
+  button {
+    padding: 5px 16px;
+  }
+  @media (max-width: 599px) {
+    width: 100%;
+    border-radius: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-items: center;
+  }
+}

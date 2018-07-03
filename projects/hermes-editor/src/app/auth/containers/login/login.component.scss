@@ -1,0 +1,30 @@
+form {
+  max-width: 500px;
+  margin: 2rem auto;
+}
+
+mat-card-content {
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-items: center;
+  mat-form-field {
+    width: 80%;
+  }
+}
+
+mat-card-actions {
+  text-align: center;
+}
+
+.error {
+  color: red;
+}
+
+.google-button {
+  display: inline-block;
+  background-image: url("../../../../assets/buttons/google.png");
+  background-size: cover;
+  width: 2rem;
+  height: 2rem;
+  margin-right: 1rem;
+}

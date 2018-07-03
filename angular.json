@@ -1,0 +1,263 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "hermes-editor": {
+      "root": "projects/hermes-editor/",
+      "sourceRoot": "projects/hermes-editor/src",
+      "projectType": "application",
+      "prefix": "hm-editor",
+      "schematics": {
+        "@schematics/angular:component": {
+          "styleext": "scss"
+        }
+      },
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/public/hermes-editor",
+            "index": "projects/hermes-editor/src/index.html",
+            "main": "projects/hermes-editor/src/main.ts",
+            "polyfills": "projects/hermes-editor/src/polyfills.ts",
+            "tsConfig": "projects/hermes-editor/tsconfig.app.json",
+            "assets": [
+              "projects/hermes-editor/src/favicon.ico",
+              "projects/hermes-editor/src/assets",
+              "projects/hermes-editor/src/manifest.json"
+            ],
+            "styles": [
+              {
+                "input": "node_modules/@angular/material/prebuilt-themes/indigo-pink.css"
+              },
+              "projects/hermes-editor/src/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/hermes-editor/src/environments/environment.ts",
+                  "with": "projects/hermes-editor/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "serviceWorker": true
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "hermes-editor:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "hermes-editor:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "hermes-editor:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/hermes-editor/src/test.ts",
+            "polyfills": "projects/hermes-editor/src/polyfills.ts",
+            "tsConfig": "projects/hermes-editor/tsconfig.spec.json",
+            "karmaConfig": "projects/hermes-editor/karma.conf.js",
+            "styles": [
+              {
+                "input": "node_modules/@angular/material/prebuilt-themes/indigo-pink.css"
+              },
+              "projects/hermes-editor/src/styles.scss"
+            ],
+            "scripts": [],
+            "assets": [
+              "projects/hermes-editor/src/favicon.ico",
+              "projects/hermes-editor/src/assets",
+              "projects/hermes-editor/src/manifest.json"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/hermes-editor/tsconfig.app.json",
+              "projects/hermes-editor/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "hermes-editor-e2e": {
+      "root": "projects/hermes-editor-e2e/",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "projects/hermes-editor-e2e/protractor.conf.js",
+            "devServerTarget": "hermes-editor:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "hermes-editor:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": "projects/hermes-editor-e2e/tsconfig.e2e.json",
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "hermes": {
+      "root": "projects/hermes/",
+      "sourceRoot": "projects/hermes/src",
+      "projectType": "application",
+      "prefix": "hm",
+      "schematics": {
+        "@schematics/angular:component": {
+          "styleext": "scss"
+        }
+      },
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/public/hermes",
+            "index": "projects/hermes/src/index.html",
+            "main": "projects/hermes/src/main.ts",
+            "polyfills": "projects/hermes/src/polyfills.ts",
+            "tsConfig": "projects/hermes/tsconfig.app.json",
+            "assets": [
+              "projects/hermes/src/favicon.ico",
+              "projects/hermes/src/assets"
+            ],
+            "styles": [
+              "projects/hermes/src/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/hermes/src/environments/environment.ts",
+                  "with": "projects/hermes/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "hermes:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "hermes:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "hermes:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/hermes/src/test.ts",
+            "polyfills": "projects/hermes/src/polyfills.ts",
+            "tsConfig": "projects/hermes/tsconfig.spec.json",
+            "karmaConfig": "projects/hermes/karma.conf.js",
+            "styles": [
+              "projects/hermes/src/styles.scss"
+            ],
+            "scripts": [],
+            "assets": [
+              "projects/hermes/src/favicon.ico",
+              "projects/hermes/src/assets"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/hermes/tsconfig.app.json",
+              "projects/hermes/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "hermes-e2e": {
+      "root": "projects/hermes-e2e/",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "projects/hermes-e2e/protractor.conf.js",
+            "devServerTarget": "hermes:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "hermes:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": "projects/hermes-e2e/tsconfig.e2e.json",
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "hermes"
+}

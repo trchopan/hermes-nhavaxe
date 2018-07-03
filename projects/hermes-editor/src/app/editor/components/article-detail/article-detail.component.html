@@ -1,0 +1,36 @@
+<div class="article-container">
+  <h1 class="article-title">
+    {{ article.title }}
+  </h1>
+  <p class="article-sapo">
+    {{ article.sapo }}
+  </p>
+  <mat-divider></mat-divider>
+  <div *ngIf="safeYoutube"
+    class="youtube-container">
+    <div [innerHtml]="safeYoutube"
+      class="center youtube">
+    </div>
+  </div>
+  <div class="article-body ql-editor"
+    [class.article-style]="article.style === 'article'"
+    [class.picture-style]="article.style === 'picture'"
+    [innerHtml]="article.body">
+  </div>
+  <p class="article-source">
+    Dẫn nguồn từ
+    <span>{{ article.reference | titlecase }}</span> -
+    <span>{{ article.publisher | titlecase }}</span>
+  </p>
+  <div class="article-creator-detail">
+    <div class="article-creator-name">Bài được đăng bởi
+      <strong>{{ article.creatorName }}</strong>
+    </div>
+    <div class="article-creator-avatar"
+      [ngStyle]="{ 'background-image': 'url(' + article.creatorAvatar + ')' }">
+    </div>
+    <div class="article-publish-at">
+      {{ article.publishAt | date: "dd/MM/yy HH:mm" }}
+    </div>
+  </div>
+</div>

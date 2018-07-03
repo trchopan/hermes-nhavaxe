@@ -1,0 +1,32 @@
+mat-form-field {
+  width: 100%;
+}
+
+form {
+  max-width: 360px;
+  margin: 1rem auto;
+  text-align: center;
+}
+
+button {
+  margin: 0 0.5rem;
+}
+
+.email {
+  color: rgba(0, 0, 0, 0.49);
+}
+
+.phone {
+  margin-top: 1rem;
+}
+
+.avatarImg {
+  margin: auto;
+  overflow: hidden;
+  height: 7rem;
+  width: 7rem;
+  border-radius: 50%;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}

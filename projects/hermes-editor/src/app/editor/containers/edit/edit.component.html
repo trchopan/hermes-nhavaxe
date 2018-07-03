@@ -1,0 +1,12 @@
+<ng-container *ngIf="!loading; else loadingBlock">
+  <article-form [creatorId]="user.authData.id"
+    [profile]="user.profile"
+    [article]="article"
+    (onSubmit)="handleEdit($event)"></article-form>
+</ng-container>
+
+<ng-template #loadingBlock>
+  <mat-spinner color="accent"
+    diameter="30"
+    strokeWidth="2"></mat-spinner>
+</ng-template>

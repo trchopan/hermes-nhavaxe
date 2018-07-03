@@ -1,0 +1,15 @@
+form {
+  margin: 1rem auto;
+  max-width: 760px;
+}
+mat-card-content {
+  display: flex;
+  flex-wrap: wrap;
+}
+mat-form-field {
+  padding: 0 1rem;
+  &.note {
+    width: 70%;
+    min-width: 350px;
+  }
+}

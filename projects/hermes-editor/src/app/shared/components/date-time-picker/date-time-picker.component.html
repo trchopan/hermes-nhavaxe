@@ -1,0 +1,49 @@
+<form [formGroup]="form">
+  <mat-form-field>
+    <mat-select placeholder="Ngày"
+      formControlName="date">
+      <mat-option *ngFor="let date of dates"
+        [value]="date + 1">
+        {{ date + 1 }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-select placeholder="Tháng"
+      formControlName="month">
+      <mat-option *ngFor="let month of months"
+        [value]="month + 1">
+        {{ month + 1}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-select placeholder="Năm"
+      formControlName="year">
+      <mat-option *ngFor="let year of years"
+        [value]="year">
+        {{ year }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <ng-container *ngIf="showTime">
+    <mat-form-field>
+      <mat-select placeholder="Giờ"
+        formControlName="hour">
+        <mat-option *ngFor="let hour of hours"
+          [value]="hour">
+          {{ hour }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="Phút"
+        formControlName="minute">
+        <mat-option *ngFor="let minute of minutes"
+          [value]="minute">
+          {{ minute }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </ng-container>
+</form>

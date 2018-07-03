@@ -1,0 +1,27 @@
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+@import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500|Play|Francois+One|Merriweather");
+@import "~quill/dist/quill.snow.css";
+@import "~projects/hermes-editor/src/assets/scss/quill.scss";
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Courier New", Courier, monospace;
+}
+
+a {
+  cursor: pointer;
+  user-select: none;
+}
+
+mat-spinner {
+  margin: auto;
+}
+
+.center {
+  text-align: center;
+}

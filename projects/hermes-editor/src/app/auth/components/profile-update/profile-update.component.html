@@ -1,0 +1,60 @@
+<form [formGroup]="form"
+  (ngSubmit)="submit()">
+  <section class="setting-section fullname">
+    <mat-form-field>
+      <input matInput
+        class="input"
+        formControlName="fullname"
+        type="text"
+        placeholder="Tên" />
+      <mat-error *ngIf="form.controls.fullname.hasError('required')"
+        i18n>
+        Vui lòng điền tên
+      </mat-error>
+    </mat-form-field>
+  </section>
+
+  <section class="setting-section avatar-link">
+    <mat-form-field>
+      <input matInput
+        formControlName="avatar"
+        type="text"
+        placeholder="Avatar url" />
+    </mat-form-field>
+  </section>
+
+  <div class="avatarImg"
+    [ngStyle]="{ 'background-image': 'url(' + form.controls.avatar.value + ')'}">
+  </div>
+
+  <section class="setting-section phone">
+    <mat-form-field>
+      <input matInput
+        class="input"
+        formControlName="phone"
+        type="tel"
+        placeholder="Điện thoại" />
+      <mat-error *ngIf="form.controls.phone.hasError('minlength')">
+        Điện thoại có ít nhất 10 chữ số
+      </mat-error>
+      <mat-error *ngIf="form.controls.phone.hasError('maxlength')">
+        Điện thoại có tối đa 11 chữ số
+      </mat-error>
+      <mat-error *ngIf="form.controls.phone.hasError('pattern')">
+        Điện thoại bắt đầu bằng 0
+      </mat-error>
+    </mat-form-field>
+  </section>
+  <div>
+    <button mat-button
+      type="button"
+      (click)="onCancle.emit()">Quay lại</button>
+    <button mat-raised-button
+      class="button"
+      [disabled]="form.pristine || !form.valid"
+      type="submit"
+      color="primary">
+      Lưu thay đổi
+    </button>
+  </div>
+</form>

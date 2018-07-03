@@ -1,0 +1,58 @@
+<form [formGroup]="form"
+  (ngSubmit)="onSubmit()">
+  <mat-card>
+    <mat-card-content>
+      <mat-form-field>
+        <input matInput
+          class="input"
+          type="text"
+          placeholder="Email"
+          formControlName="email" />
+        <mat-error *ngIf="email.hasError('email')"
+          i18n>
+          Email không hợp lệ
+        </mat-error>
+        <mat-error *ngIf="email.hasError('required')"
+          i18n>
+          Vui lòng nhập email
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput
+          class="input"
+          type="password"
+          placeholder="Mật khẩu"
+          formControlName="password" />
+        <mat-error *ngIf="password.hasError('required')"
+          i18n>
+          Vui lòng nhập mật khẩu
+        </mat-error>
+      </mat-form-field>
+      <p *ngIf="error$ | async as error"
+        class="error">
+        {{error}}
+      </p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button
+        type="submit"
+        color="primary"
+        [disabled]="user.loading$ | async"
+        i18n>
+        <span *ngIf="!(user.loading$ | async)">Đăng nhập</span>
+        <mat-spinner *ngIf="user.loading$ | async"
+          strokeWidth="2"
+          color="accent"
+          diameter="30"></mat-spinner>
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</form>
+
+<div class="center">
+  <button mat-raised-button
+    (click)="user.googleLogin()">
+    <div class="google-button"></div>
+    <span>Đăng nhập bằng tài khoản Google</span>
+  </button>
+</div>
