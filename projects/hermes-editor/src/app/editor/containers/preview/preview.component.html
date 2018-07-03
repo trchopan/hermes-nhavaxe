@@ -1,5 +1,9 @@
-<ng-container *ngIf="!loading && article; else loadingBlock">
-  <article-detail [article]="article"></article-detail>
+<ng-container *ngIf="!(articles.loading$ | async); else loadingBlock">
+  <p *ngIf="articles.error$ | async as error"
+    class="center error">
+    Lỗi hệ thống. Vui lòng báo admin nội dung sau: {{ error | json }}
+  </p>
+  <article-detail [article]="article$ | async"></article-detail>
   <form *ngIf="user.isManager"
     [formGroup]="form"
     (ngSubmit)="submit()">
@@ -13,7 +17,7 @@
             placeholder="Ghi chú của BTV:"
             matAutosize
             matAutosizeMinRows="1">
-              </textarea>
+          </textarea>
         </mat-form-field>
         <mat-form-field>
           <mat-select placeholder="Trạng thái"

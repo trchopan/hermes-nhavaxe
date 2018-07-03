@@ -15,6 +15,7 @@ import { QuillEditorComponent } from "ngx-quill";
 import { IProfile } from "@editor/app/auth/models/profile.model";
 import { IArticle } from "@editor/app/editor/models/article.model";
 import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
+import { ArticlesService } from "@editor/app/editor/services/articles.service";
 
 @Component({
   selector: "article-form",
@@ -75,7 +76,11 @@ export class ArticleFormComponent implements OnDestroy, AfterViewInit {
     ]
   };
 
-  constructor(private fb: FormBuilder, private dom: DomSanitizer) {
+  constructor(
+    public articles: ArticlesService,
+    private fb: FormBuilder,
+    private dom: DomSanitizer
+  ) {
     this.form = this.fb.group({
       id: [""],
       coverImg: ["", Validators.required],
@@ -84,12 +89,14 @@ export class ArticleFormComponent implements OnDestroy, AfterViewInit {
       video: [""],
       body: ["", Validators.required],
       style: ["article", Validators.required],
+      categoryId: ["", Validators.required],
+      categoryName: ["", Validators.required],
       creatorName: [""],
       creatorAvatar: [""],
       creatorId: [""],
       publisher: ["", Validators.required],
       reference: ["", Validators.required],
-      status: ["draft"],
+      status: ["draft", Validators.required],
       publishAt: [Date.now()],
       note: [""],
       tags: [""]
@@ -124,6 +131,18 @@ export class ArticleFormComponent implements OnDestroy, AfterViewInit {
         }
         console.log("video is", youtube);
       });
+
+    this.form.controls.categoryId.valueChanges
+      .pipe(
+        takeUntil(this.ngUnsub),
+        distinctUntilChanged(),
+        debounceTime(1000)
+      )
+      .subscribe(catId =>
+        this.form.controls.categoryName.setValue(
+          this.articles.categories$.value.find(cat => cat.id === catId).name
+        )
+      );
   }
 
   ngAfterViewInit() {
@@ -131,6 +150,10 @@ export class ArticleFormComponent implements OnDestroy, AfterViewInit {
     this.form.controls.style.valueChanges
       .pipe(takeUntil(this.ngUnsub))
       .subscribe(value => this.setStyleClass(value));
+  }
+
+  get status() {
+    return this.form.get("status");
   }
 
   @ViewChild("quillEditor") quillEditorComp: QuillEditorComponent;
@@ -159,10 +182,13 @@ export class ArticleFormComponent implements OnDestroy, AfterViewInit {
   submit() {
     var reference = this.form.controls.reference.value;
     var publisher = this.form.controls.publisher.value;
-    var video = this.form.controls.video.value;
     this.form.controls.reference.setValue(this.toTitleCase(reference.trim()));
     this.form.controls.publisher.setValue(this.toTitleCase(publisher.trim()));
-    this.form.controls.video.setValue(this.youtube_parser(video));
+
+    var video = this.form.controls.video.value;
+    video
+      ? this.form.controls.video.setValue(this.youtube_parser(video))
+      : null;
 
     console.log("Submit article", this.form.value);
     this.onSubmit.emit(this.form.value);

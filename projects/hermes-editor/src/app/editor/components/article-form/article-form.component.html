@@ -84,11 +84,19 @@
             placeholder="Tags" />
         </mat-form-field>
 
-        <mat-form-field>
+        <mat-form-field *ngIf="status.value === 'draft' || status.value === 'pending'">
           <mat-select placeholder="Trạng thái"
             formControlName="status">
             <mat-option value="draft">Bản nháp</mat-option>
             <mat-option value="pending">Gởi duyệt</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-select placeholder="Chuyên mục"
+            formControlName="categoryId">
+            <mat-option *ngFor="let cat of articles.categories$ | async"
+              [value]="cat.id">{{ cat.name }}</mat-option>
           </mat-select>
         </mat-form-field>
 

@@ -1,10 +1,10 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { UserService } from "@editor/app/auth/services/user.service";
 import { ArticlesService } from "@editor/app/editor/services/articles.service";
-import { Router } from "@angular/router";
+import { Router, ActivatedRoute } from "@angular/router";
 import { IArticle } from "@editor/app/editor/models/article.model";
-import { Subject } from "rxjs";
-import { takeUntil } from "rxjs/operators";
+import { Observable, combineLatest } from "rxjs";
+import { map } from "rxjs/operators";
 import { MatSnackBar } from "@angular/material";
 
 @Component({
@@ -12,49 +12,28 @@ import { MatSnackBar } from "@angular/material";
   templateUrl: "./edit.component.html",
   styleUrls: ["./edit.component.scss"]
 })
-export class EditComponent implements OnInit, OnDestroy {
-  ngUnsub = new Subject();
-  loading: boolean = true;
-  article: IArticle;
+export class EditComponent implements OnInit {
+  article$: Observable<IArticle>;
 
   constructor(
     public user: UserService,
     public articles: ArticlesService,
-    private router: Router,
-    private snackbar: MatSnackBar
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
-    this.articles.selected$
-      .pipe(takeUntil(this.ngUnsub))
-      .subscribe(selected => {
-        if (selected) {
-          this.article = selected;
-        } else {
-          this.router.navigate(["/list"]);
-        }
-        this.loading = false;
-      });
+    this.articles.clearError();
+    this.article$ = combineLatest(
+      this.articles.list$,
+      this.route.paramMap
+    ).pipe(
+      map(([articles, params]) =>
+        articles.find(article => article.id === params.get("id"))
+      )
+    );
   }
 
-  ngOnDestroy() {
-    this.ngUnsub.next();
-    this.ngUnsub.complete();
-  }
-
-  handleEdit(article: IArticle) {
-    this.loading = true;
-    this.articles
-      .update(article)
-      .then(() => {
-        this.router.navigate(["/list"]);
-        this.snackbar.open("Bài viết đã được cập nhật", null, {
-          duration: 1000
-        });
-      })
-      .catch(error => {
-        console.error("Creating Article error", error);
-        this.snackbar.open("Lỗi cập nhật bài viết", null, { duration: 1000 });
-      });
+  handleUpdate(article: IArticle) {
+    this.articles.update(article);
   }
 }

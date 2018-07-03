@@ -4,7 +4,9 @@
 @import "~projects/hermes-editor/src/assets/scss/quill.scss";
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
@@ -24,4 +26,14 @@ mat-spinner {
 
 .center {
   text-align: center;
+}
+
+.container {
+  margin: auto;
+  padding: 1rem 0;
+  max-width: 900px;
+}
+
+.error {
+  color: red;
 }

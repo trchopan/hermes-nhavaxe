@@ -33,12 +33,12 @@ const routes: Routes = [
     canActivate: [AuthGuardService]
   },
   {
-    path: "edit",
+    path: "edit/:id",
     component: EditComponent,
     canActivate: [AuthGuardService]
   },
   {
-    path: "preview",
+    path: "preview/:id",
     component: PreviewComponent,
     canActivate: [AuthGuardService]
   },

@@ -9,8 +9,12 @@ import {
   parseArticle,
   IArticle
 } from "@editor/app/editor/models/article.model";
+import { ICategory } from "@editor/app/editor/models/category.model";
+import { Router } from "@angular/router";
+import { MatSnackBar } from "@angular/material";
 
 const ArticlesCollection = "articles";
+const CategoriesCollection = "categories";
 
 @Injectable({
   providedIn: "root"
@@ -22,19 +26,33 @@ export class ArticlesService {
     fromDate: new Date().setHours(0, 0, 0, 0),
     range: "day"
   });
-  selected$: BehaviorSubject<IArticle> = new BehaviorSubject<IArticle>(null);
   list$: BehaviorSubject<IArticle[]> = new BehaviorSubject<IArticle[]>(null);
+  categories$: BehaviorSubject<ICategory[]> = new BehaviorSubject<ICategory[]>(
+    null
+  );
   error$: BehaviorSubject<string> = new BehaviorSubject<string>(null);
 
   constructor(
     private afFirestore: AngularFirestore,
-    private user: UserService
+    private user: UserService,
+    private router: Router,
+    private snackbar: MatSnackBar
   ) {
+    this.afFirestore
+      .collection(CategoriesCollection)
+      .snapshotChanges()
+      .subscribe(snap => {
+        let categories = snap.map(doc => {
+          let data = doc.payload.doc.data() as { name: string };
+          return { id: doc.payload.doc.id, name: data.name };
+        });
+        this.categories$.next(categories);
+      });
+
     this.query$
       .pipe(
-        switchMap((query: IQuery) => {
-          this.loading$.next(true);
-          return this.afFirestore
+        switchMap((query: IQuery) =>
+          this.afFirestore
             .collection(ArticlesCollection, ref => {
               let combRef:
                 | firestore.CollectionReference
@@ -46,7 +64,11 @@ export class ArticlesService {
                     ? combRef
                     : combRef.where("creatorId", "==", query.creatorId);
               } else {
-                query.creatorId || this.user.authData.id;
+                combRef = combRef.where(
+                  "creatorId",
+                  "==",
+                  this.user.authData.id
+                );
               }
               combRef = query.status
                 ? combRef.where("status", "==", query.status)
@@ -60,10 +82,9 @@ export class ArticlesService {
                 .startAt(query.fromDate + range)
                 .endAt(query.fromDate);
             })
-            .snapshotChanges();
-        }),
+            .snapshotChanges()
+        ),
         map(snap => {
-          this.loading$.next(false);
           return snap.length > 0
             ? snap.map(doc =>
                 parseArticle(doc.payload.doc.id, doc.payload.doc.data())
@@ -76,8 +97,14 @@ export class ArticlesService {
         })
       )
       .subscribe(
-        articles => this.list$.next(articles),
-        error => this.error$.next(error)
+        articles => {
+          this.list$.next(articles);
+          this.loading$.next(false);
+        },
+        error => {
+          this.error$.next(error);
+          this.loading$.next(false);
+        }
       );
   }
 
@@ -86,20 +113,57 @@ export class ArticlesService {
     this.query$.next(query);
   }
 
-  setSelected = (article: IArticle) => this.selected$.next(article);
+  create(article: IArticle) {
+    this.loading$.next(true);
+    console.log(this.className + " creating", this.loading$.value);
+    this.afFirestore
+      .collection(ArticlesCollection)
+      .add(article)
+      .then(() => this.handleSuccess())
+      .catch(err => this.handleError(err));
+  }
 
-  create = (article: IArticle) =>
-    this.afFirestore.collection(ArticlesCollection).add(article);
-
-  update = (article: IArticle) =>
+  update(article: IArticle) {
+    this.loading$.next(true);
+    console.log(this.className + " updating", this.loading$.value);
     this.afFirestore
       .collection(ArticlesCollection)
       .doc(article.id)
-      .update(article);
+      .update(article)
+      .then(() => this.handleSuccess())
+      .catch(err => this.handleError(err));
+  }
 
-  delete = (id: string) =>
+  delete(id: string) {
+    this.loading$.next(true);
     this.afFirestore
       .collection(ArticlesCollection)
       .doc(id)
-      .delete();
+      .delete()
+      .then(() => this.handleSuccess())
+      .catch(err => this.handleError(err));
+  }
+
+  handleSuccess() {
+    this.router.navigate(["list"]);
+    this.snackbar.open("Bài viết đã được cập nhật", null, {
+      duration: 1000
+    });
+    this.loading$.next(false);
+    console.log(this.className + " success");
+  }
+
+  handleError(err) {
+    console.error(this.className + " error ", err);
+    this.error$.next(err);
+    this.snackbar.open("Lỗi cập nhật bài viết", null, {
+      duration: 1000
+    });
+    this.loading$.next(false);
+  }
+
+  clearError = () => this.error$.next(null);
+
+  isEditable = (status: string) =>
+    status === "draft" || status === "pending" || this.user.isManager;
 }

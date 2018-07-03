@@ -1,3 +1,4 @@
+<p class="email center">Email: &lt;{{ user.authData.email }}&gt;</p>
 <mat-card class="profile">
   <ng-container *ngIf="editProfile; else profileBlock">
     <profile-update [profile]="editProfile"

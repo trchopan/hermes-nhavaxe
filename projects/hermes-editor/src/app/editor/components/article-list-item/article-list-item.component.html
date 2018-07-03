@@ -6,11 +6,14 @@
   <p>
     <strong>{{ article.title }}</strong>
   </p>
+  <p>
+    <em> // {{ article.categoryName }}</em>
+    <span class="author"> &copy; {{ article.creatorName }}</span>
+  </p>
 </section>
 <section class="info">
   <p>
     <publish-at-label [publishAt]="article.publishAt"></publish-at-label>
-    <span class="author">&nbsp;&copy; {{ article.creatorName }} </span>
     <span *ngIf="article.status === 'published'"
       class="published">🔒 duyệt bởi {{ article.managerName }}</span>
     <span *ngIf="article.status === 'unpublished'"

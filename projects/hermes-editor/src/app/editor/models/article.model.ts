@@ -6,6 +6,8 @@ export interface IArticle {
   video: string;
   body: string;
   style: string;
+  categoryId: string;
+  categoryName: string;
   creatorName: string;
   creatorAvatar: string;
   creatorId: string;
@@ -29,6 +31,8 @@ export function parseArticle(id: string, data: any): IArticle {
     video: data.video || null,
     body: data.body || null,
     style: data.style || "article",
+    categoryId: data.categoryId || null,
+    categoryName: data.categoryName || null,
     creatorName: data.creatorName || null,
     creatorAvatar: data.creatorAvatar || null,
     creatorId: data.creatorId || null,

@@ -21,6 +21,7 @@ export class ArticlesListComponent implements OnInit, OnDestroy {
   queryDate: number;
   articlesList: IArticle[];
   list: IArticle[];
+  pageSize: number = 10;
   editorList$: Observable<{ id: string; name: string }[]>;
   pageEvent$: BehaviorSubject<PageEvent> = new BehaviorSubject<PageEvent>(null);
 
@@ -61,7 +62,7 @@ export class ArticlesListComponent implements OnInit, OnDestroy {
       this.pageEvent$.next({
         previousPageIndex: 0,
         pageIndex: 0,
-        pageSize: 20,
+        pageSize: this.pageSize,
         length: list ? list.length : 0
       });
     });
@@ -105,9 +106,8 @@ export class ArticlesListComponent implements OnInit, OnDestroy {
   }
 
   edit(article: IArticle) {
-    if (this.isEditable(article.status)) {
-      this.articles.setSelected(article);
-      this.router.navigate(["edit"]);
+    if (this.articles.isEditable(article.status)) {
+      this.router.navigate(["edit", article.id]);
     } else {
       console.log("[Articles] locked", article);
       this.snackbar.open("Bài đã bị khoá", null, { duration: 1500 });
@@ -115,14 +115,10 @@ export class ArticlesListComponent implements OnInit, OnDestroy {
   }
 
   preview(article: IArticle) {
-    this.articles.setSelected(article);
-    this.router.navigate(["preview"]);
+    this.router.navigate(["preview", article.id]);
   }
 
   handlePageChange(event: PageEvent) {
     this.pageEvent$.next(event);
   }
-
-  isEditable = (status: string) =>
-    status === "draft" || status === "pending" || this.user.isManager;
 }

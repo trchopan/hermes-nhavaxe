@@ -1,9 +1,3 @@
-form {
-  margin: auto;
-  padding: 1rem 0;
-  max-width: 900px;
-}
-
 mat-tab-group {
   width: 100%;
 }
@@ -42,6 +36,8 @@ mat-form-field {
   background-position-y: 23%;
 }
 
-.publish-at {
-  grid-column: 1 / -1;
+.video-preview {
+  height: 196px;
+  width: 100%;
 }
+
