@@ -35,27 +35,7 @@ export class ArticlesListComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.editorList$ = !this.user.isManager
-      ? null
-      : this.aFs
-          .collection("users", ref => ref.orderBy("fullname"))
-          .snapshotChanges()
-          .pipe(
-            map(snapshots => {
-              if (snapshots.length > 0) {
-                return snapshots.map(snap => {
-                  let doc = snap.payload.doc;
-                  let data = doc.data() as { fullname: string };
-                  return {
-                    id: doc.id,
-                    name: data.fullname
-                  };
-                });
-              } else {
-                return null;
-              }
-            })
-          );
+    this.editorList$ = this.getEditorList();
 
     this.articles.list$.pipe(takeUntil(this.ngUnsub)).subscribe(list => {
       this.articlesList = list;
@@ -79,14 +59,15 @@ export class ArticlesListComponent implements OnInit, OnDestroy {
             : null
       );
 
+    this.queryDate =
+      this.articles.query$.value.fromDate || new Date().setHours(0, 0, 0, 0);
+
     this.form = this.fb.group({
-      fromDate: [null],
+      fromDate: [this.queryDate],
       creatorId: [null],
       status: [this.articles.query$.value.status],
       range: [this.articles.query$.value.range]
     });
-
-    this.queryDate = this.articles.query$.value.fromDate || Date.now();
 
     this.form.valueChanges
       .pipe(
@@ -121,4 +102,27 @@ export class ArticlesListComponent implements OnInit, OnDestroy {
   handlePageChange(event: PageEvent) {
     this.pageEvent$.next(event);
   }
+
+  getEditorList = () =>
+    !this.user.isManager
+      ? null
+      : this.aFs
+          .collection("users", ref => ref.orderBy("fullname"))
+          .snapshotChanges()
+          .pipe(
+            map(snapshots => {
+              if (snapshots.length > 0) {
+                return snapshots.map(snap => {
+                  let doc = snap.payload.doc;
+                  let data = doc.data() as { fullname: string };
+                  return {
+                    id: doc.id,
+                    name: data.fullname
+                  };
+                });
+              } else {
+                return null;
+              }
+            })
+          );
 }
