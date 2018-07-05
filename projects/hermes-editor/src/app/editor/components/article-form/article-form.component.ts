@@ -5,17 +5,16 @@ import {
   OnDestroy,
   Input,
   ViewChild,
-  AfterViewInit,
-  ElementRef
+  AfterViewInit
 } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { takeUntil, debounceTime, distinctUntilChanged } from "rxjs/operators";
 import { Subject } from "rxjs";
 import { QuillEditorComponent } from "ngx-quill";
-import { IProfile } from "@editor/app/auth/models/profile.model";
 import { IArticle } from "@editor/app/editor/models/article.model";
 import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
 import { ArticlesService } from "@editor/app/editor/services/articles.service";
+import { UserService } from "@editor/app/auth/services/user.service";
 
 @Component({
   selector: "article-form",
@@ -23,18 +22,6 @@ import { ArticlesService } from "@editor/app/editor/services/articles.service";
   styleUrls: ["./article-form.component.scss"]
 })
 export class ArticleFormComponent implements OnDestroy, AfterViewInit {
-  @Input("profile")
-  set profileSetter(profile: IProfile) {
-    var creatorAvatar = this.form.controls.creatorAvatar;
-    !creatorAvatar.value ? creatorAvatar.setValue(profile.avatar) : null;
-    var creatorName = this.form.controls.creatorName;
-    !creatorName.value ? creatorName.setValue(profile.fullname) : null;
-  }
-  @Input("creatorId")
-  set creatorIdSetter(id: string) {
-    var creatorId = this.form.controls.creatorId;
-    !creatorId.value ? creatorId.setValue(id) : null;
-  }
   @Input("article")
   set articleSetter(article: IArticle) {
     this.articlePublishAt = article.publishAt;
@@ -43,12 +30,17 @@ export class ArticleFormComponent implements OnDestroy, AfterViewInit {
         this.form.get(key).setValue(article[key]);
       }
     });
+    this.articles
+      .getBodyData(article.id)
+      .pipe(takeUntil(this.ngUnsub))
+      .subscribe(bodyData =>
+        this.form.controls.bodyData.setValue(bodyData ? bodyData.body : "")
+      );
   }
   @Output() onSubmit = new EventEmitter();
 
   ngUnsub = new Subject();
   form: FormGroup;
-  show: boolean = true;
   articlePublishAt: number = Date.now();
   imgSrc: string;
   videoIframe: SafeHtml;
@@ -78,6 +70,7 @@ export class ArticleFormComponent implements OnDestroy, AfterViewInit {
 
   constructor(
     public articles: ArticlesService,
+    private user: UserService,
     private fb: FormBuilder,
     private dom: DomSanitizer
   ) {
@@ -87,13 +80,13 @@ export class ArticleFormComponent implements OnDestroy, AfterViewInit {
       title: ["", Validators.required],
       sapo: ["", Validators.required],
       video: [""],
-      body: ["", Validators.required],
+      bodyData: ["", Validators.required],
       style: ["article", Validators.required],
       categoryId: ["", Validators.required],
       categoryName: ["", Validators.required],
-      creatorName: [""],
-      creatorAvatar: [""],
-      creatorId: [""],
+      creatorId: [user.authData.id],
+      creatorName: [user.profile.fullname],
+      creatorAvatar: [user.profile.avatar],
       publisher: ["", Validators.required],
       reference: ["", Validators.required],
       status: ["draft", Validators.required],
@@ -180,19 +173,23 @@ export class ArticleFormComponent implements OnDestroy, AfterViewInit {
   }
 
   submit() {
-    var reference = this.form.controls.reference.value;
-    var publisher = this.form.controls.publisher.value;
-    this.form.controls.reference.setValue(this.toTitleCase(reference.trim()));
-    this.form.controls.publisher.setValue(this.toTitleCase(publisher.trim()));
-
-    var video = this.form.controls.video.value;
+    let video = this.form.controls.video.value;
     video
       ? this.form.controls.video.setValue(this.youtube_parser(video))
       : null;
 
-    console.log("Submit article", this.form.value);
-    this.onSubmit.emit(this.form.value);
-    this.form.reset();
+    let bodyData = this.form.controls.bodyData.value;
+
+    let article = {
+      ...this.form.value,
+      bodyData: {
+        body: bodyData,
+        modifiedAt: Date.now(),
+        modifiedBy: this.user.authData.id
+      }
+    };
+    console.log("Submit article", article);
+    this.form.valid && this.onSubmit.emit(article);
   }
 
   toTitleCase = (str: string) =>

@@ -1,0 +1,109 @@
+.container {
+  height: 100vh;
+  overflow: auto;
+}
+.nav-spacer {
+  height: 3rem;
+}
+nav {
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 2rem;
+  height: 3rem;
+  flex-wrap: nowrap;
+  width: 100%;
+  overflow: hidden;
+}
+nav.fixed {
+  position: fixed;
+  top: 0;
+  z-index: 1;
+  background: white;
+  border-bottom: solid 1px;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
+}
+nav > ul {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: center;
+  list-style: none;
+  color: black;
+  white-space: nowrap;
+  font-weight: bold;
+  li {
+    position: relative;
+    padding: 0 2rem;
+    font-weight: bold;
+    font-size: 1.1rem;
+    cursor: pointer;
+  }
+  li::after,
+  li.selected::after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 1px;
+    background: black;
+    bottom: -0.5rem;
+    left: 25%;
+    transition: width 150ms ease-in;
+  }
+  li.selected::after {
+    width: 50%;
+    background: #ed1d24;
+  }
+  li:hover::after {
+    width: 50%;
+  }
+}
+.scroll-left,
+.scroll-right {
+  display: none;
+  position: absolute;
+  background: white;
+  width: 3rem;
+  z-index: 1;
+  cursor: pointer;
+}
+.scroll-left {
+  left: 0;
+}
+.scroll-right {
+  right: 0;
+}
+.head {
+  width: 100%;
+  padding: 1rem 0;
+  text-align: center;
+}
+.logo {
+  height: 3rem;
+}
+.content {
+  max-width: 900px;
+  margin: auto;
+}
+
+@media (max-width: 799px) {
+  .scroll-left,
+  .scroll-right {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  nav {
+    justify-content: flex-start;
+    ul > li {
+      padding: 0 1rem;
+    }
+    overflow: auto;
+  }
+}
+@media (max-width: 600px) {
+  .logo {
+    height: 2.5rem;
+  }
+}

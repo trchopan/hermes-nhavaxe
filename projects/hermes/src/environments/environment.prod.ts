@@ -1,3 +1,6 @@
+import { firebase } from "@editor/environments/firebase.conf";
+
 export const environment = {
-  production: true
+  production: true,
+  firebase: firebase
 };

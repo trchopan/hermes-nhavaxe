@@ -9,7 +9,7 @@ import { IArticle } from "@editor/app/editor/models/article.model";
   styleUrls: ["./create.component.scss"]
 })
 export class CreateComponent implements OnInit {
-  constructor(public user: UserService, public articles: ArticlesService) {}
+  constructor(public articles: ArticlesService) {}
 
   ngOnInit() {
     this.articles.clearError();

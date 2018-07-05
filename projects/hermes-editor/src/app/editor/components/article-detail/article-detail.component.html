@@ -15,7 +15,7 @@
   <div class="article-body ql-editor"
     [class.article-style]="article.style === 'article'"
     [class.picture-style]="article.style === 'picture'"
-    [innerHtml]="article.body">
+    [innerHtml]="body$ | async">
   </div>
   <p class="article-source">
     Dẫn nguồn từ

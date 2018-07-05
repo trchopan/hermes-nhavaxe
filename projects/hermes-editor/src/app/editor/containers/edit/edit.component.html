@@ -3,10 +3,8 @@
     class="center error">
     Lỗi hệ thống. Vui lòng báo admin nội dung sau: {{ error | json }}
   </p>
-  <ng-container *ngIf="!(articles.loading$ | async); else loadingBlock">
-    <article-form [creatorId]="user.authData.id"
-      [profile]="user.profile"
-      [article]="article$ | async"
+  <ng-container *ngIf="article$ | async as article; else loadingBlock">
+    <article-form [article]="article"
       (onSubmit)="handleUpdate($event)"></article-form>
   </ng-container>
 </div>

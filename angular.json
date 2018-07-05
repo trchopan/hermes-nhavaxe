@@ -155,7 +155,7 @@
             "polyfills": "projects/hermes/src/polyfills.ts",
             "tsConfig": "projects/hermes/tsconfig.app.json",
             "assets": [
-              "projects/hermes/src/favicon.ico",
+              "projects/hermes/src/favicon.png",
               "projects/hermes/src/assets"
             ],
             "styles": [
@@ -212,7 +212,7 @@
             ],
             "scripts": [],
             "assets": [
-              "projects/hermes/src/favicon.ico",
+              "projects/hermes/src/favicon.png",
               "projects/hermes/src/assets"
             ]
           }

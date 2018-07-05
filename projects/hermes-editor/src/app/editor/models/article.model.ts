@@ -1,16 +1,17 @@
+import { firestore } from "firebase/app";
+
 export interface IArticle {
   id: string;
   coverImg: string;
   title: string;
   sapo: string;
   video: string;
-  body: string;
   style: string;
   categoryId: string;
   categoryName: string;
+  creatorId: string;
   creatorName: string;
   creatorAvatar: string;
-  creatorId: string;
   publisher: string;
   reference: string;
   status: string;
@@ -20,30 +21,40 @@ export interface IArticle {
   managerName: string;
   note: string;
   tags: string;
+  bodyData?: IArticleBody;
 }
 
-export function parseArticle(id: string, data: any): IArticle {
-  return {
-    id: id || null,
-    coverImg: data.coverImg || null,
-    title: data.title || null,
-    sapo: data.sapo || null,
-    video: data.video || null,
-    body: data.body || null,
-    style: data.style || "article",
-    categoryId: data.categoryId || null,
-    categoryName: data.categoryName || null,
-    creatorName: data.creatorName || null,
-    creatorAvatar: data.creatorAvatar || null,
-    creatorId: data.creatorId || null,
-    publisher: data.publisher || null,
-    reference: data.reference || null,
-    status: data.status || null,
-    publishAt: data.publishAt || 0,
-    modifiedAt: data.modifiedAt || 0,
-    managerId: data.managerId || null,
-    managerName: data.managerName || null,
-    note: data.note || null,
-    tags: data.tags || null
-  };
+export interface IArticleBody {
+  body: string;
+  modifiedAt: number;
+  modifiedBy: string;
 }
+
+export const parseArticleBody = (bodyData: any): IArticleBody => ({
+  body: bodyData.body,
+  modifiedAt: bodyData.modifiedAt,
+  modifiedBy: bodyData.modifiedBy
+});
+
+export const parseArticle = (id: string, articleData: any): IArticle => ({
+  id: id,
+  coverImg: articleData.coverImg || null,
+  title: articleData.title || null,
+  sapo: articleData.sapo || null,
+  video: articleData.video || null,
+  style: articleData.style || "article",
+  categoryId: articleData.categoryId || null,
+  categoryName: articleData.categoryName || null,
+  creatorName: articleData.creatorName || null,
+  creatorAvatar: articleData.creatorAvatar || null,
+  creatorId: articleData.creatorId || null,
+  publisher: articleData.publisher || null,
+  reference: articleData.reference || null,
+  status: articleData.status || null,
+  publishAt: articleData.publishAt || 0,
+  modifiedAt: articleData.modifiedAt || 0,
+  managerId: articleData.managerId || null,
+  managerName: articleData.managerName || null,
+  note: articleData.note || null,
+  tags: articleData.tags || null
+});
