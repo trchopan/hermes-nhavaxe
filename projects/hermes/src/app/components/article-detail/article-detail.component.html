@@ -1,3 +1,40 @@
-<p>
-  article-detail works!
-</p>
+<div *ngIf="meta && body"
+  class="overlay"
+  (scroll)="scrollHandler($event)">
+  <div class="article-container">
+    <h1 class="article-title">
+      {{ meta.title }}
+    </h1>
+    <p class="article-sapo">
+      {{ meta.sapo }}
+    </p>
+    <hr>
+    <div *ngIf="safeYoutube"
+      class="youtube-container">
+      <div [innerHtml]="safeYoutube"
+        class="center youtube">
+      </div>
+    </div>
+    <div class="article-body ql-editor"
+      [class.article-style]="meta.style === 'article'"
+      [class.picture-style]="meta.style === 'picture'"
+      [innerHtml]="body.body">
+    </div>
+    <p class="article-source">
+      Dẫn nguồn từ
+      <span>{{ meta.reference | titlecase }}</span> &copy;
+      <span>{{ meta.publisher | titlecase }}</span>
+    </p>
+    <div class="article-creator-detail">
+      <div class="article-creator-name">Bài được đăng bởi
+        <strong>{{ meta.creatorName }}</strong>
+      </div>
+      <div class="article-creator-avatar"
+        [ngStyle]="{ 'background-image': 'url(' + meta.creatorAvatar + ')' }">
+      </div>
+      <div class="article-publish-at">
+        {{ meta.publishAt | date: "dd/MM/yy HH:mm" }}
+      </div>
+    </div>
+  </div>
+</div>

@@ -11,14 +11,18 @@ import { ArticlesGridComponent } from "@app/app/components/articles-grid/article
 import { PageNotFoundComponent } from "@app/app/components/page-not-found/page-not-found.component";
 import { ArticleDetailComponent } from "@app/app/components/article-detail/article-detail.component";
 import { PublishAtParserPipe } from './pipes/publish-at-parser.pipe';
+import { ArticlesGridTopComponent } from './components/articles-grid-top/articles-grid-top.component';
+import { ArticlesGridListComponent } from './components/articles-grid-list/articles-grid-list.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ArticlesGridComponent,
-    ArticleDetailComponent,
+    PublishAtParserPipe,
     PageNotFoundComponent,
-    PublishAtParserPipe
+    ArticleDetailComponent,
+    ArticlesGridComponent,
+    ArticlesGridTopComponent,
+    ArticlesGridListComponent
   ],
   imports: [
     BrowserModule,

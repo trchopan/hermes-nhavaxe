@@ -5,8 +5,7 @@ import { PageNotFoundComponent } from "@app/app/components/page-not-found/page-n
 
 const routes: Routes = [
   { path: "", pathMatch: "full", redirectTo: "/home" },
-  { path: ":category/:id", component: ArticlesGridComponent },
-  { path: ":id", component: ArticlesGridComponent },
+  { path: ":request", component: ArticlesGridComponent },
   { path: "**", component: PageNotFoundComponent }
 ];
 

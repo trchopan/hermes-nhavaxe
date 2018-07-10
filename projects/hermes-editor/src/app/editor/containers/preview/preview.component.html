@@ -1,44 +1,42 @@
-<ng-container *ngIf="!(articles.loading$ | async); else loadingBlock">
-  <p *ngIf="articles.error$ | async as error"
-    class="center error">
-    Lỗi hệ thống. Vui lòng báo admin nội dung sau: {{ error | json }}
-  </p>
-  <article-detail [article]="article$ | async"></article-detail>
-  <form *ngIf="user.isManager"
-    [formGroup]="form"
-    (ngSubmit)="submit()">
-    <mat-card>
-      <mat-card-content>
-        <mat-form-field class="note">
-          <textarea matInput
-            matTextareaAutosize
-            class="input"
-            formControlName="note"
-            placeholder="Ghi chú của BTV:"
-            matAutosize
-            matAutosizeMinRows="1">
+<p *ngIf="articles.error$ | async as error"
+  class="center error">
+  Lỗi hệ thống. Vui lòng báo admin nội dung sau: {{ error | json }}
+</p>
+<mat-spinner *ngIf="articles.loading$ | async"
+  color="accent"
+  diameter="30"
+  strokeWidth="2"></mat-spinner>
+<article-detail [article]="article$ | async"></article-detail>
+<form *ngIf="user.isManager"
+  [formGroup]="form"
+  (ngSubmit)="submit()">
+  <mat-card>
+    <mat-card-content>
+      <mat-form-field class="note">
+        <textarea matInput
+          matTextareaAutosize
+          class="input"
+          formControlName="note"
+          placeholder="Ghi chú của BTV:"
+          matAutosize
+          matAutosizeMinRows="1">
           </textarea>
-        </mat-form-field>
-        <mat-form-field>
-          <mat-select placeholder="Trạng thái"
-            formControlName="status">
-            <mat-option value="pending">Gởi duyệt</mat-option>
-            <mat-option value="published">Đã duyệt</mat-option>
-            <mat-option value="unpublished">Gở bài</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-raised-button
-          color="primary"
-          type="submit">Cập nhật</button>
-      </mat-card-actions>
-    </mat-card>
-  </form>
-</ng-container>
-
-<ng-template #loadingBlock>
-  <mat-spinner color="accent"
-    diameter="30"
-    strokeWidth="2"></mat-spinner>
-</ng-template>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-select placeholder="Trạng thái"
+          formControlName="status">
+          <mat-option value="pending">Gởi duyệt</mat-option>
+          <mat-option value="published">Đã duyệt</mat-option>
+          <mat-option value="unpublished">Gở bài</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button
+        color="primary"
+        type="submit">
+        Cập nhật
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</form>

@@ -146,9 +146,10 @@ export class ArticlesService {
   create(article: IArticle) {
     this.loading$.next(true);
     console.log(this.className + " creating", this.loading$.value);
+    var newArticle = { ...article, bodyData: "" } 
     this.afFirestore
       .collection(ArticlesCollection)
-      .add({ ...article, bodyData: firestore.FieldValue.delete() })
+      .add(newArticle)
       .then(doc =>
         doc
           .collection(BodyCollection)
@@ -169,9 +170,9 @@ export class ArticlesService {
       ...article,
       bodyData: firestore.FieldValue.delete()
     });
-    const bodyPromise = articleDoc
-      .collection(BodyCollection)
-      .add(article.bodyData);
+    const bodyPromise = article.bodyData
+      ? articleDoc.collection(BodyCollection).add(article.bodyData)
+      : Promise.resolve(null);
 
     Promise.all([metaPromise, bodyPromise])
       .then(() => this.handleSuccess())

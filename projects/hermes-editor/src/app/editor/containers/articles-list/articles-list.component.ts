@@ -35,7 +35,7 @@ export class ArticlesListComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.editorList$ = this.getEditorList();
+    this.editorList$ = !this.user.isManager ? null : this.getEditorList();
 
     this.articles.list$.pipe(takeUntil(this.ngUnsub)).subscribe(list => {
       this.articlesList = list;
@@ -104,25 +104,23 @@ export class ArticlesListComponent implements OnInit, OnDestroy {
   }
 
   getEditorList = () =>
-    !this.user.isManager
-      ? null
-      : this.aFs
-          .collection("users", ref => ref.orderBy("fullname"))
-          .snapshotChanges()
-          .pipe(
-            map(snapshots => {
-              if (snapshots.length > 0) {
-                return snapshots.map(snap => {
-                  let doc = snap.payload.doc;
-                  let data = doc.data() as { fullname: string };
-                  return {
-                    id: doc.id,
-                    name: data.fullname
-                  };
-                });
-              } else {
-                return null;
-              }
-            })
-          );
+    this.aFs
+      .collection("users", ref => ref.orderBy("fullname"))
+      .snapshotChanges()
+      .pipe(
+        map(snapshots => {
+          if (snapshots.length > 0) {
+            return snapshots.map(snap => {
+              let doc = snap.payload.doc;
+              let data = doc.data() as { fullname: string };
+              return {
+                id: doc.id,
+                name: data.fullname
+              };
+            });
+          } else {
+            return null;
+          }
+        })
+      );
 }

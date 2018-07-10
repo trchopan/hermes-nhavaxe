@@ -1,14 +1,3 @@
-<ul>
-  <li *ngFor="let article of articles.cacheList$ | async">
-    <div class="cover-image"
-      [ngStyle]="{ 'background-image': 'url(' + article.coverImg + ')'}">
-    </div>
-    <div class="category"
-      [style.background]="article.categoryId == 'RWTkmXHmJca6Zap12f87' ? '#ed1d24' : '#159cd8'">{{ article.categoryName }}</div>
-    <p class="title">
-      {{ article.title }}
-      <br/>
-      <span class="publish-at">// {{ article.publishAt | publishAtParser }}</span>
-    </p>
-  </li>
-</ul>
+<hm-articles-grid-top [list]="articles.list$ | async"></hm-articles-grid-top>
+<hm-article-detail [meta]="articles.selectedMeta$ | async"
+  [body]="articles.selectedBody$ | async"></hm-article-detail>

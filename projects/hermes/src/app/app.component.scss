@@ -2,10 +2,18 @@
   height: 100vh;
   overflow: auto;
 }
-.nav-spacer {
-  height: 3rem;
+header {
+  width: 100%;
+  padding: 1rem 0;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 150ms ease-in;
 }
-nav {
+header:hover {
+  transform: scale(1.05);
+}
+nav,
+.nav-spacer {
   display: flex;
   position: relative;
   align-items: center;
@@ -19,10 +27,10 @@ nav {
 nav.fixed {
   position: fixed;
   top: 0;
-  z-index: 1;
+  z-index: 2;
   background: white;
-  border-bottom: solid 1px;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 200ms ease-in;
 }
 nav > ul {
   display: flex;
@@ -53,47 +61,26 @@ nav > ul {
   }
   li.selected::after {
     width: 50%;
-    background: #ed1d24;
+    background: var(--red-preset);
   }
   li:hover::after {
     width: 50%;
   }
 }
-.scroll-left,
-.scroll-right {
-  display: none;
-  position: absolute;
-  background: white;
-  width: 3rem;
-  z-index: 1;
-  cursor: pointer;
-}
-.scroll-left {
-  left: 0;
-}
-.scroll-right {
-  right: 0;
-}
-.head {
-  width: 100%;
-  padding: 1rem 0;
-  text-align: center;
-}
 .logo {
   height: 3rem;
 }
 .content {
-  max-width: 900px;
+  max-width: var(--container-width);
   margin: auto;
+}
+.top-loading-bar {
+  position: absolute;
+  top: 0;
+  z-index: 3;
 }
 
 @media (max-width: 799px) {
-  .scroll-left,
-  .scroll-right {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
   nav {
     justify-content: flex-start;
     ul > li {
@@ -101,9 +88,7 @@ nav > ul {
     }
     overflow: auto;
   }
-}
-@media (max-width: 600px) {
-  .logo {
-    height: 2.5rem;
+  .content {
+    padding: 0 0.5rem;
   }
 }
