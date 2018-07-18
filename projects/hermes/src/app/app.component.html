@@ -1,29 +1,11 @@
 <div (scroll)="scrollHandler($event)"
   class="container">
   <header #head>
-    <img (click)="articles.clearCacheReload()"
+    <img routerLink="/"
       class="logo"
       src="assets/logo.png"
       alt="logo">
   </header>
-  <div *ngIf="articles.loading$ | async"
-    class="top-loading-bar progress">
-    <div class="indeterminate"></div>
-  </div>
-  <div *ngIf="fixedMenu"
-    class="nav-spacer"></div>
-  <nav [class.fixed]="fixedMenu">
-    <ul>
-      <li routerLink="/home"
-        [class.selected]="!selectedCategory">Trang Chủ</li>
-      <li *ngFor="let category of categories; let i = index"
-        [class.selected]="selectedCategory && selectedCategory.position == i"
-        [routerLink]="category.link">
-        {{ category.name | titlecase }}
-      </li>
-    </ul>
-  </nav>
-  <div class="content">
-    <router-outlet></router-outlet>
-  </div>
+  <hm-loading-bar></hm-loading-bar>
+  <router-outlet></router-outlet>
 </div>

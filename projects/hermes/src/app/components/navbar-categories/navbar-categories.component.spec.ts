@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ArticlesGridListComponent } from './articles-grid-list.component';
+import { NavbarCategoriesComponent } from './navbar-categories.component';
 
-describe('ArticlesGridListComponent', () => {
-  let component: ArticlesGridListComponent;
-  let fixture: ComponentFixture<ArticlesGridListComponent>;
+describe('NavbarCategoriesComponent', () => {
+  let component: NavbarCategoriesComponent;
+  let fixture: ComponentFixture<NavbarCategoriesComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ArticlesGridListComponent ]
+      declarations: [ NavbarCategoriesComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ArticlesGridListComponent);
+    fixture = TestBed.createComponent(NavbarCategoriesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

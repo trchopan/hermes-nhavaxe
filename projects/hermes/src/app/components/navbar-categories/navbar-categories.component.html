@@ -1,0 +1,11 @@
+<div *ngIf="layout.fixedNav"
+  class="nav-spacer"></div>
+<nav [class.fixed]="layout.fixedNav">
+  <ul>
+    <li *ngFor="let category of articles.categoriesList$ | async"
+      [class.selected]="(articles.selectedCat$ | async)?.id == category.id"
+      (click)="selectCategory(category)">
+      {{ category.name | titlecase }}
+    </li>
+  </ul>
+</nav>

@@ -1,8 +1,10 @@
 .container {
   height: 100vh;
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
 }
 header {
+  // margin-top: 3rem;
   width: 100%;
   padding: 1rem 0;
   text-align: center;
@@ -12,83 +14,6 @@ header {
 header:hover {
   transform: scale(1.05);
 }
-nav,
-.nav-spacer {
-  display: flex;
-  position: relative;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 2rem;
-  height: 3rem;
-  flex-wrap: nowrap;
-  width: 100%;
-  overflow: hidden;
-}
-nav.fixed {
-  position: fixed;
-  top: 0;
-  z-index: 2;
-  background: white;
-  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
-  transition: box-shadow 200ms ease-in;
-}
-nav > ul {
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: center;
-  justify-content: center;
-  list-style: none;
-  color: black;
-  white-space: nowrap;
-  font-weight: bold;
-  li {
-    position: relative;
-    padding: 0 2rem;
-    font-weight: bold;
-    font-size: 1.1rem;
-    cursor: pointer;
-  }
-  li::after,
-  li.selected::after {
-    content: "";
-    position: absolute;
-    width: 0;
-    height: 1px;
-    background: black;
-    bottom: -0.5rem;
-    left: 25%;
-    transition: width 150ms ease-in;
-  }
-  li.selected::after {
-    width: 50%;
-    background: var(--red-preset);
-  }
-  li:hover::after {
-    width: 50%;
-  }
-}
 .logo {
   height: 3rem;
-}
-.content {
-  max-width: var(--container-width);
-  margin: auto;
-}
-.top-loading-bar {
-  position: absolute;
-  top: 0;
-  z-index: 3;
-}
-
-@media (max-width: 799px) {
-  nav {
-    justify-content: flex-start;
-    ul > li {
-      padding: 0 1rem;
-    }
-    overflow: auto;
-  }
-  .content {
-    padding: 0 0.5rem;
-  }
 }

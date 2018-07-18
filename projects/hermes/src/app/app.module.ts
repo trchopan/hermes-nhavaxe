@@ -10,19 +10,23 @@ import { AppRoutingModule } from "@app/app/app-routing.module";
 import { ArticlesGridComponent } from "@app/app/components/articles-grid/articles-grid.component";
 import { PageNotFoundComponent } from "@app/app/components/page-not-found/page-not-found.component";
 import { ArticleDetailComponent } from "@app/app/components/article-detail/article-detail.component";
-import { PublishAtParserPipe } from './pipes/publish-at-parser.pipe';
-import { ArticlesGridTopComponent } from './components/articles-grid-top/articles-grid-top.component';
-import { ArticlesGridListComponent } from './components/articles-grid-list/articles-grid-list.component';
+import { PublishAtParserPipe } from "./pipes/publish-at-parser.pipe";
+import { ArticlesGridTopComponent } from "./components/articles-grid-top/articles-grid-top.component";
+import { NavbarCategoriesComponent } from "./components/navbar-categories/navbar-categories.component";
+import { LoadingBarComponent } from "./components/loading-bar/loading-bar.component";
+import { TrimTextPipe } from "./pipes/trim-text.pipe";
 
 @NgModule({
   declarations: [
     AppComponent,
     PublishAtParserPipe,
+    TrimTextPipe,
     PageNotFoundComponent,
     ArticleDetailComponent,
     ArticlesGridComponent,
     ArticlesGridTopComponent,
-    ArticlesGridListComponent
+    NavbarCategoriesComponent,
+    LoadingBarComponent
   ],
   imports: [
     BrowserModule,

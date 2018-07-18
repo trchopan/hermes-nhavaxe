@@ -1,85 +1,42 @@
-import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import {
-  ArticlesService,
-  QueryAllCategories
-} from "@app/app/services/articles.service";
-import { ICategory } from "@editor/app/editor/models/category.model";
-import { Router, NavigationEnd, NavigationStart } from "@angular/router";
-import {
-  filter,
-  map,
-  distinctUntilChanged,
-  debounceTime
-} from "rxjs/operators";
-import { combineLatest } from "rxjs";
+  Component,
+  OnInit,
+  ViewChild,
+  ElementRef,
+  AfterViewInit
+} from "@angular/core";
 import smoothscroll from "smoothscroll-polyfill";
+import { LayoutService } from "@app/app/services/layout.service";
+import { ArticlesService } from "@app/app/services/articles.service";
 
 @Component({
   selector: "app-root",
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.scss"]
 })
-export class AppComponent implements OnInit {
-  fixedMenu: boolean = false;
-  categories: ICategory[];
-  selectedCategory: ICategory = null;
-
+export class AppComponent implements OnInit, AfterViewInit {
   @ViewChild("head") headEl: ElementRef;
 
-  constructor(public articles: ArticlesService, private router: Router) {
+  constructor(
+    private layout: LayoutService,
+    private articles: ArticlesService
+  ) {
     smoothscroll.polyfill();
   }
 
-  ngOnInit() {
-    // Scroll to top when navigate to new route
-    this.router.events
-      .pipe(
-        filter(e => e instanceof NavigationStart),
-        map(e => e as NavigationStart),
-        distinctUntilChanged()
-      )
-      .subscribe(() => {
-        this.headEl.nativeElement.scrollIntoView({ behavior: "smooth" });
-      });
+  ngOnInit() {}
 
-    // Resolve the routes and category selection
-    combineLatest(
-      this.articles.getCategories(),
-      this.router.events.pipe(
-        filter(e => e instanceof NavigationEnd),
-        map(e => e as NavigationEnd),
-        debounceTime(200)
-      )
-    ).subscribe(([categories, nav]) => {
-      if (categories) {
-        this.categories = categories;
-        this.selectedCategory = categories.find(
-          cat => cat.link === nav.url.slice(1)
-        );
-        let catId = this.selectedCategory
-          ? this.selectedCategory.id
-          : QueryAllCategories;
-        this.articles.clearSelected();
-        this.articles.loadByCategoryId(catId);
-      }
-    });
-
-    // Set the menu to fix top when a acticle is selected
-    this.articles.selectedMeta$.subscribe(meta => {
-      if (meta === null) {
-        return;
-      }
-      this.fixedMenu = true;
-    });
+  ngAfterViewInit() {
+    this.layout.headEl = this.headEl;
   }
 
   scrollHandler(event: any) {
     let scrollTop = event.target.scrollTop;
     let scrollHeight = event.target.scrollHeight;
-    let offsetHeight = event.target.offsetHeight;
-    this.fixedMenu = scrollTop >= 82 ? true : false;
+    let clientHeight = event.target.clientHeight;
+    this.layout.fixedNav = scrollTop >= 82 ? true : false;
 
-    if (scrollTop + offsetHeight >= scrollHeight * 0.9) {
+    if (scrollTop >= (scrollHeight - clientHeight) * 0.9) {
       this.articles.loadMore();
     }
   }

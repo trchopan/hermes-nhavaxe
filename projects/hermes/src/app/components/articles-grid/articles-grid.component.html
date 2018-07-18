@@ -1,3 +1,7 @@
-<hm-articles-grid-top [list]="articles.list$ | async"></hm-articles-grid-top>
-<hm-article-detail [meta]="articles.selectedMeta$ | async"
-  [body]="articles.selectedBody$ | async"></hm-article-detail>
+<hm-navbar-categories></hm-navbar-categories>
+<div class="container">
+  <hm-articles-grid-top *ngIf="list$ | async as list"
+    [list]="list"
+    (selected)="select($event)"></hm-articles-grid-top>
+  <hm-article-detail></hm-article-detail>
+</div>
