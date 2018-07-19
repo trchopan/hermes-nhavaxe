@@ -88,7 +88,7 @@ export class ArticlesListComponent implements OnInit, OnDestroy {
 
   edit(article: IArticle) {
     if (this.articles.isEditable(article.status)) {
-      this.router.navigate(["edit", article.id]);
+      this.router.navigate(["article/edit", article.id]);
     } else {
       console.log("[Articles] locked", article);
       this.snackbar.open("Bài đã bị khoá", null, { duration: 1500 });
@@ -96,7 +96,7 @@ export class ArticlesListComponent implements OnInit, OnDestroy {
   }
 
   preview(article: IArticle) {
-    this.router.navigate(["preview", article.id]);
+    this.router.navigate(["article", article.id]);
   }
 
   handlePageChange(event: PageEvent) {

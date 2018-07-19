@@ -1,6 +1,6 @@
 {
   "projects": {
-    "default": "hermes-editor",
+    "default": "hermes",
     "editor": "hermes-editor",
     "nhavaxe-publish": "nhavaxe-publish",
     "nhavaxe-editor": "nhavaxe-editor"

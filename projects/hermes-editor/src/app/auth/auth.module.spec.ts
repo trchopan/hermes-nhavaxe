@@ -1,4 +1,4 @@
-import { AuthModule } from './auth.module';
+import { AuthModule } from '@editor/app/auth/auth.module';
 
 describe('AuthModule', () => {
   let authModule: AuthModule;

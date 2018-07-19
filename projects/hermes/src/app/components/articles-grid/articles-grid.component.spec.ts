@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ArticlesGridComponent } from './articles-grid.component';
+import { ArticlesGridComponent } from '@app/app/components/articles-grid/articles-grid.component';
 
 describe('ArticlesGridComponent', () => {
   let component: ArticlesGridComponent;

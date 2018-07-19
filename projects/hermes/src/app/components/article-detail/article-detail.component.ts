@@ -67,7 +67,6 @@ export class ArticleDetailComponent implements OnInit {
         return;
       }
       this.layout.showArticle = true;
-      this.layout.fixedNav = true;
       this.meta$ = this.articles.getArticleData(id).pipe(
         tap(meta => {
           if (meta && meta.video) {

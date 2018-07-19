@@ -29,6 +29,31 @@ export class UserService {
     private router: Router,
     private aFs: AngularFirestore
   ) {
+    // Stud data
+    // this.authData = {
+    //   id: "nCxyrSBwnLWDV96GcHWhbJc0Lqe2",
+    //   email: "logan1011001@gmail.com"
+    // };
+    // this.profile = {
+    //   avatar:
+    //     "https://pbs.twimg.com/profile_images/644262622234284032/tpm8sb5J_400x400.jpg",
+    //   fullname: "Cờ Toooo",
+    //   phone: "",
+    //   points: 0,
+    //   greeting: ""
+    // };
+    // this.managerProf = {
+    //   avatar:
+    //     "https://pbs.twimg.com/profile_images/644262622234284032/tpm8sb5J_400x400.jpg",
+    //   fullname: "Cờ To Thiệt To",
+    //   phone: "",
+    //   points: 0,
+    //   greeting: ""
+    // };
+    // this.isLoggedIn = true;
+    // this.isManager = true;
+    // this.loading$.next(false)
+
     this.afAuth.authState.subscribe(auth => {
       if (auth) {
         console.log(this.className + " authed ", auth.uid);

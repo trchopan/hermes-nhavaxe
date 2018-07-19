@@ -1,22 +1,29 @@
+.logo {
+  width: 5rem;
+  height: 2rem;
+  background-image: url("../../../assets/logo.png");
+  background-size: cover;
+  transition: transform 150ms ease-in;
+  transform: scale(1);
+}
+.logo:hover {
+  transform: scale(1.1);
+}
 nav,
 .nav-spacer {
   display: flex;
-  position: relative;
   z-index: 1;
   align-items: center;
   justify-content: center;
   margin: 0 auto 2rem;
-  height: 3.5rem;
+  height: 3rem;
   flex-wrap: nowrap;
   width: 100%;
   overflow: hidden;
-}
-nav.fixed {
   position: fixed;
   top: 0;
   background: white;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
-  transition: box-shadow 200ms ease-in;
 }
 nav > ul {
   display: flex;
@@ -49,13 +56,9 @@ nav > ul {
     width: 50%;
     background: var(--primary-color);
   }
-  li:hover::after {
+  li.nav-text:hover::after {
     width: 50%;
   }
-}
-.back-button {
-  color: var(--primary-color);
-  margin-left: 1rem;
 }
 @media (max-width: 799px) {
   nav {
@@ -64,8 +67,5 @@ nav > ul {
       padding: 0 1rem;
     }
     overflow: auto;
-  }
-  .content {
-    padding: 0 0.5rem;
   }
 }

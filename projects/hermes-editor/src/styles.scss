@@ -4,10 +4,27 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @import "~projects/hermes-editor/src/assets/scss/quill.scss";
 
+:root {
+  --primary-color: #ed1d24;
+  --primary-color-tint: #ffdfe0;
+  --secondary-color: #159cd8;
+  --text-main-color: #000000;
+  --text-secondary-color: #575757;
+  --text-faded-color: #8a8a8a;
+  --container-width: 900px;
+}
+
 *,
 *::before,
 *::after {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  outline: none;
+}
+
+body {
+  font-family: Play, "Courier New", Courier, monospace;
 }
 
 body {

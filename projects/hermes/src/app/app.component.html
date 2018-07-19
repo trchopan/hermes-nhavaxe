@@ -1,11 +1,7 @@
-<div (scroll)="scrollHandler($event)"
+<div #container
+  (scroll)="scrollHandler($event)"
   class="container">
-  <header #head>
-    <img routerLink="/"
-      class="logo"
-      src="assets/logo.png"
-      alt="logo">
-  </header>
+  <hm-navbar-categories></hm-navbar-categories>
   <hm-loading-bar></hm-loading-bar>
   <router-outlet></router-outlet>
 </div>

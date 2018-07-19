@@ -1,4 +1,4 @@
-import { LeagueProcessPipe } from './league-process.pipe';
+import { LeagueProcessPipe } from '@editor/app/shared/pipes/league-process.pipe';
 
 describe('LeagueProcessPipe', () => {
   it('create an instance', () => {

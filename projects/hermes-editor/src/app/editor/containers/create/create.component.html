@@ -3,11 +3,6 @@
     class="center error">
     Lỗi hệ thống. Vui lòng báo admin nội dung sau: {{ error | json }}
   </p>
-  <mat-spinner *ngIf="articles.loading$ | async"
-    color="accent"
-    diameter="30"
-    strokeWidth="2"></mat-spinner>
-  <article-form *ngIf="!(articles.loading$ | async)"
-    (onSubmit)="handleCreate($event)">
+  <article-form (onSubmit)="handleCreate($event)">
   </article-form>
 </div>

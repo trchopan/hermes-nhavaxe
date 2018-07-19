@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { AngularFirestore } from "angularfire2/firestore";
 import { IQuery } from "@editor/app/editor/models/query.model";
 import { BehaviorSubject, of, Observable } from "rxjs";
-import { switchMap, map, catchError } from "rxjs/operators";
+import { switchMap, map, catchError, tap } from "rxjs/operators";
 import { firestore } from "firebase/app";
 import { UserService } from "@editor/app/auth/services/user.service";
 import {
@@ -17,6 +17,7 @@ import {
   IArticleBody,
   parseArticleBody
 } from "@editor/app/editor/models/article.model";
+import { LayoutService } from "@editor/app/core/services/layout.service";
 
 const ArticlesCollection = "articles";
 const BodyCollection = "body";
@@ -27,8 +28,14 @@ const CategoriesCollection = "categories";
 })
 export class ArticlesService {
   private className = "[Articles] ";
+  
+  statusMap = [
+    { value: "draft", text: "Đang soạn"},
+    { value: "pending", text: "Chờ duyệt"},
+    { value: "published", text: "Đã duyệt"},
+    { value: "unpublished", text: "Gở bỏ"},
+  ]
 
-  loading$: BehaviorSubject<boolean>;
   query$: BehaviorSubject<IQuery>;
   list$: BehaviorSubject<IArticle[]>;
   categories$: BehaviorSubject<ICategory[]>;
@@ -38,9 +45,9 @@ export class ArticlesService {
     private afFirestore: AngularFirestore,
     private user: UserService,
     private router: Router,
-    private snackbar: MatSnackBar
+    private snackbar: MatSnackBar,
+    private layout: LayoutService
   ) {
-    this.loading$ = new BehaviorSubject<boolean>(true);
     this.list$ = new BehaviorSubject<IArticle[]>(null);
     this.query$ = new BehaviorSubject<IQuery>({
       fromDate: new Date().setHours(0, 0, 0, 0),
@@ -63,6 +70,7 @@ export class ArticlesService {
     // Get the list of Meta data
     this.query$
       .pipe(
+        tap(() => this.layout.loading$.next(true)),
         switchMap((query: IQuery) =>
           this.afFirestore
             .collection(ArticlesCollection, ref => {
@@ -112,40 +120,65 @@ export class ArticlesService {
       .subscribe(
         (articles: IArticle[]) => {
           this.list$.next(articles);
-          this.loading$.next(false);
+          this.layout.loading$.next(false);
         },
         error => {
           this.error$.next(error);
-          this.loading$.next(false);
+          this.layout.loading$.next(false);
         }
       );
   }
 
-  getArticleData = (id: string): Observable<IArticle> =>
-    this.afFirestore
+  getArticleData(id: string): Observable<IArticle> {
+    this.layout.loading$.next(true);
+    console.log(this.className + "get article data " + id);
+
+    return this.afFirestore
       .collection(ArticlesCollection)
       .doc(id)
       .valueChanges()
-      .pipe(map(value => parseArticle(id, value)));
+      .pipe(
+        map(result => {
+          this.layout.loading$.next(false);
+          return parseArticle(id, result);
+        }),
+        catchError(err => {
+          console.log(this.className + "getting article data error", err);
+          return of(err);
+        })
+      );
+  }
 
-  getBodyData = (id: string): Observable<IArticleBody> =>
-    this.afFirestore
+  getBodyData(id: string): Observable<IArticleBody> {
+    this.layout.loading$.next(true);
+    return this.afFirestore
       .collection(ArticlesCollection)
       .doc(id)
       .collection(BodyCollection, ref =>
         ref.orderBy("modifiedAt", "desc").limit(1)
       )
       .valueChanges()
-      .pipe(map(snap => (snap.length > 0 ? parseArticleBody(snap[0]) : null)));
+      .pipe(
+        map(snap => {
+          console.log(this.className + "get article body " + id);
+          this.layout.loading$.next(false);
+          return snap.length > 0 ? parseArticleBody(snap[0]) : null;
+        }),
+        catchError(err => {
+          console.log(this.className + "getting article body error", err);
+          return of(err);
+        })
+      );
+  }
 
   setQuery(query: IQuery) {
-    this.loading$.next(true);
+    this.layout.loading$.next(true);
     this.query$.next(query);
   }
 
   create(article: IArticle) {
-    this.loading$.next(true);
-    console.log(this.className + " creating", this.loading$.value);
+    this.layout.loading$.next(true);
+    console.log(this.className + " creating");
     var newArticle = { ...article, bodyData: "" } 
     this.afFirestore
       .collection(ArticlesCollection)
@@ -160,8 +193,8 @@ export class ArticlesService {
   }
 
   update(article: IArticle) {
-    this.loading$.next(true);
-    console.log(this.className + " updating", this.loading$.value);
+    this.layout.loading$.next(true);
+    console.log(this.className + " updating");
     const articleDoc = this.afFirestore
       .collection(ArticlesCollection)
       .doc(article.id);
@@ -180,11 +213,11 @@ export class ArticlesService {
   }
 
   handleSuccess() {
-    this.router.navigate(["list"]);
+    this.router.navigate(["article"]);
     this.snackbar.open("Bài viết đã được cập nhật", null, {
       duration: 1000
     });
-    this.loading$.next(false);
+    this.layout.loading$.next(false);
     console.log(this.className + " success");
   }
 
@@ -194,7 +227,7 @@ export class ArticlesService {
     this.snackbar.open("Lỗi cập nhật bài viết", null, {
       duration: 1000
     });
-    this.loading$.next(false);
+    this.layout.loading$.next(false);
   }
 
   clearError = () => this.error$.next(null);

@@ -1,4 +1,4 @@
-import { LeagueImagePipe } from './league-image.pipe';
+import { LeagueImagePipe } from '@editor/app/shared/pipes/league-image.pipe';
 
 describe('LeagueImagePipe', () => {
   it('create an instance', () => {

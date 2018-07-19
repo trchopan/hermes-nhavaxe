@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LoginLoadingComponent } from './login-loading.component';
+import { LoginLoadingComponent } from '@editor/app/core/components/login-loading/login-loading.component';
 
 describe('LoginLoadingComponent', () => {
   let component: LoginLoadingComponent;

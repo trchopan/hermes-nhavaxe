@@ -1,18 +1,19 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { PageNotFoundComponent } from "./containers/page-not-found/page-not-found.component";
+import { PageNotFoundComponent } from "@editor/app/core/containers/page-not-found/page-not-found.component";
 import { Routes, RouterModule } from "@angular/router";
-import { AppComponent } from "./containers/app/app.component";
+import { AppComponent } from "@editor/app/core/containers/app/app.component";
 import { LoginLoadingComponent } from "@editor/app/core/components/login-loading/login-loading.component";
 import {
   MatButtonModule,
   MatIconModule,
-  MatToolbarModule
+  MatToolbarModule,
+  MatProgressSpinnerModule
 } from "@angular/material";
-import { MlToolbarComponent } from "@editor/app/core/components/ml-toolbar/ml-toolbar.component";
+import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
 
 const routes: Routes = [
-  { path: "", pathMatch: "full", redirectTo: "/list" },
+  { path: "", pathMatch: "full", redirectTo: "/article" },
   { path: "**", component: PageNotFoundComponent }
 ];
 
@@ -23,13 +24,14 @@ const routes: Routes = [
     MatButtonModule,
     MatIconModule,
     MatButtonModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatProgressSpinnerModule
   ],
   declarations: [
     AppComponent,
     PageNotFoundComponent,
     LoginLoadingComponent,
-    MlToolbarComponent
+    LoadingSpinnerComponent,
   ],
   exports: [RouterModule]
 })

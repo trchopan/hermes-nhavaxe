@@ -18,7 +18,6 @@ export class NavbarCategoriesComponent {
 
   selectCategory(category: ICategory) {
     this.layout.scrollTop();
-    this.layout.fixedNav = false;
     this.layout.showArticle = false;
     this.articles.selectedCat$.next(category);
     this.articles.lastStartAtCursor$.next(null);

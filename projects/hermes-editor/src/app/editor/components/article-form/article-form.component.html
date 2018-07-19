@@ -84,11 +84,12 @@
             placeholder="Tags" />
         </mat-form-field>
 
-        <mat-form-field *ngIf="status.value === 'draft' || status.value === 'pending'">
+        <mat-form-field>
           <mat-select placeholder="Trạng thái"
             formControlName="status">
-            <mat-option value="draft">Bản nháp</mat-option>
-            <mat-option value="pending">Gởi duyệt</mat-option>
+            <mat-option *ngFor="let status of articles.statusMap"
+              [disabled]="(status.value == 'published' || status.value == 'unpublished') && !user.isManager"
+              [value]="status.value">{{ status.text }}</mat-option>
           </mat-select>
         </mat-form-field>
 
@@ -115,7 +116,7 @@
               Bài chữ bao hình
             </mat-radio-button>
             <mat-radio-button value="picture">
-              Bài 2 cột
+              Bài 1 cột
             </mat-radio-button>
           </mat-radio-group>
         </div>
@@ -134,7 +135,7 @@
         [disabled]="form.pristine || !form.valid"
         color="primary"
         type="submit">
-          {{ form.controls.id.value ? 'Cập nhật' : 'Thêm bài mới' }}
+        {{ form.controls.id.value ? 'Cập nhật' : 'Thêm bài mới' }}
       </button>
     </mat-card-actions>
   </mat-card>

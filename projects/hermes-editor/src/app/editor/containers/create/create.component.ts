@@ -1,5 +1,4 @@
 import { Component, OnInit } from "@angular/core";
-import { UserService } from "@editor/app/auth/services/user.service";
 import { ArticlesService } from "@editor/app/editor/services/articles.service";
 import { IArticle } from "@editor/app/editor/models/article.model";
 

@@ -1,6 +1,14 @@
 .article-container {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  background: white;
   margin: auto;
-  max-width: 960px;
+  padding: 3.5rem 0;
+  max-width: var(--container-width);
 }
 
 h1.article-title {
@@ -21,10 +29,24 @@ p.article-sapo {
   font-style: italic;
 }
 
+hr {
+  border: 0;
+  height: 1px;
+  background: var(--secondary-color);
+  background-image: linear-gradient(
+    to right,
+    var(--primary-color-tint),
+    var(--primary-color),
+    var(--primary-color-tint)
+  );
+}
+
 .article-body {
   padding: 1rem 1.5rem;
   line-height: 1.8rem;
   font-size: 1.1rem;
+  overflow: visible;
+  height: auto;
 }
 
 .article-source {

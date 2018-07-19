@@ -1,4 +1,4 @@
-import { PublishAtParserPipe } from './publish-at-parser.pipe';
+import { PublishAtParserPipe } from '@app/app/pipes/publish-at-parser.pipe';
 
 describe('PublishAtParserPipe', () => {
   it('create an instance', () => {

@@ -3,10 +3,6 @@
     class="center error">
     Lỗi hệ thống. Vui lòng báo admin nội dung sau: {{ error | json }}
   </p>
-  <mat-spinner *ngIf="articles.loading$ | async"
-    color="accent"
-    diameter="30"
-    strokeWidth="2"></mat-spinner>
   <ng-container *ngIf="article$ | async as article">
     <article-form *ngIf="!(articles.loading$ | async)"
       [article]="article"

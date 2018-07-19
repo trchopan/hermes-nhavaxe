@@ -70,7 +70,7 @@ export class ArticleFormComponent implements OnDestroy, AfterViewInit {
 
   constructor(
     public articles: ArticlesService,
-    private user: UserService,
+    public user: UserService,
     private fb: FormBuilder,
     private dom: DomSanitizer
   ) {
@@ -173,11 +173,6 @@ export class ArticleFormComponent implements OnDestroy, AfterViewInit {
   }
 
   submit() {
-    let video = this.form.controls.video.value;
-    video
-      ? this.form.controls.video.setValue(this.youtube_parser(video))
-      : null;
-
     let bodyData = this.form.controls.bodyData.value;
 
     let article = {

@@ -15,7 +15,7 @@ import { ArticlesService } from "@app/app/services/articles.service";
   styleUrls: ["./app.component.scss"]
 })
 export class AppComponent implements OnInit, AfterViewInit {
-  @ViewChild("head") headEl: ElementRef;
+  @ViewChild("container") containerEl: ElementRef;
 
   constructor(
     private layout: LayoutService,
@@ -27,16 +27,15 @@ export class AppComponent implements OnInit, AfterViewInit {
   ngOnInit() {}
 
   ngAfterViewInit() {
-    this.layout.headEl = this.headEl;
+    this.layout.containerEl = this.containerEl;
   }
 
   scrollHandler(event: any) {
     let scrollTop = event.target.scrollTop;
     let scrollHeight = event.target.scrollHeight;
     let clientHeight = event.target.clientHeight;
-    this.layout.fixedNav = scrollTop >= 82 ? true : false;
 
-    if (scrollTop >= (scrollHeight - clientHeight) * 0.9) {
+    if (scrollTop >= scrollHeight - clientHeight - 100) {
       this.articles.loadMore();
     }
   }

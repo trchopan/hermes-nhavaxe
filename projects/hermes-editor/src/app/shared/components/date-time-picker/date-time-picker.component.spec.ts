@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DateTimePickerComponent } from './date-time-picker.component';
+import { DateTimePickerComponent } from '@editor/app/shared/components/date-time-picker/date-time-picker.component';
 
 describe('DateTimePickerComponent', () => {
   let component: DateTimePickerComponent;

@@ -1,4 +1,4 @@
-import { TrimTextPipe } from './trim-text.pipe';
+import { TrimTextPipe } from '@app/app/pipes/trim-text.pipe';
 
 describe('TrimTextPipe', () => {
   it('create an instance', () => {

@@ -1,11 +1,11 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { CreateComponent } from "./containers/create/create.component";
+import { CreateComponent } from "@editor/app/editor/containers/create/create.component";
 import { Routes, RouterModule } from "@angular/router";
-import { AuthGuardService } from "../auth/services/auth-guard.service";
-import { EditComponent } from "./containers/edit/edit.component";
-import { ArticlesListComponent } from "./containers/articles-list/articles-list.component";
-import { ArticleListItemComponent } from "./components/article-list-item/article-list-item.component";
+import { AuthGuardService } from "@editor/app/auth/services/auth-guard.service";
+import { EditComponent } from "@editor/app/editor/containers/edit/edit.component";
+import { ArticlesListComponent } from "@editor/app/editor/containers/articles-list/articles-list.component";
+import { ArticleListItemComponent } from "@editor/app/editor/components/article-list-item/article-list-item.component";
 import {
   MatListModule,
   MatButtonModule,
@@ -20,32 +20,21 @@ import {
   MatTabsModule
 } from "@angular/material";
 import { ReactiveFormsModule } from "@angular/forms";
-import { PreviewComponent } from "./containers/preview/preview.component";
-import { ArticleDetailComponent } from "./components/article-detail/article-detail.component";
-import { ArticleFormComponent } from "./components/article-form/article-form.component";
+import { ArticleDetailComponent } from "@editor/app/editor/components/article-detail/article-detail.component";
+import { ArticleFormComponent } from "@editor/app/editor/components/article-form/article-form.component";
 import { SharedModule } from "@editor/app/shared/shared.module";
 import { QuillModule } from "ngx-quill";
 
 const routes: Routes = [
   {
-    path: "create",
-    component: CreateComponent,
-    canActivate: [AuthGuardService]
-  },
-  {
-    path: "edit/:id",
-    component: EditComponent,
-    canActivate: [AuthGuardService]
-  },
-  {
-    path: "preview/:id",
-    component: PreviewComponent,
-    canActivate: [AuthGuardService]
-  },
-  {
-    path: "list",
+    path: "article",
     component: ArticlesListComponent,
-    canActivate: [AuthGuardService]
+    canActivate: [AuthGuardService],
+    children: [
+      { path: "create", component: CreateComponent },
+      { path: "edit/:id", component: EditComponent },
+      { path: ":id", component: ArticleDetailComponent }
+    ]
   }
 ];
 
@@ -74,7 +63,6 @@ const routes: Routes = [
     ArticleFormComponent,
     ArticlesListComponent,
     ArticleListItemComponent,
-    PreviewComponent,
     ArticleDetailComponent
   ],
   exports: [RouterModule]

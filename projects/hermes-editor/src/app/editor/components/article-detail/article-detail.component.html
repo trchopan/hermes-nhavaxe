@@ -1,36 +1,29 @@
-<div class="article-container">
-  <h1 class="article-title">
-    {{ article.title }}
-  </h1>
-  <p class="article-sapo">
-    {{ article.sapo }}
-  </p>
-  <mat-divider></mat-divider>
-  <div *ngIf="safeYoutube"
-    class="youtube-container">
-    <div [innerHtml]="safeYoutube"
-      class="center youtube">
+<div *ngIf="meta$ | async as meta"
+  [@showAnimation]>
+  <div class="article-container">
+    <h1 class="article-title">
+      {{ meta.title }}
+    </h1>
+    <p class="article-sapo">
+      {{ meta.sapo }}
+    </p>
+    <hr>
+    <div *ngIf="safeYoutube"
+      class="youtube-container">
+      <div [innerHtml]="safeYoutube"
+        class="center youtube">
+      </div>
     </div>
-  </div>
-  <div class="article-body ql-editor"
-    [class.article-style]="article.style === 'article'"
-    [class.picture-style]="article.style === 'picture'"
-    [innerHtml]="body$ | async">
-  </div>
-  <p class="article-source">
-    Dẫn nguồn từ
-    <span>{{ article.reference | titlecase }}</span> &copy;
-    <span>{{ article.publisher | titlecase }}</span>
-  </p>
-  <div class="article-creator-detail">
-    <div class="article-creator-name">Bài được đăng bởi
-      <strong>{{ article.creatorName }}</strong>
+    <div *ngIf="body$ | async as body"
+      class="article-body ql-editor"
+      [class.article-style]="meta.style === 'article'"
+      [class.picture-style]="meta.style === 'picture'"
+      [innerHtml]="body.body">
     </div>
-    <div class="article-creator-avatar"
-      [ngStyle]="{ 'background-image': 'url(' + article.creatorAvatar + ')' }">
-    </div>
-    <div class="article-publish-at">
-      {{ article.publishAt | date: "dd/MM/yy HH:mm" }}
-    </div>
+    <p class="article-source">
+      Dẫn nguồn từ
+      <span>{{ meta.reference | titlecase }}</span> &copy;
+      <span>{{ meta.publisher | titlecase }}</span>
+    </p>
   </div>
 </div>

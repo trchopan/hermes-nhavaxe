@@ -1,4 +1,4 @@
-import { LeagueTextPipe } from './league-text.pipe';
+import { LeagueTextPipe } from '@editor/app/shared/pipes/league-text.pipe';
 
 describe('LeagueTextPipe', () => {
   it('create an instance', () => {

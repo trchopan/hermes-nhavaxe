@@ -1,38 +1,94 @@
-import { Component, Input, ViewEncapsulation, OnInit } from "@angular/core";
-import { IArticle } from "@editor/app/editor/models/article.model";
-import { SafeHtml, DomSanitizer } from "@angular/platform-browser";
-import { Observable } from "rxjs";
+import { Component, ViewEncapsulation, OnInit } from "@angular/core";
+import {
+  IArticle,
+  IArticleBody
+} from "@editor/app/editor/models/article.model";
 import { ArticlesService } from "@editor/app/editor/services/articles.service";
-import { map } from "rxjs/operators";
+import { SafeHtml, DomSanitizer } from "@angular/platform-browser";
+import { trigger, style, animate, transition } from "@angular/animations";
+import { map, tap } from "rxjs/operators";
+import { Observable } from "rxjs";
+import { ActivatedRoute, Router } from "@angular/router";
+import { LayoutService } from "@app/app/services/layout.service";
 
 @Component({
-  selector: "article-detail",
+  selector: "hm-article-detail",
   templateUrl: "./article-detail.component.html",
   styleUrls: ["./article-detail.component.scss"],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+  animations: [
+    trigger("showAnimation", [
+      transition(":enter", [
+        style({
+          transform: "translateX(100vw)",
+          opacity: "0",
+          display: "block"
+        }),
+        animate(
+          "200ms ease-in",
+          style({ transform: "translateX(0)", opacity: "1" })
+        )
+      ]),
+      transition(":leave", [
+        animate(
+          "200ms ease-in",
+          style({
+            transform: "translateX(100vw)",
+            opacity: "0",
+            display: "none"
+          })
+        )
+      ])
+    ])
+  ]
 })
 export class ArticleDetailComponent implements OnInit {
-  @Input() article: IArticle;
-
+  meta$: Observable<IArticle>;
+  body$: Observable<IArticleBody>;
   safeYoutube: SafeHtml;
-  body$: Observable<string>;
 
-  constructor(private dom: DomSanitizer, private articles: ArticlesService) {}
+  constructor(
+    public layout: LayoutService,
+    private dom: DomSanitizer,
+    private articles: ArticlesService,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit() {
-    if (this.article.video) {
-      let html = `
-      <iframe
-        src="https://www.youtube.com/embed/${this.article.video}"
-        frameborder="0"
-        allow="autoplay; encrypted-media"
-        allowfullscreen></iframe>
-      `;
-      this.safeYoutube = this.dom.bypassSecurityTrustHtml(html);
-    }
+    console.log("Article Detail init");
 
-    this.body$ = this.articles
-      .getBodyData(this.article.id)
-      .pipe(map(bodyData => (bodyData ? bodyData.body : "")));
+    this.route.paramMap.subscribe(params => {
+      let id = params.get("id");
+      if (!id) {
+        this.layout.showArticle = false;
+        this.meta$ = null;
+        this.body$ = null;
+        this.safeYoutube = null;
+        return;
+      }
+      this.layout.showArticle = true;
+      this.meta$ = this.articles.getArticleData(id).pipe(
+        tap(meta => {
+          if (meta && meta.video) {
+            let video = this.youtube_parser(meta.video);
+            let html = `
+              <iframe
+                src="https://www.youtube.com/embed/${video}"
+                frameborder="0"
+                allow="autoplay; encrypted-media"
+                allowfullscreen></iframe>
+              `;
+            this.safeYoutube = this.dom.bypassSecurityTrustHtml(html);
+          }
+        })
+      );
+      this.body$ = this.articles.getBodyData(id);
+    });
+  }
+
+  youtube_parser(url) {
+    var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
+    var match = url.match(regExp);
+    return match && match[7].length == 11 ? match[7] : false;
   }
 }

@@ -8,7 +8,7 @@ import {
 } from "@angular/router";
 import { Observable, of } from "rxjs";
 import { switchMap } from "rxjs/operators";
-import { UserService } from "./user.service";
+import { UserService } from "@editor/app/auth/services/user.service";
 
 @Injectable({
   providedIn: "root"
@@ -24,6 +24,7 @@ export class AuthGuardService implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> {
+    // return of(true)
     return this.auth.authState.pipe(
       switchMap(authState => {
         if (authState) {

@@ -1,6 +1,6 @@
 import { Component, OnDestroy } from "@angular/core";
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
-import { UserService } from "../../services/user.service";
+import { UserService } from "@editor/app/auth/services/user.service";
 import { Subject, Observable } from "rxjs";
 import { takeUntil, map } from "rxjs/operators";
 import { Router } from "@angular/router";

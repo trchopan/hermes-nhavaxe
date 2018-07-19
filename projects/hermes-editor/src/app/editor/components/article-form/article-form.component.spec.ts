@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ArticleFormComponent } from './article-form.component';
+import { ArticleFormComponent } from '@editor/app/editor/components/article-form/article-form.component';
 
 describe('ArticleFormComponent', () => {
   let component: ArticleFormComponent;

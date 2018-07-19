@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PublishAtLabelComponent } from './publish-at-label.component';
+import { PublishAtLabelComponent } from '@editor/app/shared/components/publish-at-label/publish-at-label.component';
 
 describe('PublishAtLabelComponent', () => {
   let component: PublishAtLabelComponent;

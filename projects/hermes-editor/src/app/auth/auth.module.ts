@@ -9,9 +9,9 @@ import {
   MatProgressSpinnerModule,
   MatProgressBarModule
 } from "@angular/material";
-import { AuthGuardService } from "./services/auth-guard.service";
-import { ProfileComponent } from "./containers/profile/profile.component";
-import { LoginComponent } from "./containers/login/login.component";
+import { AuthGuardService } from "@editor/app/auth/services/auth-guard.service";
+import { ProfileComponent } from "@editor/app/auth/containers/profile/profile.component";
+import { LoginComponent } from "@editor/app/auth/containers/login/login.component";
 import { SharedModule } from "@editor/app/shared/shared.module";
 import { ProfileUpdateComponent } from "@editor/app/auth/components/profile-update/profile-update.component";
 
