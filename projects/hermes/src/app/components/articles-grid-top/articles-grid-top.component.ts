@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
 import { ArticlesService } from "@app/app/services/articles.service";
 import { IArticle } from "@editor/app/editor/models/article.model";
 import {
@@ -37,7 +37,6 @@ import { LayoutService } from "@app/app/services/layout.service";
 })
 export class ArticlesGridTopComponent implements OnInit {
   @Input() list: IArticle[];
-  @Output() selected = new EventEmitter();
 
   currentCategoryId: string;
   titleMax: number = 80;
@@ -46,8 +45,8 @@ export class ArticlesGridTopComponent implements OnInit {
   constructor(public articles: ArticlesService, public layout: LayoutService) {}
 
   ngOnInit() {
+    // Set the max character for the triming pipe
     let clientWidth = this.layout.getViewWidth();
-    console.log("client Width", clientWidth);
     if (clientWidth > 799) {
       this.titleMax = 999;
       this.sapoMax = 999;
@@ -59,10 +58,8 @@ export class ArticlesGridTopComponent implements OnInit {
       return;
     }
     if (clientWidth) {
-      this.titleMax = 80;
+      this.titleMax = 75;
       this.sapoMax = 150;
     }
   }
-
-  select = (article: IArticle) => this.selected.emit(article);
 }

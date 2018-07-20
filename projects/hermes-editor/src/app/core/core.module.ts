@@ -10,7 +10,7 @@ import {
   MatToolbarModule,
   MatProgressSpinnerModule
 } from "@angular/material";
-import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
+import { LoadingSpinnerComponent } from '@editor/app/core/components/loading-spinner/loading-spinner.component';
 
 const routes: Routes = [
   { path: "", pathMatch: "full", redirectTo: "/article" },

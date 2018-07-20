@@ -1,6 +1,6 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import { LayoutService } from './layout.service';
+import { LayoutService } from '@editor/app/core/services/layout.service';
 
 describe('LayoutService', () => {
   beforeEach(() => {

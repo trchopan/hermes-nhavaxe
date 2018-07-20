@@ -23,3 +23,8 @@
 body {
   font-family: Play, "Courier New", Courier, monospace;
 }
+
+a {
+  text-decoration: none;
+  color: var(--text-main-color);
+}

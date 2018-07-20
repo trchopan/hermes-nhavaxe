@@ -27,6 +27,7 @@
     class="note">
     <strong>Ghi chú: </strong>
     <em>&quot;{{ article.note }}&quot;</em>
+    <span *ngIf="article.managerName"> - {{ article.managerName }}</span>
   </p>
 </section>
 <mat-divider></mat-divider>

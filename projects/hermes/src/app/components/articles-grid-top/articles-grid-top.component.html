@@ -1,16 +1,19 @@
 <ul [@listState]="layout.showArticle ? 'hide' : 'show'">
-  <li *ngFor="let article of list"
-    (click)="select(article)">
-    <div class="cover-image"
-      [ngStyle]="{ 'background-image': 'url(' + article.coverImg + ')'}">
-      <p *ngIf="(articles.selectedCat$ | async)?.id == 'HomeCategoriesId'"
-        [class]="'category cat-' + article.categoryId">
-        {{ article.categoryName }}
-      </p>
-    </div>
+  <li *ngFor="let article of list">
+    <a routerLink="/article/{{ article.id }}">
+      <div class="cover-image"
+        [ngStyle]="{ 'background-image': 'url(' + article.coverImg + ')'}">
+        <p *ngIf="(articles.selectedCat$ | async)?.id == 'HomeCategoriesId'"
+          [class]="'category cat-' + article.categoryId">
+          {{ article.categoryName }}
+        </p>
+      </div>
+    </a>
     <div class="info">
       <p class="title">
-        {{ article.title | trimText:titleMax }}
+        <a routerLink="/article/{{ article.id }}">
+          {{ article.title | trimText:titleMax }}
+        </a>
       </p>
       <p class="publish-at">
         {{ article.publishAt | publishAtParser }}

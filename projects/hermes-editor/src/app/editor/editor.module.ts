@@ -19,7 +19,7 @@ import {
   MatPaginatorModule,
   MatTabsModule
 } from "@angular/material";
-import { ReactiveFormsModule } from "@angular/forms";
+import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { ArticleDetailComponent } from "@editor/app/editor/components/article-detail/article-detail.component";
 import { ArticleFormComponent } from "@editor/app/editor/components/article-form/article-form.component";
 import { SharedModule } from "@editor/app/shared/shared.module";
@@ -42,6 +42,7 @@ const routes: Routes = [
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
+    FormsModule,
     ReactiveFormsModule,
     QuillModule,
     SharedModule,

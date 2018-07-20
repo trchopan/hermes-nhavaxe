@@ -6,8 +6,8 @@
       <mat-select placeholder="Người soạn"
         formControlName="creatorId">
         <mat-option value="ALLEDITOR">-- Tất cả --</mat-option>
-        <mat-option *ngFor="let editor of editorList$ | async"
-          [value]="editor.id">{{ editor.name }}</mat-option>
+        <mat-option *ngFor="let editor of articles.editorList$ | async"
+          [value]="editor.id">{{ editor.fullname }}</mat-option>
       </mat-select>
     </mat-form-field>
     <mat-form-field>

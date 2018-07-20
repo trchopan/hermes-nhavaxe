@@ -35,8 +35,6 @@ export class ArticlesListComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.editorList$ = !this.user.isManager ? null : this.getEditorList();
-
     this.articles.list$.pipe(takeUntil(this.ngUnsub)).subscribe(list => {
       this.articlesList = list;
       this.pageEvent$.next({
@@ -102,25 +100,4 @@ export class ArticlesListComponent implements OnInit, OnDestroy {
   handlePageChange(event: PageEvent) {
     this.pageEvent$.next(event);
   }
-
-  getEditorList = () =>
-    this.aFs
-      .collection("users", ref => ref.orderBy("fullname"))
-      .snapshotChanges()
-      .pipe(
-        map(snapshots => {
-          if (snapshots.length > 0) {
-            return snapshots.map(snap => {
-              let doc = snap.payload.doc;
-              let data = doc.data() as { fullname: string };
-              return {
-                id: doc.id,
-                name: data.fullname
-              };
-            });
-          } else {
-            return null;
-          }
-        })
-      );
 }

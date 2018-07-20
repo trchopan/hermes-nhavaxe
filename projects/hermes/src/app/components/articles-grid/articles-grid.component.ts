@@ -22,7 +22,6 @@ export class ArticlesGridComponent implements OnInit {
   constructor(
     public layout: LayoutService,
     public articles: ArticlesService,
-    private router: Router
   ) {}
 
   ngOnInit() {
@@ -49,9 +48,5 @@ export class ArticlesGridComponent implements OnInit {
         return this.cache;
       })
     );
-  }
-
-  select(article: IArticle) {
-    this.router.navigate(["article", article.id]);
   }
 }

@@ -1,5 +1,3 @@
-import { firestore } from "firebase/app";
-
 export interface IArticle {
   id: string;
   coverImg: string;
@@ -25,15 +23,19 @@ export interface IArticle {
 }
 
 export interface IArticleBody {
+  id: string;
   body: string;
   modifiedAt: number;
   modifiedBy: string;
+  modifierId: string;
 }
 
-export const parseArticleBody = (bodyData: any): IArticleBody => ({
+export const parseArticleBody = (id: string, bodyData: any): IArticleBody => ({
+  id: id,
   body: bodyData.body,
   modifiedAt: bodyData.modifiedAt,
-  modifiedBy: bodyData.modifiedBy
+  modifiedBy: bodyData.modifiedBy,
+  modifierId: bodyData.modifierId
 });
 
 export const parseArticle = (id: string, articleData: any): IArticle => ({

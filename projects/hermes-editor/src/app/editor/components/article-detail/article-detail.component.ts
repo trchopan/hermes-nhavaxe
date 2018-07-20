@@ -5,7 +5,7 @@ import {
 } from "@editor/app/editor/models/article.model";
 import { ArticlesService } from "@editor/app/editor/services/articles.service";
 import { SafeHtml, DomSanitizer } from "@angular/platform-browser";
-import { tap } from "rxjs/operators";
+import { tap, map } from "rxjs/operators";
 import { Observable } from "rxjs";
 import { ActivatedRoute, Router } from "@angular/router";
 import { LayoutService } from "@app/app/services/layout.service";
@@ -18,8 +18,9 @@ import { LayoutService } from "@app/app/services/layout.service";
 })
 export class ArticleDetailComponent implements OnInit {
   meta$: Observable<IArticle>;
-  body$: Observable<IArticleBody>;
+  bodyList$: Observable<IArticleBody[]>;
   safeYoutube: SafeHtml;
+  selectedBodyIndex: number = 0;
 
   constructor(
     public layout: LayoutService,
@@ -36,7 +37,7 @@ export class ArticleDetailComponent implements OnInit {
       if (!id) {
         this.layout.showArticle = false;
         this.meta$ = null;
-        this.body$ = null;
+        this.bodyList$ = null;
         this.safeYoutube = null;
         return;
       }
@@ -56,7 +57,14 @@ export class ArticleDetailComponent implements OnInit {
           }
         })
       );
-      this.body$ = this.articles.getBodyData(id);
+      this.bodyList$ = this.articles
+        .getBodyData(id)
+        .pipe(
+          map(
+            (articles: IArticleBody[]) =>
+              articles && articles.length > 0 ? articles : null
+          )
+        );
     });
   }
 

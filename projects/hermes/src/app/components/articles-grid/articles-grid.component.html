@@ -1,6 +1,5 @@
 <div class="container">
   <hm-articles-grid-top *ngIf="list$ | async as list"
-    [list]="list"
-    (selected)="select($event)"></hm-articles-grid-top>
+    [list]="list"></hm-articles-grid-top>
   <hm-article-detail></hm-article-detail>
 </div>

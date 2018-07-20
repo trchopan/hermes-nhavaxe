@@ -11,7 +11,10 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { takeUntil, debounceTime, distinctUntilChanged } from "rxjs/operators";
 import { Subject } from "rxjs";
 import { QuillEditorComponent } from "ngx-quill";
-import { IArticle } from "@editor/app/editor/models/article.model";
+import {
+  IArticle,
+  IArticleBody
+} from "@editor/app/editor/models/article.model";
 import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
 import { ArticlesService } from "@editor/app/editor/services/articles.service";
 import { UserService } from "@editor/app/auth/services/user.service";
@@ -33,9 +36,12 @@ export class ArticleFormComponent implements OnDestroy, AfterViewInit {
     this.articles
       .getBodyData(article.id)
       .pipe(takeUntil(this.ngUnsub))
-      .subscribe(bodyData =>
-        this.form.controls.bodyData.setValue(bodyData ? bodyData.body : "")
-      );
+      .subscribe(bodyData => {
+        if (bodyData && bodyData.length > 0) {
+          this.bodyDataList = bodyData;
+          this.form.controls.selectedBodyId.setValue(bodyData[0].id);
+        }
+      });
   }
   @Output() onSubmit = new EventEmitter();
 
@@ -44,6 +50,7 @@ export class ArticleFormComponent implements OnDestroy, AfterViewInit {
   articlePublishAt: number = Date.now();
   imgSrc: string;
   videoIframe: SafeHtml;
+  bodyDataList: IArticleBody[] = [];
   quillClassName: string = "ql-editor";
   quillContent: string;
   quillFormats = [
@@ -80,19 +87,22 @@ export class ArticleFormComponent implements OnDestroy, AfterViewInit {
       title: ["", Validators.required],
       sapo: ["", Validators.required],
       video: [""],
-      bodyData: ["", Validators.required],
       style: ["article", Validators.required],
       categoryId: ["", Validators.required],
       categoryName: ["", Validators.required],
       creatorId: [user.authData.id],
       creatorName: [user.profile.fullname],
       creatorAvatar: [user.profile.avatar],
+      managerId: [""],
+      managerName: [""],
       publisher: ["", Validators.required],
       reference: ["", Validators.required],
       status: ["draft", Validators.required],
       publishAt: [Date.now()],
       note: [""],
-      tags: [""]
+      tags: [""],
+      selectedBodyId: [""],
+      bodyData: ["", Validators.required]
     });
 
     this.form.controls.coverImg.valueChanges
@@ -136,6 +146,16 @@ export class ArticleFormComponent implements OnDestroy, AfterViewInit {
           this.articles.categories$.value.find(cat => cat.id === catId).name
         )
       );
+
+    this.form.controls.selectedBodyId.valueChanges
+      .pipe(takeUntil(this.ngUnsub))
+      .subscribe(id => {
+        console.log("body", id, this.bodyDataList);
+        let bodyData = this.bodyDataList
+          ? this.bodyDataList.find(body => body.id === id)
+          : null;
+        this.form.controls.bodyData.setValue(bodyData ? bodyData.body : "");
+      });
   }
 
   ngAfterViewInit() {
@@ -173,18 +193,38 @@ export class ArticleFormComponent implements OnDestroy, AfterViewInit {
   }
 
   submit() {
-    let bodyData = this.form.controls.bodyData.value;
+    if (this.user.isManager) {
+      this.form.controls.managerId.setValue(this.user.authData.id);
+      this.form.controls.managerName.setValue(this.user.managerProf.fullname);
+    }
+
+    delete this.form.value.selectedBodyId;
+
+    let body = this.form.controls.bodyData.value;
+    let bodyData = {
+      body: body,
+      modifiedAt: Date.now(),
+      modifiedBy: this.user.profile.fullname,
+      modifierId: this.user.authData.id
+    };
+    if (
+      this.bodyDataList &&
+      this.bodyDataList.length > 0 &&
+      body == this.bodyDataList[0].body
+    ) {
+      console.log("woot", this.bodyDataList);
+      bodyData = null;
+    }
 
     let article = {
       ...this.form.value,
-      bodyData: {
-        body: bodyData,
-        modifiedAt: Date.now(),
-        modifiedBy: this.user.authData.id
-      }
+      bodyData: bodyData
     };
+
     console.log("Submit article", article);
     this.form.valid && this.onSubmit.emit(article);
+
+    this.form.disable();
   }
 
   toTitleCase = (str: string) =>

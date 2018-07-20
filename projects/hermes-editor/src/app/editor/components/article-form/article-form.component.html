@@ -89,6 +89,7 @@
             formControlName="status">
             <mat-option *ngFor="let status of articles.statusMap"
               [disabled]="(status.value == 'published' || status.value == 'unpublished') && !user.isManager"
+          
               [value]="status.value">{{ status.text }}</mat-option>
           </mat-select>
         </mat-form-field>
@@ -110,6 +111,18 @@
       </section>
 
       <section>
+        <div class="article-body-select">
+          <mat-form-field>
+            <mat-select placeholder="Phiên bản"
+              formControlName="selectedBodyId">
+              <mat-option [value]="null">-- Tạo mới --</mat-option>
+              <mat-option *ngFor="let body of bodyDataList"
+                [value]="body.id">
+                {{ body.modifiedAt | date: "dd/MM HH:mm" }} - {{ body.modifiedBy }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
         <div class="article-type-seclect">
           <mat-radio-group formControlName="style">
             <mat-radio-button value="article">

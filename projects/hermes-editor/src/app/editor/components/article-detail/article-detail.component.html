@@ -1,6 +1,14 @@
-<div *ngIf="meta$ | async as meta"
-  [@showAnimation]>
+<div *ngIf="meta$ | async as meta">
   <div class="article-container">
+    <mat-form-field>
+      <mat-select placeholder="Phiên bản"
+        [(ngModel)]="selectedBodyIndex">
+        <mat-option *ngFor="let body of bodyList$ | async; let i = index"
+          [value]="i">
+          {{ body.modifiedAt | date: "dd/MM HH:mm" }} - {{ body.modifiedBy }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
     <h1 class="article-title">
       {{ meta.title }}
     </h1>
@@ -14,11 +22,11 @@
         class="center youtube">
       </div>
     </div>
-    <div *ngIf="body$ | async as body"
+    <div *ngIf="bodyList$ | async as body"
       class="article-body ql-editor"
       [class.article-style]="meta.style === 'article'"
       [class.picture-style]="meta.style === 'picture'"
-      [innerHtml]="body.body">
+      [innerHtml]="body[selectedBodyIndex].body">
     </div>
     <p class="article-source">
       Dẫn nguồn từ
