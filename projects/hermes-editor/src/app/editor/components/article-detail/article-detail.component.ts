@@ -5,8 +5,7 @@ import {
 } from "@editor/app/editor/models/article.model";
 import { ArticlesService } from "@editor/app/editor/services/articles.service";
 import { SafeHtml, DomSanitizer } from "@angular/platform-browser";
-import { trigger, style, animate, transition } from "@angular/animations";
-import { map, tap } from "rxjs/operators";
+import { tap } from "rxjs/operators";
 import { Observable } from "rxjs";
 import { ActivatedRoute, Router } from "@angular/router";
 import { LayoutService } from "@app/app/services/layout.service";
@@ -15,32 +14,7 @@ import { LayoutService } from "@app/app/services/layout.service";
   selector: "hm-article-detail",
   templateUrl: "./article-detail.component.html",
   styleUrls: ["./article-detail.component.scss"],
-  encapsulation: ViewEncapsulation.None,
-  animations: [
-    trigger("showAnimation", [
-      transition(":enter", [
-        style({
-          transform: "translateX(100vw)",
-          opacity: "0",
-          display: "block"
-        }),
-        animate(
-          "200ms ease-in",
-          style({ transform: "translateX(0)", opacity: "1" })
-        )
-      ]),
-      transition(":leave", [
-        animate(
-          "200ms ease-in",
-          style({
-            transform: "translateX(100vw)",
-            opacity: "0",
-            display: "none"
-          })
-        )
-      ])
-    ])
-  ]
+  encapsulation: ViewEncapsulation.None
 })
 export class ArticleDetailComponent implements OnInit {
   meta$: Observable<IArticle>;

@@ -3,44 +3,18 @@ import {
   IArticle,
   IArticleBody
 } from "@editor/app/editor/models/article.model";
-import { ArticlesService } from "@app/app/services/articles.service";
 import { SafeHtml, DomSanitizer } from "@angular/platform-browser";
-import { trigger, style, animate, transition } from "@angular/animations";
-import { map, tap } from "rxjs/operators";
+import { tap } from "rxjs/operators";
 import { Observable } from "rxjs";
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute } from "@angular/router";
 import { LayoutService } from "@app/app/services/layout.service";
+import { ArticlesService } from "@app/app/services/articles.service";
 
 @Component({
   selector: "hm-article-detail",
   templateUrl: "./article-detail.component.html",
   styleUrls: ["./article-detail.component.scss"],
-  encapsulation: ViewEncapsulation.None,
-  animations: [
-    trigger("showAnimation", [
-      transition(":enter", [
-        style({
-          transform: "translateX(100vw)",
-          opacity: "0",
-          display: "block"
-        }),
-        animate(
-          "200ms ease-in",
-          style({ transform: "translateX(0)", opacity: "1" })
-        )
-      ]),
-      transition(":leave", [
-        animate(
-          "200ms ease-in",
-          style({
-            transform: "translateX(100vw)",
-            opacity: "0",
-            display: "none"
-          })
-        )
-      ])
-    ])
-  ]
+  encapsulation: ViewEncapsulation.None
 })
 export class ArticleDetailComponent implements OnInit {
   meta$: Observable<IArticle>;
@@ -70,9 +44,10 @@ export class ArticleDetailComponent implements OnInit {
       this.meta$ = this.articles.getArticleData(id).pipe(
         tap(meta => {
           if (meta && meta.video) {
+            let video = this.youtube_parser(meta.video);
             let html = `
               <iframe
-                src="https://www.youtube.com/embed/${meta.video}"
+                src="https://www.youtube.com/embed/${video}"
                 frameborder="0"
                 allow="autoplay; encrypted-media"
                 allowfullscreen></iframe>
@@ -83,5 +58,11 @@ export class ArticleDetailComponent implements OnInit {
       );
       this.body$ = this.articles.getBodyData(id);
     });
+  }
+
+  youtube_parser(url) {
+    var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
+    var match = url.match(regExp);
+    return match && match[7].length == 11 ? match[7] : false;
   }
 }
