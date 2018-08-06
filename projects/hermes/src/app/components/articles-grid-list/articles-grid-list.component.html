@@ -1,0 +1,27 @@
+<ul [@listState]="layout.showArticle ? 'hide' : 'show'">
+  <li *ngFor="let article of list">
+    <a routerLink="/article/{{ article.id }}">
+      <div class="cover-image"
+        [ngStyle]="{ 'background-image': 'url(' + article.coverImg + ')'}">
+        <p *ngIf="(articles.selectedCat$ | async)?.id == 'HomeCategoriesId'"
+          [class]="'category cat-' + article.categoryId">
+          {{ article.categoryName }}
+        </p>
+      </div>
+    </a>
+    <div class="info">
+      <p class="title">
+        <a routerLink="/article/{{ article.id }}">
+          {{ article.title | trimText:titleMax }}
+        </a>
+      </p>
+      <p class="publish-at">
+        {{ article.publishAt | publishAtParser }}
+        <span *ngIf="article.video">🎬</span>
+      </p>
+      <p class="sapo">
+        {{ article.sapo | trimText:sapoMax }}
+      </p>
+    </div>
+  </li>
+</ul>

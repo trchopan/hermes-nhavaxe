@@ -11,14 +11,9 @@ import {
   IArticleBody,
   parseArticleBody
 } from "@editor/app/editor/models/article.model";
-import {
-  map,
-  switchMap,
-  share,
-  catchError,
-  debounceTime
-} from "rxjs/operators";
+import { map, share, catchError } from "rxjs/operators";
 import { Router } from "@angular/router";
+import { environment } from "@app/environments/environment";
 
 export const HomeCategories: ICategory = {
   id: "HomeCategoriesId",
@@ -26,11 +21,6 @@ export const HomeCategories: ICategory = {
   link: "/",
   position: 0
 };
-
-const ArticlesCollection = "articles";
-const BodyCollection = "body";
-const CategoriesCollection = "categories";
-const CollectionPagingLimit = 7;
 
 @Injectable({
   providedIn: "root"
@@ -61,7 +51,9 @@ export class ArticlesService {
   getCategories = (): Observable<ICategory[]> => {
     this.loading$.next(true);
     return this.afFirestore
-      .collection(CategoriesCollection, ref => ref.orderBy("position"))
+      .collection(environment.CategoriesCollection, ref =>
+        ref.orderBy("position")
+      )
       .snapshotChanges()
       .pipe(
         map(snapshot => {
@@ -86,7 +78,7 @@ export class ArticlesService {
     // Get the articles from firestore
     console.log(this.className + "getting articles for category", id);
     return this.afFirestore
-      .collection(ArticlesCollection, ref => {
+      .collection(environment.ArticlesCollection, ref => {
         let q =
           id !== HomeCategories.id ? ref.where("categoryId", "==", id) : ref;
 
@@ -94,7 +86,7 @@ export class ArticlesService {
           .where("status", "==", "published")
           .orderBy("publishAt", "desc")
           .startAfter(lastStartAt)
-          .limit(CollectionPagingLimit);
+          .limit(environment.CollectionPagingLimit);
       })
       .snapshotChanges()
       .pipe(
@@ -130,7 +122,7 @@ export class ArticlesService {
     console.log(this.className + "get article data " + id);
 
     return this.afFirestore
-      .collection(ArticlesCollection)
+      .collection(environment.ArticlesCollection)
       .doc(id)
       .snapshotChanges()
       .pipe(
@@ -139,7 +131,7 @@ export class ArticlesService {
           return parseArticle(snapshot.payload.id, snapshot.payload.data());
         }),
         catchError(err => {
-          console.log(this.className + "getting article data error", err);
+          console.error(this.className + "getting article data error", err);
           return of(err);
         })
       );
@@ -148,9 +140,9 @@ export class ArticlesService {
   getBodyData(id: string): Observable<IArticleBody> {
     this.loading$.next(true);
     return this.afFirestore
-      .collection(ArticlesCollection)
+      .collection(environment.ArticlesCollection)
       .doc(id)
-      .collection(BodyCollection, ref =>
+      .collection(environment.BodyCollection, ref =>
         ref.orderBy("modifiedAt", "desc").limit(1)
       )
       .valueChanges()
@@ -158,7 +150,7 @@ export class ArticlesService {
         map(snap => {
           console.log(this.className + "get article body " + id);
           this.loading$.next(false);
-          return snap.length > 0 ? parseArticleBody(snap[0]) : null;
+          return snap.length > 0 ? parseArticleBody(id, snap[0]) : null;
         }),
         catchError(err => {
           console.log(this.className + "getting article body error", err);

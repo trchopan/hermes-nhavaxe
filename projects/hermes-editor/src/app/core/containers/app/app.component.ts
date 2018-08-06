@@ -15,6 +15,7 @@ export class AppComponent {
   buttonList = [
     { path: ["article", "create"], icon: "edit", text: "Tạo bài viết" },
     { path: "article", icon: "list", text: "Danh sách bài viết" },
+    { path: "tags", icon: "filter_list", text: "Quản lý Tags" },
     { path: "profile", icon: "account_circle", text: "Tài khoản" }
   ];
 

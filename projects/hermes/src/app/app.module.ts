@@ -15,6 +15,7 @@ import { ArticlesGridTopComponent } from "@app/app/components/articles-grid-top/
 import { NavbarCategoriesComponent } from "@app/app/components/navbar-categories/navbar-categories.component";
 import { LoadingBarComponent } from "@app/app/components/loading-bar/loading-bar.component";
 import { TrimTextPipe } from "@app/app/pipes/trim-text.pipe";
+import { ArticlesGridListComponent } from "@app/app/components/articles-grid-list/articles-grid-list.component";
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { TrimTextPipe } from "@app/app/pipes/trim-text.pipe";
     ArticleDetailComponent,
     ArticlesGridComponent,
     ArticlesGridTopComponent,
+    ArticlesGridListComponent,
     NavbarCategoriesComponent,
     LoadingBarComponent
   ],

@@ -3,6 +3,10 @@
     <h1 class="article-title">
       {{ meta.title }}
     </h1>
+    <p class="article-info">
+      <span class="category">{{ meta.categoryName }}</span>&#124;
+      <span class="publish-time">{{ meta.publishAt | date:'dd/MM/yy HH:mm' }}</span>
+    </p>
     <p class="article-sapo">
       {{ meta.sapo }}
     </p>

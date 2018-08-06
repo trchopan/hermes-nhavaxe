@@ -77,14 +77,6 @@
         </mat-form-field>
 
         <mat-form-field>
-          <input matInput
-            class="input"
-            formControlName="tags"
-            type="text"
-            placeholder="Tags" />
-        </mat-form-field>
-
-        <mat-form-field>
           <mat-select placeholder="Trạng thái"
             formControlName="status">
             <mat-option *ngFor="let status of articles.statusMap"
@@ -108,9 +100,7 @@
             showTime="true"
             (onChange)="setPublishAt($event)"></date-time-picker>
         </div>
-      </section>
 
-      <section>
         <div class="article-body-select">
           <mat-form-field>
             <mat-select placeholder="Phiên bản"
@@ -123,6 +113,12 @@
             </mat-select>
           </mat-form-field>
         </div>
+      </section>
+
+      <section>
+        <hm-editor-tag-input [tagList]="form.controls.tags.value || []">
+        </hm-editor-tag-input>
+        <p>{{ form.controls.tags.value | json }}</p>
         <div class="article-type-seclect">
           <mat-radio-group formControlName="style">
             <mat-radio-button value="article">

@@ -7,8 +7,8 @@ import { BehaviorSubject } from "rxjs";
 export class LayoutService {
   reachBottom$: BehaviorSubject<boolean>;
   showArticle: boolean = false;
-  containerEl: ElementRef;
-  clientWith: number
+  headEl: ElementRef;
+  clientWith: number;
 
   constructor() {
     this.reachBottom$ = new BehaviorSubject(false);
@@ -16,8 +16,8 @@ export class LayoutService {
 
   scrollTop = () => {
     console.log("scrolling top");
-    this.containerEl.nativeElement.scrollIntoView();
+    this.headEl.nativeElement.scrollIntoView({ behavior: "smooth" });
   };
 
-  getViewWidth = () => this.containerEl.nativeElement.clientWidth;
+  getViewWidth = () => this.headEl.nativeElement.clientWidth;
 }

@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "dist/public/hermes-editor",
+    "public": "dist/public/hermes",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "rewrites": [
       {

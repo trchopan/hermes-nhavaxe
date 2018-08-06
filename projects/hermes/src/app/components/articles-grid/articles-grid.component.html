@@ -1,5 +1,7 @@
 <div class="container">
-  <hm-articles-grid-top *ngIf="list$ | async as list"
-    [list]="list"></hm-articles-grid-top>
+  <hm-articles-grid-top *ngIf="tops$ | async as tops"
+    [list]="tops"></hm-articles-grid-top>
+  <hm-articles-grid-list *ngIf="remains$ | async as remains"
+    [list]="remains"></hm-articles-grid-list>
   <hm-article-detail></hm-article-detail>
 </div>

@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
-@import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500|Play|Francois+One|Merriweather");
+@import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500|Play|Merriweather");
 @import "~quill/dist/quill.snow.css";
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @import "~projects/hermes-editor/src/assets/scss/quill.scss";
@@ -10,7 +10,7 @@
   --secondary-color: #159cd8;
   --text-main-color: #000000;
   --text-secondary-color: #575757;
-  --text-faded-color: #8a8a8a;
+  --text-faded-color : #8a8a8a;
   --container-width: 900px;
 }
 

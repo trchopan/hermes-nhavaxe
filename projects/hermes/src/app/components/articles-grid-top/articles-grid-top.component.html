@@ -1,7 +1,9 @@
 <ul [@listState]="layout.showArticle ? 'hide' : 'show'">
-  <li *ngFor="let article of list">
-    <a routerLink="/article/{{ article.id }}">
-      <div class="cover-image"
+  <li *ngFor="let article of list; let i = index"
+    [class]="'li-'+i">
+    <a class="cover-image"
+      routerLink="/article/{{ article.id }}">
+      <div class="image"
         [ngStyle]="{ 'background-image': 'url(' + article.coverImg + ')'}">
         <p *ngIf="(articles.selectedCat$ | async)?.id == 'HomeCategoriesId'"
           [class]="'category cat-' + article.categoryId">

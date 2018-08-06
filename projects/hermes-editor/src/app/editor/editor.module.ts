@@ -17,13 +17,16 @@ import {
   MatCardModule,
   MatInputModule,
   MatPaginatorModule,
-  MatTabsModule
+  MatTabsModule,
+  MatChipsModule,
+  MatAutocompleteModule
 } from "@angular/material";
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { ArticleDetailComponent } from "@editor/app/editor/components/article-detail/article-detail.component";
 import { ArticleFormComponent } from "@editor/app/editor/components/article-form/article-form.component";
 import { SharedModule } from "@editor/app/shared/shared.module";
 import { QuillModule } from "ngx-quill";
+import { TagInputComponent } from './components/tag-input/tag-input.component';
 
 const routes: Routes = [
   {
@@ -56,7 +59,9 @@ const routes: Routes = [
     MatSelectModule,
     MatProgressSpinnerModule,
     MatPaginatorModule,
-    MatTabsModule
+    MatTabsModule,
+    MatChipsModule,
+    MatAutocompleteModule
   ],
   declarations: [
     CreateComponent,
@@ -64,7 +69,8 @@ const routes: Routes = [
     ArticleFormComponent,
     ArticlesListComponent,
     ArticleListItemComponent,
-    ArticleDetailComponent
+    ArticleDetailComponent,
+    TagInputComponent
   ],
   exports: [RouterModule]
 })

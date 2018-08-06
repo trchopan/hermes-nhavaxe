@@ -33,8 +33,9 @@
   @media (max-width: 825px) {
     width: 100%;
     border-radius: 0;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    justify-items: center;
+    display: flex;
+    button {
+      flex: 1;
+    }
   }
 }

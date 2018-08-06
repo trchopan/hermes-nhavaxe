@@ -8,7 +8,12 @@ import {
   AfterViewInit
 } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { takeUntil, debounceTime, distinctUntilChanged } from "rxjs/operators";
+import {
+  takeUntil,
+  debounceTime,
+  distinctUntilChanged,
+  withLatestFrom
+} from "rxjs/operators";
 import { Subject } from "rxjs";
 import { QuillEditorComponent } from "ngx-quill";
 import {
@@ -29,7 +34,7 @@ export class ArticleFormComponent implements OnDestroy, AfterViewInit {
   set articleSetter(article: IArticle) {
     this.articlePublishAt = article.publishAt;
     Object.keys(this.form.controls).forEach(key => {
-      if (article[key]) {
+      if (article[key] && key !== "tags") {
         this.form.get(key).setValue(article[key]);
       }
     });
@@ -42,7 +47,17 @@ export class ArticleFormComponent implements OnDestroy, AfterViewInit {
           this.form.controls.selectedBodyId.setValue(bodyData[0].id);
         }
       });
+    this.articles
+      .getTags(article.id)
+      .pipe(takeUntil(this.ngUnsub))
+      .subscribe(tags => {
+        console.log("tags is ", tags);
+        if (tags.length > 0) {
+          this.form.controls.tags.setValue(tags);
+        }
+      });
   }
+
   @Output() onSubmit = new EventEmitter();
 
   ngUnsub = new Subject();
@@ -100,7 +115,8 @@ export class ArticleFormComponent implements OnDestroy, AfterViewInit {
       status: ["draft", Validators.required],
       publishAt: [Date.now()],
       note: [""],
-      tags: [""],
+      tags: [null],
+      // tagList: [null],
       selectedBodyId: [""],
       bodyData: ["", Validators.required]
     });
@@ -137,13 +153,14 @@ export class ArticleFormComponent implements OnDestroy, AfterViewInit {
 
     this.form.controls.categoryId.valueChanges
       .pipe(
+        withLatestFrom(this.articles.categories$),
         takeUntil(this.ngUnsub),
         distinctUntilChanged(),
         debounceTime(1000)
       )
-      .subscribe(catId =>
+      .subscribe(([catId, categories]) =>
         this.form.controls.categoryName.setValue(
-          this.articles.categories$.value.find(cat => cat.id === catId).name
+          categories.find(cat => cat.id === catId).name
         )
       );
 
@@ -193,13 +210,7 @@ export class ArticleFormComponent implements OnDestroy, AfterViewInit {
   }
 
   submit() {
-    if (this.user.isManager) {
-      this.form.controls.managerId.setValue(this.user.authData.id);
-      this.form.controls.managerName.setValue(this.user.managerProf.fullname);
-    }
-
     delete this.form.value.selectedBodyId;
-
     let body = this.form.controls.bodyData.value;
     let bodyData = {
       body: body,
@@ -212,7 +223,6 @@ export class ArticleFormComponent implements OnDestroy, AfterViewInit {
       this.bodyDataList.length > 0 &&
       body == this.bodyDataList[0].body
     ) {
-      console.log("woot", this.bodyDataList);
       bodyData = null;
     }
 
@@ -222,9 +232,38 @@ export class ArticleFormComponent implements OnDestroy, AfterViewInit {
     };
 
     console.log("Submit article", article);
-    this.form.valid && this.onSubmit.emit(article);
 
-    this.form.disable();
+    // if (this.user.isManager) {
+    //   this.form.controls.managerId.setValue(this.user.authData.id);
+    //   this.form.controls.managerName.setValue(this.user.managerProf.fullname);
+    // }
+
+    // delete this.form.value.selectedBodyId;
+
+    // let body = this.form.controls.bodyData.value;
+    // let bodyData = {
+    //   body: body,
+    //   modifiedAt: Date.now(),
+    //   modifiedBy: this.user.profile.fullname,
+    //   modifierId: this.user.authData.id
+    // };
+    // if (
+    //   this.bodyDataList &&
+    //   this.bodyDataList.length > 0 &&
+    //   body == this.bodyDataList[0].body
+    // ) {
+    //   bodyData = null;
+    // }
+
+    // let article = {
+    //   ...this.form.value,
+    //   bodyData: bodyData
+    // };
+
+    // console.log("Submit article", article);
+    // this.form.valid && this.onSubmit.emit(article);
+
+    // this.form.disable();
   }
 
   toTitleCase = (str: string) =>

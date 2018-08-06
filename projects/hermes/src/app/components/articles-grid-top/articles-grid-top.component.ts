@@ -39,7 +39,7 @@ export class ArticlesGridTopComponent implements OnInit {
   @Input() list: IArticle[];
 
   currentCategoryId: string;
-  titleMax: number = 80;
+  titleMax: number = 100;
   sapoMax: number = 0;
 
   constructor(public articles: ArticlesService, public layout: LayoutService) {}
@@ -56,10 +56,6 @@ export class ArticlesGridTopComponent implements OnInit {
       this.titleMax = 120;
       this.sapoMax = 200;
       return;
-    }
-    if (clientWidth) {
-      this.titleMax = 75;
-      this.sapoMax = 150;
     }
   }
 }

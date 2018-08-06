@@ -15,7 +15,7 @@ import { ArticlesService } from "@app/app/services/articles.service";
   styleUrls: ["./app.component.scss"]
 })
 export class AppComponent implements OnInit, AfterViewInit {
-  @ViewChild("container") containerEl: ElementRef;
+  @ViewChild("head") headEl: ElementRef;
 
   constructor(
     private layout: LayoutService,
@@ -27,7 +27,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   ngOnInit() {}
 
   ngAfterViewInit() {
-    this.layout.containerEl = this.containerEl;
+    this.layout.headEl = this.headEl;
   }
 
   scrollHandler(event: any) {

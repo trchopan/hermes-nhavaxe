@@ -1,0 +1,32 @@
+<mat-form-field>
+  <mat-chip-list #chipList>
+    <mat-chip *ngFor="let tag of selectedTags$ | async"
+      [selectable]="true"
+      [removable]="true"
+      (removed)="remove(tag)">
+      {{ tag }}
+      <mat-icon matChipRemove>cancel</mat-icon>
+    </mat-chip>
+    <input placeholder="Tìm kiếm theo tags"
+      #tagInput
+      [formControl]="tagControl"
+      [matAutocomplete]="auto"
+      [matChipInputFor]="chipList"
+      [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+      [matChipInputAddOnBlur]="false"
+      (matChipInputTokenEnd)="add($event)">
+    <mat-error *ngIf="tagControl.hasError()">Vui lòng chọn tag</mat-error>
+  </mat-chip-list>
+  <mat-autocomplete #auto="matAutocomplete"
+    (optionSelected)="selected($event)">
+    <mat-option *ngFor="let tag of filteredTags$ | async"
+      [value]="tag">
+      {{ tag }}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>
+
+<div *ngIf="resultArticles$ | async as results">
+  <p>Amount: {{ results.length }}</p>
+  <hm-editor-tag-results [list]="results"></hm-editor-tag-results>
+</div>

@@ -12,19 +12,27 @@
 }
 
 h1.article-title {
-  margin-top: 1rem;
+  margin: 1rem 0;
   padding: 0 1.5rem;
-  font-family: "Francois+One", sans-serif;
-  font-size: 2rem;
-  font-weight: bold;
-  line-height: 2.4rem;
+  font: 500 2.4rem/2.8rem "Roboto", sans-serif;
+}
+
+p.article-info {
+  padding: 0 1.5rem;
+  .category {
+    font-weight: bold;
+    background: black;
+    color: white;
+    padding: 0 0.5rem;
+  }
+  .publish-time {
+    color: var(--text-faded-color);
+  }
 }
 
 p.article-sapo {
   padding: 1rem 1.5rem;
-  line-height: 1.8rem;
-  font-size: 1.1rem;
-  font-family: "Merriweather", serif;
+  font: 1.1rem/1.8rem "Merriweather", serif;
   text-align: justify;
   font-style: italic;
 }

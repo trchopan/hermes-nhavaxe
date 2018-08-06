@@ -18,8 +18,10 @@ import {
   parseArticleBody
 } from "@editor/app/editor/models/article.model";
 import { LayoutService } from "@editor/app/core/services/layout.service";
+import { IArticleTags } from "@editor/app/tags/models/article-tags.model";
 
 const ArticlesCollection = "articles";
+const ArticleTagsCollection = "article-tags";
 const BodyCollection = "body";
 const CategoriesCollection = "categories";
 
@@ -39,7 +41,7 @@ export class ArticlesService {
   query$: BehaviorSubject<IQuery>;
   list$: BehaviorSubject<IArticle[]>;
   editorList$: Observable<{ id: string; fullname: string }[]>;
-  categories$: BehaviorSubject<ICategory[]>;
+  categories$: Observable<ICategory[]>;
   error$: BehaviorSubject<string>;
 
   constructor(
@@ -54,21 +56,22 @@ export class ArticlesService {
       fromDate: new Date().setHours(0, 0, 0, 0),
       range: "day"
     });
-    this.categories$ = new BehaviorSubject<ICategory[]>(null);
+    // this.categories$ = new BehaviorSubject<ICategory[]>(null);
     this.error$ = new BehaviorSubject<string>(null);
 
     this.editorList$ = this.getEditorList();
 
     // Get the list of Categories
-    this.afFirestore
+    this.categories$ = this.afFirestore
       .collection(CategoriesCollection)
       .snapshotChanges()
-      .subscribe(snap => {
-        let categories = snap.map(doc =>
-          parseCategory(doc.payload.doc.id, doc.payload.doc.data())
-        );
-        this.categories$.next(categories);
-      });
+      .pipe(
+        map(snap =>
+          snap.map(doc =>
+            parseCategory(doc.payload.doc.id, doc.payload.doc.data())
+          )
+        )
+      );
 
     // Get the list of Meta data
     this.query$
@@ -174,6 +177,18 @@ export class ArticlesService {
       );
   }
 
+  getTags(id: string): Observable<string[]> {
+    this.layout.loading$.next(true);
+    console.log(this.className + "getting tag data " + id);
+
+    return this.afFirestore
+      .collection<IArticleTags>(ArticleTagsCollection, ref =>
+        ref.where("articleId", "==", id).orderBy("publishAt", "desc")
+      )
+      .valueChanges()
+      .pipe(map(results => results.map(x => x.tag)));
+  }
+
   getBodyData(id: string): Observable<IArticleBody[]> {
     this.layout.loading$.next(true);
     return this.afFirestore
@@ -206,15 +221,17 @@ export class ArticlesService {
   create(article: IArticle) {
     this.layout.loading$.next(true);
     console.log(this.className + " creating");
+    var body = article.bodyData;
+    delete article.bodyData;
     this.afFirestore
       .collection(ArticlesCollection)
       .add(article)
       .then(
         doc =>
-          article.bodyData
+          body
             ? doc
                 .collection(BodyCollection)
-                .add(article.bodyData)
+                .add(body)
                 .then(() => this.handleSuccess())
             : this.handleSuccess()
       )

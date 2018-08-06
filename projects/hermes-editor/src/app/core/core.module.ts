@@ -8,7 +8,8 @@ import {
   MatButtonModule,
   MatIconModule,
   MatToolbarModule,
-  MatProgressSpinnerModule
+  MatProgressSpinnerModule,
+  MatTooltipModule
 } from "@angular/material";
 import { LoadingSpinnerComponent } from '@editor/app/core/components/loading-spinner/loading-spinner.component';
 
@@ -25,7 +26,8 @@ const routes: Routes = [
     MatIconModule,
     MatButtonModule,
     MatToolbarModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatTooltipModule
   ],
   declarations: [
     AppComponent,

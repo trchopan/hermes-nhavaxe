@@ -6,6 +6,7 @@
     class="float-buttons">
     <button *ngFor="let button of buttonList"
       mat-button
+      [matTooltip]="button.text"
       [routerLink]="button.path">
       <mat-icon>{{ button.icon }}</mat-icon>
     </button>

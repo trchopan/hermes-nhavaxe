@@ -8,5 +8,4 @@ import { IArticle } from '@editor/app/editor/models/article.model';
 })
 export class ArticleListItemComponent {
   @Input() article: IArticle
-  now = Date.now()
 }

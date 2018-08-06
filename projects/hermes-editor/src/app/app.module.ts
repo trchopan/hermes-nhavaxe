@@ -10,6 +10,7 @@ import { AngularFireModule } from "angularfire2";
 import { AngularFireAuthModule } from "angularfire2/auth";
 import { AngularFirestoreModule } from "angularfire2/firestore";
 import { EditorModule } from "@editor/app/editor/editor.module";
+import { TagsModule } from "@editor/app/tags/tags.module";
 
 @NgModule({
   imports: [
@@ -20,6 +21,7 @@ import { EditorModule } from "@editor/app/editor/editor.module";
     AngularFirestoreModule,
     AuthModule,
     EditorModule,
+    TagsModule,
     CoreModule
   ],
   providers: [],

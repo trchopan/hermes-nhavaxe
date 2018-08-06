@@ -1,14 +1,9 @@
 import { Component, OnInit } from "@angular/core";
-import {
-  ArticlesService,
-  HomeCategories
-} from "@app/app/services/articles.service";
-import { ActivatedRoute, Router } from "@angular/router";
-import { switchMap, map, debounceTime } from "rxjs/operators";
-import { of, combineLatest, Observable } from "rxjs";
-import { LayoutService } from "@app/app/services/layout.service";
+import { ArticlesService } from "@app/app/services/articles.service";
+import { switchMap, map, debounceTime, share } from "rxjs/operators";
+import { combineLatest, Observable } from "rxjs";
 import { IArticle } from "@editor/app/editor/models/article.model";
-import { ICategory } from "@editor/app/editor/models/category.model";
+import { environment } from "@app/environments/environment";
 
 @Component({
   selector: "hm-articles-grid",
@@ -17,12 +12,11 @@ import { ICategory } from "@editor/app/editor/models/category.model";
 })
 export class ArticlesGridComponent implements OnInit {
   list$: Observable<IArticle[]>;
+  tops$: Observable<IArticle[]>;
+  remains$: Observable<IArticle[]>;
   cache: IArticle[];
 
-  constructor(
-    public layout: LayoutService,
-    public articles: ArticlesService,
-  ) {}
+  constructor(public articles: ArticlesService) {}
 
   ngOnInit() {
     console.log("Articles Grid Init");
@@ -46,7 +40,16 @@ export class ArticlesGridComponent implements OnInit {
           this.cache = this.cache.concat(articles);
         }
         return this.cache;
-      })
+      }),
+      share()
+    );
+
+    this.tops$ = this.list$.pipe(
+      map(list => list.slice(0, environment.topAmount))
+    );
+
+    this.remains$ = this.list$.pipe(
+      map(list => list.slice(environment.topAmount))
     );
   }
 }
