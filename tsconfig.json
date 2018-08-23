@@ -13,9 +13,7 @@
     "lib": ["es2017", "dom"],
     "paths": {
       "@app/*": ["projects/hermes/src/*"],
-      "@editor/*": ["projects/hermes-editor/src/*"],
-      "hermes-library": ["dist/hermes-library"],
-      "hermes-library/*": ["dist/hermes-library/*"]
+      "@admin/*": ["projects/hermes-admin/src/*"]
     }
   }
 }

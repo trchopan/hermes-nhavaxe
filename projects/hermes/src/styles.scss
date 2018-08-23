@@ -1,14 +1,16 @@
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 @import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500|Play|Merriweather");
-@import "~projects/hermes-editor/src/assets/scss/quill.scss";
+@import "~quill/dist/quill.snow.css";
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import "~projects/hermes/src/assets/scss/quill.scss";
 
 :root {
   --primary-color: #ed1d24;
   --primary-color-tint: #ffdfe0;
   --secondary-color: #159cd8;
   --text-main-color: #000000;
-  --text-accent-color: #ffffff;
   --text-secondary-color: #575757;
-  --text-faded-color: #8a8a8a;
+  --text-faded-color : #8a8a8a;
   --container-width: 900px;
 }
 
@@ -22,10 +24,28 @@
 }
 
 body {
-  font-family: Roboto, "Courier New", Courier, monospace;
+  font-family: Play, "Courier New", Courier, monospace;
 }
 
 a {
-  text-decoration: none;
-  color: var(--text-main-color);
+  cursor: pointer;
+  user-select: none;
+}
+
+mat-spinner {
+  margin: auto;
+}
+
+.center {
+  text-align: center;
+}
+
+.container {
+  margin: auto;
+  padding: 1rem 0;
+  max-width: var(--container-width);
+}
+
+.error {
+  color: red;
 }

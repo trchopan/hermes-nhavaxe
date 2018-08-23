@@ -1,0 +1,14 @@
+<mat-list>
+  <ng-container *ngFor="let item of list">
+    <mat-list-item [routerLink]="'/article/edit/' + item.article.id">
+      <div matListAvatar
+        [ngStyle]="{ 'background-image': 'url(' + item.article.coverImg + ')'}"></div>
+      <h3 matLine> {{ item.article.title }} </h3>
+      <p matLine>
+        <span>{{ item.article.publishAt | date: 'dd/MM HH:mm'}} </span>
+        <span>{{ item.article.sapo }}</span>
+      </p>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+  </ng-container>
+</mat-list>

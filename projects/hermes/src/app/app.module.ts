@@ -1,41 +1,30 @@
-import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
+import { NgModule } from "@angular/core";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-
-import { AppComponent } from "@app/app/app.component";
-import { AngularFireModule } from "angularfire2";
 import { environment } from "@app/environments/environment";
+
+import { AppComponent } from "@app/app/core/containers/app/app.component";
+import { AuthModule } from "@app/app/auth/auth.module";
+import { CoreModule } from "@app/app/core/core.module";
+import { AngularFireModule } from "angularfire2";
+import { AngularFireAuthModule } from "angularfire2/auth";
 import { AngularFirestoreModule } from "angularfire2/firestore";
-import { AppRoutingModule } from "@app/app/app-routing.module";
-import { ArticlesGridComponent } from "@app/app/components/articles-grid/articles-grid.component";
-import { PageNotFoundComponent } from "@app/app/components/page-not-found/page-not-found.component";
-import { ArticleDetailComponent } from "@app/app/components/article-detail/article-detail.component";
-import { PublishAtParserPipe } from "@app/app/pipes/publish-at-parser.pipe";
-import { ArticlesGridTopComponent } from "@app/app/components/articles-grid-top/articles-grid-top.component";
-import { NavbarCategoriesComponent } from "@app/app/components/navbar-categories/navbar-categories.component";
-import { LoadingBarComponent } from "@app/app/components/loading-bar/loading-bar.component";
-import { TrimTextPipe } from "@app/app/pipes/trim-text.pipe";
-import { ArticlesGridListComponent } from "@app/app/components/articles-grid-list/articles-grid-list.component";
+import { EditorModule } from "@app/app/editor/editor.module";
+import { TagsModule } from "@app/app/tags/tags.module";
+import { PricesModule } from "@app/app/prices/prices.module";
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    PublishAtParserPipe,
-    TrimTextPipe,
-    PageNotFoundComponent,
-    ArticleDetailComponent,
-    ArticlesGridComponent,
-    ArticlesGridTopComponent,
-    ArticlesGridListComponent,
-    NavbarCategoriesComponent,
-    LoadingBarComponent
-  ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     AngularFireModule.initializeApp(environment.firebase),
+    AngularFireAuthModule,
     AngularFirestoreModule,
-    AppRoutingModule
+    AuthModule,
+    EditorModule,
+    TagsModule,
+    PricesModule,
+    CoreModule
   ],
   bootstrap: [AppComponent]
 })

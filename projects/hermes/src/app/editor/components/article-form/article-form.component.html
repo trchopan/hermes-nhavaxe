@@ -1,0 +1,150 @@
+<form [formGroup]="form"
+  (ngSubmit)="submit()">
+  <mat-card>
+    <mat-card-content>
+      <mat-form-field class="title">
+        <input matInput
+          autofocus
+          class="input"
+          formControlName="title"
+          type="text"
+          placeholder="Tiêu đề" />
+      </mat-form-field>
+
+      <section class="info">
+        <div class="image">
+          <div class="image-preview"
+            [ngStyle]="{ 'background-image': 'url(' + imgSrc + ')' }">
+          </div>
+          <mat-form-field>
+            <input matInput
+              class="input"
+              formControlName="coverImg"
+              type="text"
+              placeholder="Ảnh bìa" />
+          </mat-form-field>
+        </div>
+
+        <div class="video">
+          <div [innerHtml]="videoIframe"
+            class="video-preview">
+          </div>
+          <mat-form-field>
+            <input matInput
+              class="input"
+              formControlName="video"
+              type="text"
+              placeholder="Video (Mã youtube)" />
+          </mat-form-field>
+        </div>
+
+        <mat-form-field>
+          <textarea matInput
+            matTextareaAutosize
+            class="input"
+            formControlName="note"
+            placeholder="Ghi chú của BTV:"
+            matAutosize
+            matAutosizeMinRows="2">
+          </textarea>
+        </mat-form-field>
+
+        <mat-form-field>
+          <textarea matInput
+            matTextareaAutosize
+            class="input"
+            formControlName="sapo"
+            placeholder="Sapo"
+            matAutosize
+            matAutosizeMinRows="2">
+          </textarea>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput
+            class="input"
+            formControlName="reference"
+            type="text"
+            placeholder="Nguồn tác giả" />
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput
+            class="input"
+            formControlName="publisher"
+            type="text"
+            placeholder="Nguồn xuất bản" />
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-select placeholder="Trạng thái"
+            formControlName="status">
+            <mat-option *ngFor="let status of articles.statusMap"
+              [disabled]="(status.value == 'published' || status.value == 'unpublished') && !user.isManager"
+          
+              [value]="status.value">{{ status.text }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-select placeholder="Chuyên mục"
+            formControlName="categoryId">
+            <mat-option *ngFor="let cat of articles.categories$ | async"
+              [value]="cat.id">{{ cat.name }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <div class="publish-at">
+          <p>Xuất bản:</p>
+          <date-time-picker [dateNumber]="articlePublishAt"
+            showTime="true"
+            (onChange)="setPublishAt($event)"></date-time-picker>
+        </div>
+
+        <div class="article-body-select">
+          <mat-form-field>
+            <mat-select placeholder="Phiên bản"
+              formControlName="selectedBodyId">
+              <mat-option [value]="null">-- Tạo mới --</mat-option>
+              <mat-option *ngFor="let body of bodyDataList"
+                [value]="body.id">
+                {{ body.modifiedAt | date: "dd/MM HH:mm" }} - {{ body.modifiedBy }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </section>
+
+      <section>
+        <hm-tag-input [tagList]="form.controls.tags.value || []">
+        </hm-tag-input>
+        <div class="article-type-seclect">
+          <mat-radio-group formControlName="style">
+            <mat-radio-button value="article">
+              Bài chữ bao hình
+            </mat-radio-button>
+            <mat-radio-button value="picture">
+              Bài 1 cột
+            </mat-radio-button>
+          </mat-radio-group>
+        </div>
+        <quill-editor #quillEditor
+          placeholder="Nội dung bài viết"
+          formControlName="bodyData"
+          [style]="{ height: '80vh' }"
+          [formats]="quillFormats"
+          [modules]="quillModules">
+        </quill-editor>
+      </section>
+    </mat-card-content>
+
+    <mat-card-actions>
+      <button mat-raised-button
+        [disabled]="form.pristine || !form.valid"
+        color="primary"
+        type="submit">
+        {{ form.controls.id.value ? 'Cập nhật' : 'Thêm bài mới' }}
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</form>

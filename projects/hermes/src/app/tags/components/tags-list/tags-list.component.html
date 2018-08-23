@@ -1,0 +1,25 @@
+<form (ngSubmit)="add()"
+  class="center">
+  <mat-form-field>
+    <input [formControl]="tagInputControl"
+      matInput
+      type="text"
+      placeholder="Tag" />
+    <mat-error *ngIf="tagInputControl.hasError('overLimit')">
+      Không xóa quá 3 tags cùng một lúc
+    </mat-error>
+  </mat-form-field>
+  <button mat-raised-button
+    color="primary"
+    type="submit">
+    Thêm
+  </button>
+</form>
+
+<mat-chip-list>
+  <mat-chip *ngFor="let tag of filteredTags$ | async">
+    {{ tag }}
+    <mat-icon matChipRemove
+      (click)="remove(tag)">cancel</mat-icon>
+  </mat-chip>
+</mat-chip-list>
