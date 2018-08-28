@@ -1,5 +1,5 @@
 <div class="container">
-  <p *ngIf="articles.error$ | async as error"
+  <p *ngIf="layout.error$ | async as error"
     class="center error">
     Lỗi hệ thống. Vui lòng báo admin nội dung sau: {{ error | json }}
   </p>

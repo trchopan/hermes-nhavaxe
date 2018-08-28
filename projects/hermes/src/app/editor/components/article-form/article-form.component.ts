@@ -193,8 +193,8 @@ export class ArticleFormComponent implements OnDestroy, AfterViewInit {
     this.ngUnsub.complete();
   }
 
-  setPublishAt(date: Date) {
-    this.form.controls.publishAt.setValue(date.getTime());
+  setPublishAt(date: number) {
+    this.form.controls.publishAt.setValue(date);
     this.form.controls.publishAt.markAsDirty();
   }
 

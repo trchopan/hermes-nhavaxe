@@ -9,7 +9,6 @@ import { ArticleListItemComponent } from "@app/app/editor/components/article-lis
 import {
   MatListModule,
   MatButtonModule,
-  MatSnackBarModule,
   MatSelectModule,
   MatIconModule,
   MatRadioModule,
@@ -54,7 +53,6 @@ const routes: Routes = [
     MatButtonModule,
     MatRadioModule,
     MatIconModule,
-    MatSnackBarModule,
     MatSelectModule,
     MatPaginatorModule,
     MatChipsModule,

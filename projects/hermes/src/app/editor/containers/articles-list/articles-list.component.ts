@@ -80,8 +80,8 @@ export class ArticlesListComponent implements OnInit, OnDestroy {
     this.ngUnsub.complete();
   }
 
-  setFromDate(date: Date) {
-    this.form.controls.fromDate.setValue(date.getTime());
+  setFromDate(date: number) {
+    this.form.controls.fromDate.setValue(date);
   }
 
   edit(article: IArticle) {

@@ -1,11 +1,9 @@
 import { Injectable } from "@angular/core";
 import { AngularFirestore } from "angularfire2/firestore";
 import { Observable } from "rxjs";
-import { map, tap } from "rxjs/operators";
-import {
-  IArticle,
-  parseArticle
-} from "@app/app/editor/models/article.model";
+import { map, tap, share } from "rxjs/operators";
+import { IArticle, parseArticle } from "@app/app/editor/models/article.model";
+import { LayoutService } from "@app/app/core/services/layout.service";
 
 const ArticleCollection = "articles";
 const TagsCollection = "tags";
@@ -23,12 +21,19 @@ export class TagService {
 
   list$: Observable<string[]>;
 
-  constructor(private afFirestore: AngularFirestore) {
+  constructor(
+    private afFirestore: AngularFirestore,
+    private layout: LayoutService
+  ) {
     this.list$ = this.afFirestore
       .collection(TagsCollection)
       .doc(TagListDoc)
       .valueChanges()
-      .pipe(map((value: ITagList) => (value ? value.list : [])));
+      .pipe(
+        map((value: ITagList) => (value ? value.list : [])),
+        tap(value => console.log(this.className + " tag list", value.length)),
+        share()
+      );
   }
 
   updateTag = (tags: string[]) => {
@@ -36,8 +41,8 @@ export class TagService {
       .collection(TagsCollection)
       .doc(TagListDoc)
       .set({ list: tags })
-      .then(() => console.log("Tag List updated"))
-      .catch(err => console.log("Tag List update errror", err));
+      .then(() => this.layout.handleSuccess(this.className, "/tags"))
+      .catch(err => this.layout.handleError(this.className, "update", err));
   };
 
   searchTag = (tag: string) => {

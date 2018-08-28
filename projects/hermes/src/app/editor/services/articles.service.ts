@@ -9,8 +9,6 @@ import {
   ICategory,
   parseCategory
 } from "@app/app/editor/models/category.model";
-import { Router } from "@angular/router";
-import { MatSnackBar } from "@angular/material";
 import {
   IArticle,
   parseArticle,
@@ -45,8 +43,6 @@ export class ArticlesService {
   constructor(
     private afFirestore: AngularFirestore,
     private user: UserService,
-    private router: Router,
-    private snackbar: MatSnackBar,
     private layout: LayoutService
   ) {
     this.list$ = new BehaviorSubject<IArticle[]>(null);
@@ -151,6 +147,7 @@ export class ArticlesService {
             return null;
           }
         }),
+        tap(editors => console.log(this.className + " editors", editors)),
         share()
       );
 
@@ -217,10 +214,12 @@ export class ArticlesService {
             ? doc
                 .collection(BodyCollection)
                 .add(body)
-                .then(() => this.handleSuccess())
-            : this.handleSuccess()
+                .then(() =>
+                  this.layout.handleSuccess(this.className, "/article")
+                )
+            : this.layout.handleSuccess(this.className, "/article")
       )
-      .catch(err => this.handleError("creating", err));
+      .catch(err => this.layout.handleError(this.className, "creating", err));
   }
 
   update(article: IArticle) {
@@ -239,29 +238,9 @@ export class ArticlesService {
       : Promise.resolve(null);
 
     Promise.all([metaPromise, bodyPromise])
-      .then(() => this.handleSuccess())
-      .catch(err => this.handleError("updating", err));
+      .then(() => this.layout.handleSuccess(this.className, "/article"))
+      .catch(err => this.layout.handleError(this.className, "updating", err));
   }
-
-  handleSuccess() {
-    this.router.navigate(["article"]);
-    this.snackbar.open("Bài viết đã được cập nhật", null, {
-      duration: 1000
-    });
-    this.layout.loading$.next(false);
-    console.log(this.className + " success");
-  }
-
-  handleError(operation: string, err: any) {
-    console.error(this.className + operation + " error ", err);
-    this.error$.next(err);
-    this.snackbar.open("Lỗi cập nhật bài viết", null, {
-      duration: 1000
-    });
-    this.layout.loading$.next(false);
-  }
-
-  clearError = () => this.error$.next(null);
 
   isEditable = (status: string) =>
     status === "draft" || status === "pending" || this.user.isManager;

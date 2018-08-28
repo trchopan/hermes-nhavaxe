@@ -4,7 +4,6 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve hermes --live-reload=false --host=0.0.0.0",
-    "serve:admin": "ng serve hermes-admin --live-reload=false --host=0.0.0.0",
     "build": "ng build hermes --prod",
     "test": "ng test",
     "lint": "ng lint",

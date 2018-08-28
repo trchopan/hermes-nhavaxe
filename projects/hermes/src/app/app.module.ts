@@ -10,8 +10,6 @@ import { AngularFireModule } from "angularfire2";
 import { AngularFireAuthModule } from "angularfire2/auth";
 import { AngularFirestoreModule } from "angularfire2/firestore";
 import { EditorModule } from "@app/app/editor/editor.module";
-import { TagsModule } from "@app/app/tags/tags.module";
-import { PricesModule } from "@app/app/prices/prices.module";
 
 @NgModule({
   imports: [
@@ -22,8 +20,6 @@ import { PricesModule } from "@app/app/prices/prices.module";
     AngularFirestoreModule,
     AuthModule,
     EditorModule,
-    TagsModule,
-    PricesModule,
     CoreModule
   ],
   bootstrap: [AppComponent]

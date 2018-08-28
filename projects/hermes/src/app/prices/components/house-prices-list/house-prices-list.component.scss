@@ -1,0 +1,86 @@
+.table-container {
+  width: var(--container-width);
+}
+table {
+  width: 100%;
+}
+th.mat-header-cell {
+  text-align: center;
+}
+th.project-header {
+  min-width: 12rem;
+}
+th.price-header {
+  min-width: 5rem;
+}
+td.mat-cell {
+  text-align: left;
+  padding: 0 0.5rem;
+  border-right: solid 1px #dfdfdf;
+}
+td.project-cell {
+  text-align: center;
+}
+td.price-cell {
+  text-align: center;
+}
+td.publish-at-cell {
+  border-right: none;
+}
+tr.detail-row {
+  height: 0;
+}
+tr.element-row:not(.expanded-row):hover {
+  background: #f5f5f5;
+}
+tr.element-row:not(.expanded-row):active {
+  background: #efefef;
+}
+.element-row td {
+  border-bottom-width: 0;
+}
+p {
+  text-align: left;
+  margin: 0;
+  padding: 0;
+  span {
+    display: block;
+  }
+}
+.element-detail {
+  overflow: hidden;
+  display: grid;
+  grid-template-areas:
+    "image scale facilities salePerks link"
+    "image scale facilities contacts link";
+  grid-template-columns: auto 1fr 1fr 1fr auto;
+  grid-gap: 0.5rem;
+  align-items: start;
+  padding: 0.5rem 0;
+  margin: 0.5rem 0;
+}
+.element-image {
+  grid-area: image;
+  width: 10rem;
+  height: 7rem;
+  background-size: cover;
+}
+.element__bold {
+  color: var(--primary-color);
+  font-weight: bold;
+}
+.element-scale {
+  grid-area: scale;
+}
+.element-facilities {
+  grid-area: facilities;
+}
+.element-sale-perks {
+  grid-area: salePerks;
+}
+.element-contacts {
+  grid-area: contacts;
+}
+.element-link {
+  grid-area: link;
+}

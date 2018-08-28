@@ -1,0 +1,25 @@
+<div class="center">
+  <form [formGroup]="collectionForm">
+    <mat-form-field>
+      <mat-select formControlName="name">
+        <mat-option *ngFor="let option of collectionOptions"
+          [value]="option">
+          {{ option }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+  <ng-container [ngSwitch]="collectionForm.controls.name.value">
+    <ng-container *ngSwitchCase="houseCollection">
+      <hm-house-prices-list></hm-house-prices-list>
+      <hm-house-prices-form [field]="priceList.selectedField$ | async"></hm-house-prices-form>
+    </ng-container>
+    <ng-container *ngSwitchCase="carCollection">
+      <hm-car-prices-list></hm-car-prices-list>
+      <hm-car-prices-form [field]="priceList.selectedField$ | async"></hm-car-prices-form>
+    </ng-container>
+    <ng-container *ngSwitchDefault>
+      <p>Woot default? something wrong</p>
+    </ng-container>
+  </ng-container>
+</div>

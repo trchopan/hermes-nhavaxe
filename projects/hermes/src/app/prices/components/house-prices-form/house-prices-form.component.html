@@ -1,0 +1,104 @@
+<form *ngIf="form"
+  [formGroup]="form">
+  <div [ngStyle]="{ 'background-image': 'url(' + form.controls.image.value + ')'}"
+    class="image-preview"></div>
+  <mat-form-field>
+    <input matInput
+      type="text"
+      formControlName="image"
+      placeholder="Hình ảnh" />
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput
+      type="text"
+      formControlName="project"
+      placeholder="Dự án" />
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput
+      type="text"
+      formControlName="investor"
+      placeholder="Chủ đầu tư" />
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput
+      type="text"
+      formControlName="location"
+      placeholder="Vị trí" />
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput
+      type="text"
+      formControlName="scale"
+      placeholder="Quy mô" />
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput
+      type="text"
+      formControlName="progress"
+      placeholder="Tiến độ" />
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput
+      type="text"
+      formControlName="salePerks"
+      placeholder="Chính sách bán hàng" />
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput
+      type="text"
+      formControlName="facilities"
+      placeholder="Hạ tầng xã hội và tiện ích" />
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput
+      type="number"
+      formControlName="avgPrice"
+      placeholder="Giá bán TB" />
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput
+      type="number"
+      formControlName="avgResalePrice"
+      placeholder="Giá bán lại TB" />
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput
+      type="text"
+      formControlName="contacts"
+      placeholder="Liên hệ" />
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput
+      type="text"
+      formControlName="link"
+      placeholder="Link bài viết" />
+  </mat-form-field>
+
+  <div class="publish-at">
+    <p>Xuất bản:</p>
+    <date-time-picker [dateNumber]="initPublishAt"
+      showTime="true"
+      (onChange)="setPublishAt($event)"></date-time-picker>
+  </div>
+
+  <button (click)="onSubmit()"
+    mat-raised-button
+    color="primary"
+    type="button">Cập nhật</button>
+  <button (click)="onReset()"
+    mat-button
+    color="accent"
+    type="button">Reset</button>
+</form>

@@ -19,9 +19,9 @@ import {
 } from "@angular/material";
 
 const routes: Routes = [
-  { path: "tags", pathMatch: "full", redirectTo: "tags/list" },
+  { path: "", pathMatch: "full", redirectTo: "/tags/list" },
   {
-    path: "tags",
+    path: "",
     component: TagsComponent,
     canActivate: [AuthGuardService],
     children: [
@@ -57,6 +57,7 @@ const routes: Routes = [
     TagsSearchComponent,
     TagResultsComponent,
     TagsComponent
-  ]
+  ],
+  exports: [RouterModule]
 })
 export class TagsModule {}

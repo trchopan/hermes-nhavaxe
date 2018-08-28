@@ -9,11 +9,14 @@ import {
   MatIconModule,
   MatToolbarModule,
   MatProgressSpinnerModule,
-  MatTooltipModule
+  MatTooltipModule,
+  MatSnackBarModule
 } from "@angular/material";
-import { LoadingSpinnerComponent } from '@app/app/core/components/loading-spinner/loading-spinner.component';
+import { LoadingSpinnerComponent } from "@app/app/core/components/loading-spinner/loading-spinner.component";
 
 const routes: Routes = [
+  { path: "tags", loadChildren: "../tags/tags.module#TagsModule" },
+  { path: "prices", loadChildren: "../prices/prices.module#PricesModule" },
   { path: "", pathMatch: "full", redirectTo: "/article" },
   { path: "**", component: PageNotFoundComponent }
 ];
@@ -22,6 +25,7 @@ const routes: Routes = [
   imports: [
     CommonModule,
     RouterModule.forRoot(routes),
+    MatSnackBarModule,
     MatButtonModule,
     MatIconModule,
     MatButtonModule,
@@ -33,7 +37,7 @@ const routes: Routes = [
     AppComponent,
     PageNotFoundComponent,
     LoginLoadingComponent,
-    LoadingSpinnerComponent,
+    LoadingSpinnerComponent
   ],
   exports: [RouterModule]
 })

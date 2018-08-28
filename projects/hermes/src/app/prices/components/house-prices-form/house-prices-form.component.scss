@@ -1,0 +1,21 @@
+form {
+  margin-top: 1rem;
+}
+
+mat-form-field {
+  padding: 0 0.5rem;
+  width: 100%;
+  max-width: 300px;
+}
+
+button {
+  display: block;
+  margin: auto;
+}
+
+.image-preview {
+  max-width: 300px;
+  height: 200px;
+  background-size: cover;
+  margin: 0.5rem auto;
+}
