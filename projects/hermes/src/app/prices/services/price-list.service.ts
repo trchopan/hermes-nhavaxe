@@ -49,12 +49,13 @@ export class PriceListService {
               })
             )
           )
-      )
+      ),
+      share()
     );
   }
 
   setPriceCollection(type: string) {
-    this.selectedField$.next(null)
+    this.selectedField$.next(null);
     if (type === HousePricesCollection) {
       this.priceCollection$.next(HousePricesCollection);
     } else {

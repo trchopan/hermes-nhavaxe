@@ -3,7 +3,8 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  housepricesApi: "http://us-central1-nhavaxe-publish.cloudfunctions.net/api/api/bang-gia/nha"
 };
 
 /*

@@ -1,4 +1,12 @@
-import { Component, OnInit, ViewChild, ElementRef, Input } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  ElementRef,
+  Input,
+  Output,
+  EventEmitter
+} from "@angular/core";
 import { COMMA, ENTER } from "@angular/cdk/keycodes";
 import { FormControl } from "@angular/forms";
 import { TagService } from "@app/app/tags/services/tag.service";
@@ -15,13 +23,21 @@ import {
   styleUrls: ["./tag-input.component.scss"]
 })
 export class TagInputComponent implements OnInit {
-  @Input() tagList: string[];
+  @Input("selectedTags")
+  set tagListSetter(selectedTags: string[]) {
+    this.tagControl.setValue(selectedTags);
+    this.tagData = selectedTags;
+  }
+  @Output()
+  outputTags = new EventEmitter();
 
+  tagData: string[] = [];
   tagControl = new FormControl();
   filteredTags$: Observable<string[]>;
   separatorKeysCodes: number[] = [ENTER, COMMA];
 
-  @ViewChild("tagInput") tagInput: ElementRef;
+  @ViewChild("tagInput")
+  tagInput: ElementRef;
 
   constructor(public tagService: TagService) {}
 
@@ -40,18 +56,19 @@ export class TagInputComponent implements OnInit {
   }
 
   remove(tag: string): void {
-    const index = this.tagList.indexOf(tag);
+    const index = this.tagData.indexOf(tag);
 
     if (index >= 0) {
-      this.tagList.splice(index, 1);
+      this.tagData.splice(index, 1);
     }
   }
 
   selected(event: MatAutocompleteSelectedEvent): void {
     console.log("selected", event.option.viewValue);
-    this.tagList.push(event.option.viewValue);
+    this.tagData.push(event.option.viewValue);
     this.tagInput.nativeElement.value = "";
     this.tagControl.setValue(null);
+    this.outputTags.emit(this.tagData);
   }
 
   add(event: MatChipInputEvent): void {

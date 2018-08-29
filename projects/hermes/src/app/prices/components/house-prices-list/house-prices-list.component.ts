@@ -37,8 +37,11 @@ export class HousePricesListComponent implements OnInit, OnDestroy {
     "investor",
     "location",
     "progress",
+    "salePerks",
     "avgPrice",
     "avgResalePrice",
+    "contacts",
+    "facilities",
     "publishAt"
   ];
   dataSource$: Observable<MatTableDataSource<IHousePrice>>;

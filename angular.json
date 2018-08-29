@@ -138,13 +138,17 @@
       "root": "projects/bang-gia/",
       "sourceRoot": "projects/bang-gia/src",
       "projectType": "application",
-      "prefix": "app",
-      "schematics": {},
+      "prefix": "bg",
+      "schematics": {
+        "@schematics/angular:component": {
+          "styleext": "scss"
+        }
+      },
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/bang-gia",
+            "outputPath": "dist/modules/bang-gia",
             "index": "projects/bang-gia/src/index.html",
             "main": "projects/bang-gia/src/main.ts",
             "polyfills": "projects/bang-gia/src/polyfills.ts",
@@ -154,7 +158,7 @@
               "projects/bang-gia/src/assets"
             ],
             "styles": [
-              "projects/bang-gia/src/styles.css"
+              "projects/bang-gia/src/styles.scss"
             ],
             "scripts": []
           },
@@ -203,7 +207,10 @@
             "tsConfig": "projects/bang-gia/tsconfig.spec.json",
             "karmaConfig": "projects/bang-gia/karma.conf.js",
             "styles": [
-              "projects/bang-gia/src/styles.css"
+              {
+                "input": "node_modules/@angular/material/prebuilt-themes/indigo-pink.css"
+              },
+              "projects/bang-gia/src/styles.scss"
             ],
             "scripts": [],
             "assets": [

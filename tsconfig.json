@@ -13,7 +13,7 @@
     "lib": ["es2017", "dom"],
     "paths": {
       "@app/*": ["projects/hermes/src/*"],
-      "@admin/*": ["projects/hermes-admin/src/*"]
+      "@bang-gia/*": ["projects/bang-gia/src/*"]
     }
   }
 }

@@ -46,10 +46,8 @@ export class DateTimePickerComponent implements OnDestroy {
         let year = this.form.controls.year.value;
         let hour = this.form.controls.hour.value;
         let minute = this.form.controls.minute.value;
-        let timeString = `${year}-${month}-${date}`;
-        timeString += this.showTime ? ` ${hour}:${minute}` : "";
-        const newDate = new Date(timeString);
-        this.onChange.emit(newDate.getTime());
+        let timeString = `${year}-${month}-${date} ${hour}:${minute}`;
+        this.onChange.emit(new Date(timeString).getTime());
       });
   }
 

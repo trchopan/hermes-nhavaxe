@@ -5,7 +5,8 @@ import {
   OnDestroy,
   Input,
   ViewChild,
-  AfterViewInit
+  AfterViewInit,
+  OnInit
 } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import {
@@ -16,10 +17,7 @@ import {
 } from "rxjs/operators";
 import { Subject } from "rxjs";
 import { QuillEditorComponent } from "ngx-quill";
-import {
-  IArticle,
-  IArticleBody
-} from "@app/app/editor/models/article.model";
+import { IArticle, IArticleBody } from "@app/app/editor/models/article.model";
 import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
 import { ArticlesService } from "@app/app/editor/services/articles.service";
 import { UserService } from "@app/app/auth/services/user.service";
@@ -29,10 +27,11 @@ import { UserService } from "@app/app/auth/services/user.service";
   templateUrl: "./article-form.component.html",
   styleUrls: ["./article-form.component.scss"]
 })
-export class ArticleFormComponent implements OnDestroy, AfterViewInit {
+export class ArticleFormComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input("article")
   set articleSetter(article: IArticle) {
     this.articlePublishAt = article.publishAt;
+    this.articleTags = article.tags;
     Object.keys(this.form.controls).forEach(key => {
       if (article[key]) {
         this.form.get(key).setValue(article[key]);
@@ -49,11 +48,13 @@ export class ArticleFormComponent implements OnDestroy, AfterViewInit {
       });
   }
 
-  @Output() onSubmit = new EventEmitter();
+  @Output()
+  onSubmit = new EventEmitter();
 
   ngUnsub = new Subject();
   form: FormGroup;
   articlePublishAt: number = Date.now();
+  articleTags: string[] = [];
   imgSrc: string;
   videoIframe: SafeHtml;
   bodyDataList: IArticleBody[] = [];
@@ -96,9 +97,9 @@ export class ArticleFormComponent implements OnDestroy, AfterViewInit {
       style: ["article", Validators.required],
       categoryId: ["", Validators.required],
       categoryName: ["", Validators.required],
-      creatorId: [user.authData.id],
-      creatorName: [user.profile.fullname],
-      creatorAvatar: [user.profile.avatar],
+      creatorId: [this.user.authData.id],
+      creatorName: [this.user.profile.fullname],
+      creatorAvatar: [this.user.profile.avatar],
       managerId: [""],
       managerName: [""],
       publisher: ["", Validators.required],
@@ -110,7 +111,9 @@ export class ArticleFormComponent implements OnDestroy, AfterViewInit {
       selectedBodyId: [""],
       bodyData: ["", Validators.required]
     });
+  }
 
+  ngOnInit() {
     this.form.controls.coverImg.valueChanges
       .pipe(
         takeUntil(this.ngUnsub),
@@ -175,7 +178,8 @@ export class ArticleFormComponent implements OnDestroy, AfterViewInit {
     return this.form.get("status");
   }
 
-  @ViewChild("quillEditor") quillEditorComp: QuillEditorComponent;
+  @ViewChild("quillEditor")
+  quillEditorComp: QuillEditorComponent;
 
   // Add style class based on document style (article/picture)
   // Based on the customed style sheet for class .ql-editor
@@ -195,7 +199,10 @@ export class ArticleFormComponent implements OnDestroy, AfterViewInit {
 
   setPublishAt(date: number) {
     this.form.controls.publishAt.setValue(date);
-    this.form.controls.publishAt.markAsDirty();
+  }
+
+  onTagsChange(tags: string[]) {
+    this.form.controls.tags.setValue(tags);
   }
 
   submit() {

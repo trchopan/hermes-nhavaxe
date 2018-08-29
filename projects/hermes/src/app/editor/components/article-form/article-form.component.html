@@ -81,7 +81,6 @@
             formControlName="status">
             <mat-option *ngFor="let status of articles.statusMap"
               [disabled]="(status.value == 'published' || status.value == 'unpublished') && !user.isManager"
-          
               [value]="status.value">{{ status.text }}</mat-option>
           </mat-select>
         </mat-form-field>
@@ -115,9 +114,10 @@
         </div>
       </section>
 
+      <hm-tag-input [selectedTags]="articleTags"
+        (outputTags)="onTagsChange($event)">
+      </hm-tag-input>
       <section>
-        <hm-tag-input [tagList]="form.controls.tags.value || []">
-        </hm-tag-input>
         <div class="article-type-seclect">
           <mat-radio-group formControlName="style">
             <mat-radio-button value="article">
