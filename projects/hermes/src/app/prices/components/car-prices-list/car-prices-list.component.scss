@@ -4,55 +4,25 @@
 table {
   width: 100%;
 }
-tr.detail-row {
-  height: 0;
-}
 td.mat-cell {
   text-align: left;
 }
-tr.element-row:not(.expanded-row):hover {
-  background: #f5f5f5;
-}
-tr.element-row:not(.expanded-row):active {
-  background: #efefef;
-}
-.element-row td {
-  border-bottom-width: 0;
-}
-.element-detail {
-  overflow: hidden;
-  display: grid;
-  grid-template-areas:
-    "image power link"
-    "image torque link";
-  grid-template-columns: auto 1fr auto;
-  grid-gap: 0.5rem;
-  align-items: center;
-}
-.element-image {
-  grid-area: image;
-  width: 4rem;
-  height: 3rem;
-  background-size: cover;
+.mat-select-trigger {
+  margin: 0 0.5rem;
 }
 p {
-  text-align: left;
-  margin: 0;
+  margin-bottom: 1rem;
   padding: 0;
 }
-.element__bold {
-  color: var(--primary-color);
-  font-weight: bold;
+span {
+  display: block;
 }
-.element-power {
-  grid-area: power;
+.mini-spinner {
+  margin: auto;
+  margin-bottom: 1rem;
 }
-.element-torque {
-  grid-area: torque;
-}
-.element-contacts {
-  grid-area: contacts;
-}
-.element-link {
-  grid-area: link;
+.fab-button {
+  position: fixed;
+  top: 90vh;
+  left: 80vw;
 }

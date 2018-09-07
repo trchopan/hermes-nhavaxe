@@ -12,8 +12,7 @@
     "typeRoots": ["node_modules/@types"],
     "lib": ["es2017", "dom"],
     "paths": {
-      "@app/*": ["projects/hermes/src/*"],
-      "@bang-gia/*": ["projects/bang-gia/src/*"]
+      "@app/*": ["projects/hermes/src/*"]
     }
   }
 }

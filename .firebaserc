@@ -1,5 +1,17 @@
 {
   "projects": {
-    "default": "nhavaxe-editor"
+    "default": "nhavaxe-publish"
+  },
+  "targets": {
+    "nhavaxe-publish": {
+      "hosting": {
+        "bang-gia-nhavaxe": [
+          "bang-gia-nhavaxe"
+        ],
+        "editor-nhavaxe": [
+          "editor-nhavaxe"
+        ]
+      }
+    }
   }
 }

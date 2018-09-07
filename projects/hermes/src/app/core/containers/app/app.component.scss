@@ -30,7 +30,8 @@
     padding: 5px 16px;
   }
   @media (max-width: 825px) {
-    width: 100%;
+    width: 100vw;
+    right: auto;
     border-radius: 0;
     display: flex;
     button {

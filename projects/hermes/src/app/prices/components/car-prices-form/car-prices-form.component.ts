@@ -1,56 +1,45 @@
-import { Component, OnInit, Input } from "@angular/core";
-import { IHousePrice } from "@app/app/prices/models/houseprice.model";
-import { Subject } from "rxjs";
+import { Component, OnInit, Inject } from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { PriceListService } from "@app/app/prices/services/price-list.service";
 import { LayoutService } from "@app/app/core/services/layout.service";
+import { ICarPrice } from "@app/app/prices/models/carprice.model";
+import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material";
 
 @Component({
-  selector: 'hm-car-prices-form',
-  templateUrl: './car-prices-form.component.html',
-  styleUrls: ['./car-prices-form.component.scss']
+  selector: "hm-car-prices-form",
+  templateUrl: "./car-prices-form.component.html",
+  styleUrls: ["./car-prices-form.component.scss"]
 })
 export class CarPricesFormComponent implements OnInit {
-  @Input("field")
-  set fieldSetter(field: IHousePrice) {
-    if (!field) return;
-    this.initPublishAt = field.publishAt;
-    this.form.setValue(field);
-  }
-
-  private className = "HousePriceForm ";
-  ngUnsub = new Subject();
+  private className = "CarPriceForm ";
   form: FormGroup;
-  initPublishAt: number = Date.now();
+  initPublishAt: number = this.data.publishAt || Date.now();
 
   constructor(
     private priceList: PriceListService,
     private fb: FormBuilder,
-    private layout: LayoutService
-  ) {
+    private layout: LayoutService,
+    public dialogRef: MatDialogRef<CarPricesFormComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: ICarPrice
+  ) {}
+
+  ngOnInit() {
     this.form = this.fb.group({
-      id: [""],
-      image: ["", Validators.required],
-      model: ["", Validators.required],
-      brand: ["", Validators.required],
-      type: ["", Validators.required],
-      origin: ["", Validators.required],
-      engine: ["", Validators.required],
-      power: ["", Validators.required],
-      torque: ["", Validators.required],
-      listPrice: [0, Validators.required],
-      salePrice: [0, Validators.required],
-      contacts: ["", Validators.required],
-      link: ["", Validators.required],
-      publishAt: [Date.now(), Validators.required]
+      id: [this.data.id],
+      image: [this.data.image, Validators.required],
+      model: [this.data.model, Validators.required],
+      brand: [this.data.brand, Validators.required],
+      type: [this.data.type, Validators.required],
+      origin: [this.data.origin, Validators.required],
+      engine: [this.data.engine, Validators.required],
+      power: [this.data.power, Validators.required],
+      torque: [this.data.torque, Validators.required],
+      listPrice: [this.data.listPrice, Validators.required],
+      salePrice: [this.data.salePrice, Validators.required],
+      contacts: [this.data.contacts, Validators.required],
+      link: [this.data.link, Validators.required],
+      publishAt: [this.data.publishAt, Validators.required]
     });
-  }
-
-  ngOnInit() {}
-
-  ngOnDestroy() {
-    this.ngUnsub.next();
-    this.ngUnsub.complete();
   }
 
   setPublishAt(publishAt: number) {
@@ -66,7 +55,7 @@ export class CarPricesFormComponent implements OnInit {
         ? this.priceList
             .create(this.form.value)
             .then(() => {
-              this.layout.handleSuccess(this.className, "/prices");
+              this.layout.handleSuccess(this.className, null);
               this.onReset();
             })
             .catch(err =>
@@ -75,21 +64,38 @@ export class CarPricesFormComponent implements OnInit {
         : this.priceList
             .update(this.form.value)
             .then(() => {
-              this.layout.handleSuccess(this.className, "/prices");
+              this.layout.handleSuccess(this.className, null);
               this.onReset();
             })
             .catch(err =>
               this.layout.handleError(this.className, "update", err)
             );
+      this.dialogRef.close();
     } else {
       console.log("woot", this.form.value);
       this.layout.formError();
     }
   }
 
+  onDelete() {
+    this.form.disable();
+    this.priceList
+      .remove(this.form.value.id)
+      .then(() => {
+        this.layout.handleSuccess(this.className, null);
+        this.onReset();
+      })
+      .catch(err => this.layout.handleError(this.className, "create", err));
+    this.dialogRef.close();
+  }
+
   onReset() {
     this.form.reset();
     this.form.enable();
     this.form.markAsPristine();
+  }
+
+  onCancle() {
+    this.dialogRef.close();
   }
 }

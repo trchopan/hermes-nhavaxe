@@ -18,7 +18,7 @@ export class LayoutService {
 
   handleSuccess(className: string, navigateTo: string) {
     console.log(className + " success");
-    this.router.navigate([navigateTo]);
+    navigateTo && this.router.navigate([navigateTo]);
     this.snackbar.open("Cập nhật thành công", null, {
       duration: 1000
     });
@@ -28,7 +28,7 @@ export class LayoutService {
   handleError(className: string, operation: string, err: any) {
     console.error(className + operation + " error ", err);
     this.error$.next(err);
-    this.snackbar.open("Lỗi cập nhật", null, {
+    this.snackbar.open("Xảy ra lỗi", null, {
       duration: 1000
     });
     this.loading$.next(false);

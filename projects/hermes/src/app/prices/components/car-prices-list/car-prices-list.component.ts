@@ -1,9 +1,9 @@
-import { Component, OnInit } from "@angular/core";
-import { Observable } from "rxjs";
-import { IHousePrice } from "@app/app/prices/models/houseprice.model";
-import { MatTableDataSource } from "@angular/material";
+import { Component, OnInit, ViewChild } from "@angular/core";
+import { Subject } from "rxjs";
+import { MatTableDataSource, MatSort, MatDialog } from "@angular/material";
 import { PriceListService } from "@app/app/prices/services/price-list.service";
-import { startWith, map } from "rxjs/operators";
+import { takeUntil } from "rxjs/operators";
+import { ICarPrice } from "@app/app/prices/models/carprice.model";
 import {
   trigger,
   state,
@@ -11,6 +11,7 @@ import {
   transition,
   animate
 } from "@angular/animations";
+import { CarPricesFormComponent } from "@app/app/prices/components/car-prices-form/car-prices-form.component";
 
 @Component({
   selector: "hm-car-prices-list",
@@ -31,6 +32,7 @@ import {
   ]
 })
 export class CarPricesListComponent implements OnInit {
+  ngUnsub = new Subject();
   displayedColumns: string[] = [
     "model",
     "brand",
@@ -41,22 +43,45 @@ export class CarPricesListComponent implements OnInit {
     "salePrice",
     "publishAt"
   ];
-  dataSource$: Observable<MatTableDataSource<IHousePrice>>;
-  expandedElement: IHousePrice;
+  dataSource: MatTableDataSource<ICarPrice> = null;
+  options = { brand: [], type: [], origin: [] };
+  filterValue: string;
+  expandedElement: ICarPrice;
 
-  constructor(public priceList: PriceListService) {}
+  constructor(public priceList: PriceListService, public dialog: MatDialog) {}
+
+  @ViewChild(MatSort)
+  sort: MatSort;
 
   ngOnInit() {
-    this.dataSource$ = this.priceList.priceData$.pipe(
-      startWith([]),
-      map(data => new MatTableDataSource(data))
-    );
+    this.priceList.priceData$.pipe(takeUntil(this.ngUnsub)).subscribe(data => {
+      console.log("data is ", data);
+      Object.keys(this.options).forEach(key => {
+        this.options[key] = data
+          .map(value => value[key])
+          .sort()
+          .filter((item, pos, arr) => !pos || item != arr[pos - 1]);
+      });
+
+      this.dataSource = new MatTableDataSource<ICarPrice>(data);
+      console.log("this sort", this.sort);
+      this.dataSource.sort = this.sort;
+    });
   }
 
-  ngOnDestroy() {}
+  applyFilter() {
+    this.dataSource.filter = this.filterValue;
+  }
 
-  selectField(field) {
-    this.priceList.selectedField$.next(field);
-    this.expandedElement = this.expandedElement == field ? null : field;
+  ngOnDestroy() {
+    this.ngUnsub.next();
+    this.ngUnsub.complete();
+  }
+
+  selectField(field: ICarPrice) {
+    this.dialog.open(CarPricesFormComponent, {
+      width: "80%",
+      data: field || {}
+    });
   }
 }

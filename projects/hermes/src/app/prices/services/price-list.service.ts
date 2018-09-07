@@ -86,17 +86,15 @@ export class PriceListService {
       .update(priceData);
   }
 
-  remove(priceId, priceData) {
+  remove(priceId) {
     console.log(
       this.className + " removing price in",
       this.priceCollection$.value
     );
     this.layout.loading$.next(true);
-    this.afFirestore
+    return this.afFirestore
       .collection(this.priceCollection$.value)
       .doc(priceId)
-      .update(priceData)
-      .then(() => this.layout.handleSuccess(this.className, "/prices"))
-      .catch(err => this.layout.handleError(this.className, "update", err));
+      .delete()
   }
 }

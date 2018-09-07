@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Observable, Subject } from "rxjs";
 import { IHousePrice } from "@app/app/prices/models/houseprice.model";
-import { MatTableDataSource } from "@angular/material";
+import { MatTableDataSource, MatDialog } from "@angular/material";
 import { PriceListService } from "@app/app/prices/services/price-list.service";
 import { takeUntil } from "rxjs/operators";
 import {
@@ -11,6 +11,7 @@ import {
   transition,
   animate
 } from "@angular/animations";
+import { HousePricesFormComponent } from "@app/app/prices/components/house-prices-form/house-prices-form.component";
 
 @Component({
   selector: "hm-house-prices-list",
@@ -46,11 +47,10 @@ export class HousePricesListComponent implements OnInit, OnDestroy {
   ];
   dataSource$: Observable<MatTableDataSource<IHousePrice>>;
   dataSource: MatTableDataSource<IHousePrice>;
-  expandedElement: IHousePrice;
   options = { project: [], investor: [], location: [] };
   filterValue: string;
 
-  constructor(public priceList: PriceListService) {}
+  constructor(public priceList: PriceListService, public dialog: MatDialog) {}
 
   ngOnInit() {
     this.priceList.priceData$.pipe(takeUntil(this.ngUnsub)).subscribe(data => {
@@ -58,17 +58,9 @@ export class HousePricesListComponent implements OnInit, OnDestroy {
       Object.keys(this.options).forEach(key => {
         this.options[key] = data
           .map(value => value[key])
+          .sort()
           .filter((item, pos, arr) => !pos || item != arr[pos - 1]);
       });
-
-      this.options.location = this.options.location
-        .map((location: string) => {
-          let loc = location.split(",").map(x => x.trim());
-          let result = loc[loc.length - 2] + ", " + loc[loc.length - 1];
-          return result;
-        })
-        .sort()
-        .filter((item, pos, arr) => !pos || item != arr[pos - 1]);
 
       this.dataSource = new MatTableDataSource<IHousePrice>(data);
     });
@@ -79,15 +71,14 @@ export class HousePricesListComponent implements OnInit, OnDestroy {
     this.ngUnsub.complete();
   }
 
-  applyFilter() {
-    this.dataSource.filter = this.filterValue;
+  selectField(field: IHousePrice) {
+    this.dialog.open(HousePricesFormComponent, {
+      width: "80%",
+      data: field || {}
+    });
   }
 
-  selectField(field) {
-    this.priceList.selectedField$.next(field);
-    this.expandedElement =
-      this.expandedElement && this.expandedElement.id === field.id
-        ? null
-        : field;
+  applyFilter() {
+    this.dataSource.filter = this.filterValue;
   }
 }

@@ -3,10 +3,9 @@
   "version": "0.5.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve hermes --live-reload=false --host=0.0.0.0",
-    "build": "ng build hermes --prod",
-    "serve:bang-gia": "ng serve bang-gia --live-reload=false --host=0.0.0.0",
-    "build:bang-gia": "ng build bang-gia --prod --base-href=/bang-gia/",
+    "build:editor": "ng build hermes --prod --output-path=dist/editor-nhavaxe",
+    "serve:editor": "ng serve hermes --live-reload=false --host=0.0.0.0",
+    "deploy:editor": "firebase deploy --only hosting:editor-nhavaxe",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
