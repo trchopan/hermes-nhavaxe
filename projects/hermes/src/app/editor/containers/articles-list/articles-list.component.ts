@@ -5,9 +5,8 @@ import { distinctUntilChanged, takeUntil } from "rxjs/operators";
 import { Router } from "@angular/router";
 import { MatSnackBar, PageEvent } from "@angular/material";
 import { IArticle } from "@app/app/editor/models/article.model";
-import { BehaviorSubject, Observable, Subject } from "rxjs";
+import { Observable, Subject, BehaviorSubject } from "rxjs";
 import { UserService } from "@app/app/auth/services/user.service";
-import { AngularFirestore } from "angularfire2/firestore";
 
 @Component({
   selector: "hermes-editor-articles-list",
@@ -15,13 +14,14 @@ import { AngularFirestore } from "angularfire2/firestore";
   styleUrls: ["./articles-list.component.scss"]
 })
 export class ArticlesListComponent implements OnInit, OnDestroy {
+  pageSize: number = 10;
+
   ngUnsub = new Subject();
   loading: boolean;
   form: FormGroup;
   queryDate: number;
   articlesList: IArticle[];
   list: IArticle[];
-  pageSize: number = 10;
   editorList$: Observable<{ id: string; name: string }[]>;
   pageEvent$: BehaviorSubject<PageEvent> = new BehaviorSubject<PageEvent>(null);
 
@@ -30,8 +30,7 @@ export class ArticlesListComponent implements OnInit, OnDestroy {
     public user: UserService,
     private fb: FormBuilder,
     private router: Router,
-    private snackbar: MatSnackBar,
-    private aFs: AngularFirestore
+    private snackbar: MatSnackBar
   ) {}
 
   ngOnInit() {
@@ -62,7 +61,7 @@ export class ArticlesListComponent implements OnInit, OnDestroy {
 
     this.form = this.fb.group({
       fromDate: [this.queryDate],
-      creatorId: [null],
+      creatorId: [this.articles.query$.value.creatorId],
       status: [this.articles.query$.value.status],
       range: [this.articles.query$.value.range]
     });
@@ -99,5 +98,9 @@ export class ArticlesListComponent implements OnInit, OnDestroy {
 
   handlePageChange(event: PageEvent) {
     this.pageEvent$.next(event);
+  }
+
+  handleFabClick() {
+    this.router.navigate(["article/create"]);
   }
 }

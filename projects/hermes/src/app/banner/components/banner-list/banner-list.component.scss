@@ -1,0 +1,19 @@
+.table-container {
+  max-width: var(--container-width);
+}
+span {
+  display: block;
+}
+table {
+  margin: auto;
+}
+tr:hover {
+  background: var(--hover-color);
+}
+td.mat-cell {
+  text-align: left;
+  padding: 0 0.25rem;
+}
+.align-right {
+  text-align: right !important;
+}

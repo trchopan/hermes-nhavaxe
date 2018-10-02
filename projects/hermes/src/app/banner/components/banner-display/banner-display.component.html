@@ -1,0 +1,18 @@
+<ng-container [ngSwitch]="type">
+  <div *ngSwitchCase="typeOptions.image.id"
+    [class]="'banner image ' + area">
+    <div [ngStyle]="{ 'background-image': 'url(' + link + ')'}">
+    </div>
+  </div>
+  <div *ngSwitchCase="typeOptions.youtube.id"
+    [class]="'banner youtube ' + area"
+    [innerHtml]="safeHtml">
+  </div>
+  <div *ngSwitchCase="typeOptions.html5.id"
+    [class]="'banner html5 ' + area"
+    [innerHtml]="safeHtml">
+  </div>
+  <div *ngSwitchDefault>
+    <p>Không hiển thị được loại banner này &lt;{{ type }}&gt;</p>
+  </div>
+</ng-container>

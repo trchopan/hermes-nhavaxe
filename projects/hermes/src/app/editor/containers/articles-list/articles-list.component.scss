@@ -26,3 +26,13 @@ mat-list > mat-list-item {
 mat-paginator {
   margin: 0 1rem;
 }
+
+.list-item:hover {
+  background: var(--hover-color);
+}
+
+.fab-button {
+  position: fixed;
+  bottom: 10vh;;
+  left: 80vw;
+}

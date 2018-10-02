@@ -1,0 +1,37 @@
+.banner {
+  margin: 1rem auto;
+}
+.big-right,
+.big-sticky,
+.inpage {
+  width: 300px;
+  height: 600px;
+}
+.small-relate {
+  width: 300px;
+  height: 250px;
+}
+.article-list {
+  width: 594px;
+  height: 150px;
+}
+.long-top {
+  width: 777px;
+  height: 200px;
+}
+.image,
+.youtube,
+.html5 {
+  position: relative;
+}
+.image {
+  div {
+    background-size: cover;
+    background-position: 50%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+  }
+}

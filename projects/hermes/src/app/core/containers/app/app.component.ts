@@ -13,10 +13,10 @@ export class AppComponent {
   titleText: string = environment.title + " - Editor";
 
   buttonList = [
-    { path: "article/create", icon: "edit", text: "Tạo bài viết" },
-    { path: "article", icon: "art_track", text: "Danh sách bài viết" },
+    { path: "article", icon: "art_track", text: "Bài viết" },
+    { path: "tags", icon: "filter_list", text: "Tags và tìm kiếm" },
     { path: "prices", icon: "format_list_numbered", text: "Bảng giá" },
-    { path: "tags", icon: "filter_list", text: "Quản lý Tags" },
+    { path: "banner", icon: "monetization_on", text: "Quảng cáo" },
     { path: "profile", icon: "account_circle", text: "Tài khoản" }
   ];
 

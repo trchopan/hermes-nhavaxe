@@ -14,21 +14,6 @@
           "destination": "/index.html"
         }
       ]
-    },
-    {
-      "target": "bang-gia-nhavaxe",
-      "public": "dist/bang-gia-nhavaxe",
-      "ignore": [
-        "firebase.json",
-        "**/.*",
-        "**/node_modules/**"
-      ],
-      "rewrites": [
-        {
-          "source": "**",
-          "destination": "/index.html"
-        }
-      ]
     }
   ]
 }

@@ -1,0 +1,13 @@
+<form class="center"
+  [formGroup]="form">
+  <mat-form-field>
+    <input matInput
+      type="text"
+      formControlName="id"
+      placeholder="ID" />
+  </mat-form-field>
+</form>
+
+<ng-container *ngIf="result$ | async as result">
+  <hm-tag-results [list]="result"></hm-tag-results>
+</ng-container>

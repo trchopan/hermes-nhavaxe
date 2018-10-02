@@ -46,6 +46,21 @@
             placeholder="Ghi chú của BTV:"
             matAutosize
             matAutosizeMinRows="2">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
           </textarea>
         </mat-form-field>
 
@@ -131,6 +146,7 @@
         <quill-editor #quillEditor
           placeholder="Nội dung bài viết"
           formControlName="bodyData"
+          class="article-body"
           [style]="{ height: '80vh' }"
           [formats]="quillFormats"
           [modules]="quillModules">

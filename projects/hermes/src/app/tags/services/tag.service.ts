@@ -13,9 +13,7 @@ interface ITagList {
   list: string[];
 }
 
-@Injectable({
-  providedIn: "root"
-})
+@Injectable({ providedIn: "root" })
 export class TagService {
   private className = "[Tags] ";
 

@@ -1,6 +1,6 @@
 {
   "name": "hermes",
-  "version": "0.5.0",
+  "version": "0.8.0",
   "scripts": {
     "ng": "ng",
     "build:editor": "ng build hermes --prod --output-path=dist/editor-nhavaxe",

@@ -15,9 +15,10 @@ import {
 import { LoadingSpinnerComponent } from "@app/app/core/components/loading-spinner/loading-spinner.component";
 
 const routes: Routes = [
+  { path: "", pathMatch: "full", redirectTo: "/article" },
   { path: "tags", loadChildren: "../tags/tags.module#TagsModule" },
   { path: "prices", loadChildren: "../prices/prices.module#PricesModule" },
-  { path: "", pathMatch: "full", redirectTo: "/article" },
+  { path: "banner", loadChildren: "../banner/banner.module#BannerModule" },
   { path: "**", component: PageNotFoundComponent }
 ];
 

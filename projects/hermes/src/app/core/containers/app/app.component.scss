@@ -1,7 +1,7 @@
 .header {
   h1 {
     margin: 3.5rem auto 1rem;
-    font-family: Play, "Courier New", Courier, monospace;
+    font-family: var(--title-font);
     text-align: center;
   }
   @media (max-width: 825px) {

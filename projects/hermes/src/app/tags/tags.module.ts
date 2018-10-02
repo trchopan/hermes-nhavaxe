@@ -5,8 +5,6 @@ import { AuthGuardService } from "@app/app/auth/services/auth-guard.service";
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { TagResultsComponent } from "./components/tag-results/tag-results.component";
 import { TagsComponent } from "./containers/tags/tags.component";
-import { TagsListComponent } from "@app/app/tags/components/tags-list/tags-list.component";
-import { TagsSearchComponent } from "@app/app/tags/components/tags-search/tags-search.component";
 import {
   MatChipsModule,
   MatIconModule,
@@ -17,6 +15,10 @@ import {
   MatInputModule,
   MatButtonModule
 } from "@angular/material";
+import { TagService } from "@app/app/tags/services/tag.service";
+import { TagsListComponent } from "@app/app/tags/containers/tags-list/tags-list.component";
+import { TagsSearchComponent } from "@app/app/tags/containers/tags-search/tags-search.component";
+import { TagsIdComponent } from "@app/app/tags/containers/tags-id/tags-id.component";
 
 const routes: Routes = [
   { path: "", pathMatch: "full", redirectTo: "/tags/list" },
@@ -32,6 +34,10 @@ const routes: Routes = [
       {
         path: "search",
         component: TagsSearchComponent
+      },
+      {
+        path: "id",
+        component: TagsIdComponent
       }
     ]
   }
@@ -56,7 +62,8 @@ const routes: Routes = [
     TagsListComponent,
     TagsSearchComponent,
     TagResultsComponent,
-    TagsComponent
+    TagsComponent,
+    TagsIdComponent
   ],
   exports: [RouterModule]
 })

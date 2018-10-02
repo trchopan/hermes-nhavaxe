@@ -1,0 +1,94 @@
+<form *ngIf="form"
+  [formGroup]="form"
+  (ngSubmit)="onSubmit()">
+  <mat-dialog-content>
+    <section class="display">
+      <hm-banner-display [type]="form.controls.type.value"
+        [area]="form.controls.area.value"
+        [link]="form.controls.contentLink.value"></hm-banner-display>
+    </section>
+    <section class="form">
+      <mat-form-field>
+        <mat-select formControlName="area"
+          placeholder="Vị trí">
+          <mat-option *ngFor="let option of areaOptions"
+            [value]="option.id">
+            {{ option.text }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput
+          type="text"
+          formControlName="customer"
+          placeholder="Khách hàng" />
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput
+          type="text"
+          formControlName="contentLink"
+          placeholder="Link nội dung" />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-select formControlName="type"
+          placeholder="Loại banner">
+          <mat-option *ngFor="let option of typeOptions"
+            [value]="option.id">
+            {{ option.text }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput
+          type="text"
+          formControlName="link"
+          placeholder="Link trả về" />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-select formControlName="status"
+          placeholder="Trạng thái">
+          <mat-option *ngFor="let option of statusOptions"
+            [value]="option.id">
+            {{ option.text }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <div class="publish-at">
+        <p>Hết hạn</p>
+        <date-time-picker [dateNumber]="initExpire"
+          showTime="true"
+          (onChange)="setExpire($event)"></date-time-picker>
+      </div>
+    </section>
+  </mat-dialog-content>
+
+  <mat-error *ngIf="layout.error$ | async as error">{{ error.message }}</mat-error>
+
+  <mat-dialog-actions>
+    <button mat-raised-button
+      color="primary"
+      type="submit">
+      <span *ngIf="data.id">Cập nhật</span>
+      <span *ngIf="!data.id">Tạo mới</span>
+    </button>
+    <button *ngIf="form.value.id"
+      (click)="onDelete()"
+      mat-raised-button
+      color="accent"
+      type="button">Xoá</button>
+    <button (click)="onReset()"
+      mat-button
+      color="accent"
+      type="button">Reset</button>
+    <button (click)="onCancle()"
+      mat-button
+      color="accent"
+      type="button">Quay lại</button>
+  </mat-dialog-actions>
+</form>

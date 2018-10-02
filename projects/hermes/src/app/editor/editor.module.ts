@@ -17,7 +17,8 @@ import {
   MatPaginatorModule,
   MatChipsModule,
   MatAutocompleteModule,
-  MatFormFieldModule
+  MatFormFieldModule,
+  MatTooltipModule
 } from "@angular/material";
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { ArticleDetailComponent } from "@app/app/editor/components/article-detail/article-detail.component";
@@ -53,11 +54,12 @@ const routes: Routes = [
     MatButtonModule,
     MatRadioModule,
     MatIconModule,
+    MatTooltipModule,
     MatSelectModule,
-    MatPaginatorModule,
     MatChipsModule,
     MatAutocompleteModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatPaginatorModule
   ],
   declarations: [
     CreateComponent,

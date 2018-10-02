@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
-@import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500|Play|Merriweather");
+@import url("https://fonts.googleapis.com/css?family=Muli:400,600|Merriweather:400,700");
 @import "~quill/dist/quill.snow.css";
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @import "~projects/hermes/src/assets/scss/quill.scss";
@@ -7,10 +7,18 @@
 :root {
   --primary-color: #ed1d24;
   --primary-color-tint: #ffdfe0;
+  --hover-color: #f8f8f8;
   --secondary-color: #159cd8;
   --text-main-color: #000000;
   --text-secondary-color: #575757;
   --text-faded-color: #8a8a8a;
+  --title-font: Muli;
+  --title-font__bold: 600;
+  --title-font__normal: 400;
+  --default-font: sans-serif;
+  --text-font: Merriweather;
+  --text-font__bold: 700;
+  --text-font__normal: 400;
   --container-width: 996px;
 }
 
@@ -24,9 +32,8 @@
 }
 
 body {
-  font-family: Play, "Courier New", Courier, monospace;
+  font-family: var(--title-font);
 }
-
 a {
   cursor: pointer;
   user-select: none;
@@ -44,9 +51,6 @@ mat-spinner {
   max-width: var(--container-width);
 }
 .error {
-  color: red;
-}
-.active-link {
   color: red;
 }
 .padding-bot {

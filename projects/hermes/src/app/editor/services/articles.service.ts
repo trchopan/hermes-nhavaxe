@@ -154,6 +154,10 @@ export class ArticlesService {
   getArticleData(id: string): Observable<IArticle> {
     this.layout.loading$.next(true);
     console.log(this.className + "get article data " + id);
+    if (!id) {
+      this.layout.handleError(this.className, " get article meta", null);
+      return of(null);
+    }
 
     return this.afFirestore
       .collection(ArticlesCollection)

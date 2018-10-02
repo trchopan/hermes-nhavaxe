@@ -1,0 +1,115 @@
+<div class="table-container">
+  <table *ngIf="dataSource; else notFoundTemplate"
+    mat-table
+    [dataSource]="dataSource"
+    class="mat-elevation-z1">
+
+    <ng-container matColumnDef="area">
+      <th mat-header-cell
+        *matHeaderCellDef>
+        <span>Vị trí</span>
+        <mat-select [(value)]="filterValue"
+          (selectionChange)="applyFilter()">
+          <mat-option [value]="">- Bỏ lọc -</mat-option>
+          <mat-option *ngFor="let option of areaOptions"
+            [value]="option.id">{{ option.text }}</mat-option>
+        </mat-select>
+      </th>
+      <td mat-cell
+        *matCellDef="let element"> {{ parseArea(element.area) }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="customer">
+      <th mat-header-cell
+        *matHeaderCellDef>
+        <span>Khách hàng</span>
+        <mat-select [(value)]="filterValue"
+          (selectionChange)="applyFilter()">
+          <mat-option [value]="">- Bỏ lọc -</mat-option>
+          <mat-option *ngFor="let option of customerList"
+            [value]="option">{{ option }}</mat-option>
+        </mat-select>
+      </th>
+      <td mat-cell
+        *matCellDef="let element"> {{ element.customer }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="type">
+      <th mat-header-cell
+        *matHeaderCellDef>
+        <span>Loại</span>
+        <mat-select [(value)]="filterValue"
+          (selectionChange)="applyFilter()">
+          <mat-option [value]="">- Bỏ lọc -</mat-option>
+          <mat-option *ngFor="let option of typeOptions"
+            [value]="option.id">{{ option.id }}</mat-option>
+        </mat-select>
+      </th>
+      <td mat-cell
+        *matCellDef="let element"> {{ element.type }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="link">
+      <th mat-header-cell
+        *matHeaderCellDef>
+        <span>Link trả về</span><span>&nbsp;</span>
+      </th>
+      <td mat-cell
+        *matCellDef="let element"> {{ element.link | trimText: 50 }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="expire">
+      <th mat-header-cell
+        *matHeaderCellDef>
+        <span>Hết hạn</span><span>&nbsp;</span>
+      </th>
+      <td mat-cell
+        *matCellDef="let element"> {{ element.expire | date: 'hh:mm dd/MM' }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <th mat-header-cell
+        *matHeaderCellDef>
+        <span>Trạng thái</span>
+        <mat-select [(value)]="filterValue"
+          (selectionChange)="applyFilter()">
+          <mat-option [value]="">- Bỏ lọc -</mat-option>
+          <mat-option *ngFor="let option of statusOptions"
+            [value]="option.id">{{ option.id }}</mat-option>
+        </mat-select>
+      </th>
+      <td mat-cell
+        *matCellDef="let element"> {{ parseStatus(element.status) }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="count">
+      <th mat-header-cell
+        *matHeaderCellDef>
+        <span>Click</span><span>&nbsp;</span>
+      </th>
+      <td mat-cell
+        class="align-right"
+        *matCellDef="let element"> {{ element.count }} </td>
+    </ng-container>
+
+    <tr mat-header-row
+      *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr mat-row
+      *matRowDef="let element; columns: displayedColumns"
+      class="element-row"
+      (click)="selectField(element)"></tr>
+
+  </table>
+</div>
+
+<ng-template #notFoundTemplate>
+  <div class="center">
+    <mat-progress-spinner class="mini-spinner"
+      color="accent"
+      mode="indeterminate"
+      strokeWidth="2"
+      diameter="25">
+    </mat-progress-spinner>
+    <p>Đang tải dữ liệu...</p>
+  </div>
+</ng-template>

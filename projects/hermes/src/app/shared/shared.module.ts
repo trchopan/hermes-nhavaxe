@@ -8,11 +8,13 @@ import { LeagueTextPipe } from "@app/app/shared/pipes/league-text.pipe";
 import { DateTimePickerComponent } from "@app/app/shared/components/date-time-picker/date-time-picker.component";
 import { PublishAtLabelComponent } from "@app/app/shared/components/publish-at-label/publish-at-label.component";
 import { FormatNewlineSplashPipe } from "@app/app/shared/pipes/format-newline-splash.pipe";
+import { TrimTextPipe } from "@app/app/shared/pipes/trim-text.pipe";
 
 const SHARED_LIST = [
   LeagueImagePipe,
   LeagueProcessPipe,
   LeagueTextPipe,
+  TrimTextPipe,
   FormatNewlineSplashPipe,
   DateTimePickerComponent,
   PublishAtLabelComponent

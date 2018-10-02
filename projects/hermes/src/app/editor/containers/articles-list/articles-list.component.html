@@ -29,7 +29,8 @@
 
   <ng-container *ngIf="list && articlesList; else emptyBlock">
     <mat-list>
-      <mat-list-item *ngFor="let article of list">
+      <mat-list-item *ngFor="let article of list"
+        class="list-item">
         <article-list-item [article]="article"
           (click)="preview(article)"></article-list-item>
         <button mat-icon-button
@@ -43,6 +44,14 @@
         hidePageSize></mat-paginator>
     </mat-list>
   </ng-container>
+
+  <button mat-fab
+    class="fab-button"
+    matTooltip="Tạo bài mới"
+    color="primary"
+    (click)="handleFabClick()">
+    <mat-icon aria-label="icon-button with a pencil icon">edit</mat-icon>
+  </button>
 </div>
 
 <router-outlet></router-outlet>

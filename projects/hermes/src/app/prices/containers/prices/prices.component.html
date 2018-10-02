@@ -1,13 +1,11 @@
 <div class="center">
-  <form [formGroup]="collectionForm">
-    <mat-form-field>
-      <mat-select formControlName="name">
-        <mat-option *ngFor="let option of collectionOptions"
-          [value]="option">
-          {{ option }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-  </form>
-  <router-outlet></router-outlet>
+  <h2>Bảng giá BĐS và Xe</h2>
+  <p *ngIf="prices.error$ | async as error"
+    class="error">{{ error | json }}</p>
+  <p *ngIf="prices.result$ | async as result"
+    class="result">{{ result }}</p>
+  <button mat-raised-button
+    color="primary"
+    [disabled]="layout.loading$ | async"
+    (click)="prices.update()">Cập nhật từ Google Sheet</button>
 </div>
