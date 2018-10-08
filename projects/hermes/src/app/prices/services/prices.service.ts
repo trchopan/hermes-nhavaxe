@@ -1,8 +1,7 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
 import { LayoutService } from "@app/app/core/services/layout.service";
-
-const API_URL = "https://nhavaxe.vn/api/pullGoogleSheet";
+import { environment } from "@app/environments/environment";
 
 @Injectable()
 export class PricesService {
@@ -20,7 +19,7 @@ export class PricesService {
     this.layout.loading$.next(true);
     this.error$.next(null);
     try {
-      const respond = await fetch(API_URL).then(res => res.json());
+      const respond = await fetch(environment.bangGiaApi).then(res => res.json());
       if (respond.result !== "success") {
         this.error$.next("Lỗi xảy ra. Dữ liệu chưa được cập nhật.");
       } else {

@@ -5,13 +5,17 @@
 @import "~projects/hermes/src/assets/scss/quill.scss";
 
 :root {
+  --hover-color: #f8f8f8;
+
   --primary-color: #ed1d24;
   --primary-color-tint: #ffdfe0;
-  --hover-color: #f8f8f8;
+  --primary-background-tint: #f3fafd;
   --secondary-color: #159cd8;
+  --secondary-color-tint: #cfedfa;
   --text-main-color: #000000;
-  --text-secondary-color: #575757;
-  --text-faded-color: #8a8a8a;
+  --text-accent-color: #ffffff;
+  --text-secondary-color: #787878;
+  --text-faded-color: #adacac;
   --title-font: Muli;
   --title-font__bold: 600;
   --title-font__normal: 400;
@@ -36,7 +40,7 @@ body {
 }
 a {
   cursor: pointer;
-  user-select: none;
+  color: black;
 }
 mat-spinner {
   margin: auto;

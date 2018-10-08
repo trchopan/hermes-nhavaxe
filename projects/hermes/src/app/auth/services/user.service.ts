@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
-import { AngularFireAuth } from "angularfire2/auth";
+import { AngularFireAuth } from "@angular/fire/auth";
 import { BehaviorSubject } from "rxjs";
 import { Router } from "@angular/router";
-import { AngularFirestore } from "angularfire2/firestore";
+import { AngularFirestore } from "@angular/fire/firestore";
 import { auth } from "firebase/app";
 import { IAuth } from "@app/app/auth/models/auth.model";
 import { IProfile, parseProfile } from "@app/app/auth/models/profile.model";

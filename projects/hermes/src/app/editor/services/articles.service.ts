@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { AngularFirestore } from "angularfire2/firestore";
+import { AngularFirestore } from "@angular/fire/firestore";
 import { IQuery } from "@app/app/editor/models/query.model";
 import { BehaviorSubject, of, Observable } from "rxjs";
 import { switchMap, map, catchError, tap, share } from "rxjs/operators";
@@ -162,11 +162,14 @@ export class ArticlesService {
     return this.afFirestore
       .collection(ArticlesCollection)
       .doc(id)
-      .valueChanges()
+      .snapshotChanges()
       .pipe(
-        map(result => {
+        map(snapshot => {
           this.layout.loading$.next(false);
-          return parseArticle(id, result);
+          if (!snapshot.payload.exists) {
+            return null;
+          }
+          return parseArticle(snapshot.payload.id, snapshot.payload.data());
         }),
         catchError(err => {
           console.log(this.className + "getting article data error", err);

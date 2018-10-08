@@ -27,13 +27,15 @@ export class LayoutService {
 
   handleError(className: string, operation: string, err: any) {
     console.error(className + operation + " error ", err);
-    switch (err.code) {
-      case "permission-denied":
-        err.message = "Bạn không có quyền thực hiện thao tác.";
-        break;
-      default:
-        err.message = "Lỗi không xác định. Vui lòng liên hệ admin.";
-        break;
+    if (err && err.code) {
+      switch (err.code) {
+        case "permission-denied":
+          err.message = "Bạn không có quyền thực hiện thao tác.";
+          break;
+        default:
+          err.message = "Lỗi không xác định. Vui lòng liên hệ admin.";
+          break;
+      }
     }
     this.error$.next(err);
     this.snackbar.open("Xảy ra lỗi", null, {

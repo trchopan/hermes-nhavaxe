@@ -1,0 +1,151 @@
+<div class="preview">
+  <div class="title-preview">
+    <p class="title">{{ form.value.title }}</p>
+    <hr />
+  </div>
+  <div class="subs-preview">
+    <p *ngIf="previewSubOne$ | async as subOne"
+      class="sub-item">
+      {{ subOne.title }}
+    </p>
+    <p *ngIf="previewSubTwo$ | async as subTwo"
+      class="sub-item">
+      {{ subTwo.title }}
+    </p>
+    <p *ngIf="previewSubThree$ | async as subThree"
+      class="sub-item">
+      {{ subThree.title }}
+    </p>
+    <p *ngIf="previewSubFour$ | async as subFour"
+      class="sub-item">
+      {{ subFour.title }}
+    </p>
+    <p *ngIf="previewSubFive$ | async as subFive"
+      class="sub-item">
+      {{ subFive.title }}
+    </p>
+    <p *ngIf="previewSubSix$ | async as subSix"
+      class="sub-item">
+      {{ subSix.title }}
+    </p>
+    <p *ngIf="previewSubSeven$ | async as subSeven"
+      class="sub-item">
+      {{ subSeven.title }}
+    </p>
+  </div>
+  <div class="mains-preview">
+    <div *ngIf="previewMainOne$ | async as mainOne"
+      class="main-1">
+      <div class="preview-main-cover"
+        [ngStyle]="{ 'background-image': 'url(' + mainOne.coverImg + ')'}"></div>
+      <p class="mains-title">{{ mainOne.title | trimText: 100 }}</p>
+    </div>
+    <div *ngIf="previewMainTwo$ | async as mainTwo"
+      class="main-1">
+      <div class="preview-main-cover"
+        [ngStyle]="{ 'background-image': 'url(' + mainTwo.coverImg + ')'}"></div>
+      <p class="mains-title">{{ mainTwo.title | trimText: 100 }}</p>
+    </div>
+  </div>
+</div>
+
+<form [formGroup]="form"
+  (ngSubmit)="submit()">
+  <mat-card>
+    <section class="title">
+      <mat-form-field class="title-field">
+        <input matInput
+          class="input"
+          formControlName="title"
+          type="text"
+          placeholder="Tên tiêu đề" />
+      </mat-form-field>
+    </section>
+    <mat-card-content>
+      <div class="subs">
+        <mat-form-field>
+          <input matInput
+            class="input"
+            formControlName="subOne"
+            type="text"
+            placeholder="Bài phụ 1" />
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput
+            class="input"
+            formControlName="subTwo"
+            type="text"
+            placeholder="Bài phụ 2" />
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput
+            class="input"
+            formControlName="subThree"
+            type="text"
+            placeholder="Bài phụ 3" />
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput
+            class="input"
+            formControlName="subFour"
+            type="text"
+            placeholder="Bài phụ 4" />
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput
+            class="input"
+            formControlName="subFive"
+            type="text"
+            placeholder="Bài phụ 5" />
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput
+            class="input"
+            formControlName="subSix"
+            type="text"
+            placeholder="Bài phụ 6" />
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput
+            class="input"
+            formControlName="subSeven"
+            type="text"
+            placeholder="Bài phụ 7" />
+        </mat-form-field>
+      </div>
+
+      <div class="mains">
+        <mat-form-field class="main-one">
+          <input matInput
+            class="input"
+            formControlName="mainOne"
+            type="text"
+            placeholder="Bài chính 1" />
+        </mat-form-field>
+
+        <mat-form-field class="main-two">
+          <input matInput
+            class="input"
+            formControlName="mainTwo"
+            type="text"
+            placeholder="Bài chính 2" />
+        </mat-form-field>
+      </div>
+    </mat-card-content>
+
+    <mat-card-actions>
+      <button mat-raised-button
+        [disabled]="form.pristine || !form.valid"
+        color="primary"
+        type="submit">
+        Cập nhật
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</form>

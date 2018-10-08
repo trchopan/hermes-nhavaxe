@@ -4,7 +4,7 @@ import { UserService } from "@app/app/auth/services/user.service";
 import { Subject, Observable } from "rxjs";
 import { takeUntil, map } from "rxjs/operators";
 import { Router } from "@angular/router";
-import { AngularFireAuth } from "angularfire2/auth";
+import { AngularFireAuth } from "@angular/fire/auth";
 
 @Component({
   selector: "hm-login",

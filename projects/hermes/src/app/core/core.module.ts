@@ -19,6 +19,7 @@ const routes: Routes = [
   { path: "tags", loadChildren: "../tags/tags.module#TagsModule" },
   { path: "prices", loadChildren: "../prices/prices.module#PricesModule" },
   { path: "banner", loadChildren: "../banner/banner.module#BannerModule" },
+  { path: "specials", loadChildren: "../specials/specials.module#SpecialsModule" },
   { path: "**", component: PageNotFoundComponent }
 ];
 

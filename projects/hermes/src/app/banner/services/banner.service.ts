@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { AngularFirestore } from "angularfire2/firestore";
+import { AngularFirestore } from "@angular/fire/firestore";
 import { LayoutService } from "@app/app/core/services/layout.service";
 import { BehaviorSubject, Observable, of } from "rxjs";
 import { IBanner, parseBanner } from "@app/app/banner/models/banner.model";
@@ -21,8 +21,6 @@ export class BannerService {
     private layout: LayoutService
   ) {
     this.error$ = new BehaviorSubject(null);
-
-    this.error$.subscribe(err => console.error(this.className + " error", err));
 
     this.bannerList$ = this.afFirestore
       .collection(BannerCollection, ref => ref.orderBy("expire", "desc"))

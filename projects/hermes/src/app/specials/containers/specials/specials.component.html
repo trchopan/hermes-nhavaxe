@@ -1,0 +1,4 @@
+<h2 class="center">Bài đặc biệt</h2>
+
+<hm-specials-form [specials]="specials.specialList$ | async"
+  (onSubmit)="specials.update($event)"></hm-specials-form>

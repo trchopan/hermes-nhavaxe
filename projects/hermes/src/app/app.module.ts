@@ -6,9 +6,9 @@ import { environment } from "@app/environments/environment";
 import { AppComponent } from "@app/app/core/containers/app/app.component";
 import { AuthModule } from "@app/app/auth/auth.module";
 import { CoreModule } from "@app/app/core/core.module";
-import { AngularFireModule } from "angularfire2";
-import { AngularFireAuthModule } from "angularfire2/auth";
-import { AngularFirestoreModule } from "angularfire2/firestore";
+import { AngularFireModule } from "@angular/fire";
+import { AngularFireAuthModule } from "@angular/fire/auth";
+import { AngularFirestoreModule } from "@angular/fire/firestore";
 import { EditorModule } from "@app/app/editor/editor.module";
 
 @NgModule({

@@ -1,5 +1,13 @@
 <div class="center">
   <h2>Bảng giá BĐS và Xe</h2>
+  <h3>
+    <a [href]="sheetLink"
+      target="_blank">
+      <span>Google Sheet bảng giá</span>
+      &nbsp;
+      <mat-icon>open_in_new</mat-icon>
+    </a>
+  </h3>
   <p *ngIf="prices.error$ | async as error"
     class="error">{{ error | json }}</p>
   <p *ngIf="prices.result$ | async as result"

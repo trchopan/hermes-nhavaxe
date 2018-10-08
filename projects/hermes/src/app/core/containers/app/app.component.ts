@@ -14,6 +14,7 @@ export class AppComponent {
 
   buttonList = [
     { path: "article", icon: "art_track", text: "Bài viết" },
+    { path: "specials", icon: "toc", text: "Bài đặc biệt" },
     { path: "tags", icon: "filter_list", text: "Tags và tìm kiếm" },
     { path: "prices", icon: "format_list_numbered", text: "Bảng giá" },
     { path: "banner", icon: "monetization_on", text: "Quảng cáo" },
