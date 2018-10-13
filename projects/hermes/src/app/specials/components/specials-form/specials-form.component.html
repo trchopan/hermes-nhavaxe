@@ -4,48 +4,21 @@
     <hr />
   </div>
   <div class="subs-preview">
-    <p *ngIf="previewSubOne$ | async as subOne"
-      class="sub-item">
-      {{ subOne.title }}
-    </p>
-    <p *ngIf="previewSubTwo$ | async as subTwo"
-      class="sub-item">
-      {{ subTwo.title }}
-    </p>
-    <p *ngIf="previewSubThree$ | async as subThree"
-      class="sub-item">
-      {{ subThree.title }}
-    </p>
-    <p *ngIf="previewSubFour$ | async as subFour"
-      class="sub-item">
-      {{ subFour.title }}
-    </p>
-    <p *ngIf="previewSubFive$ | async as subFive"
-      class="sub-item">
-      {{ subFive.title }}
-    </p>
-    <p *ngIf="previewSubSix$ | async as subSix"
-      class="sub-item">
-      {{ subSix.title }}
-    </p>
-    <p *ngIf="previewSubSeven$ | async as subSeven"
-      class="sub-item">
-      {{ subSeven.title }}
-    </p>
+    <ng-container *ngFor="let sub$ of subArticles$">
+      <p *ngIf="sub$ | async as sub"
+        class="sub-item">
+        {{ sub.title }}
+      </p>
+    </ng-container>
   </div>
   <div class="mains-preview">
-    <div *ngIf="previewMainOne$ | async as mainOne"
-      class="main-1">
-      <div class="preview-main-cover"
-        [ngStyle]="{ 'background-image': 'url(' + mainOne.coverImg + ')'}"></div>
-      <p class="mains-title">{{ mainOne.title | trimText: 100 }}</p>
-    </div>
-    <div *ngIf="previewMainTwo$ | async as mainTwo"
-      class="main-1">
-      <div class="preview-main-cover"
-        [ngStyle]="{ 'background-image': 'url(' + mainTwo.coverImg + ')'}"></div>
-      <p class="mains-title">{{ mainTwo.title | trimText: 100 }}</p>
-    </div>
+    <ng-container *ngFor="let main$ of mainArticles$">
+      <div *ngIf="main$ | async as main">
+        <div class="preview-main-cover"
+          [ngStyle]="{ 'background-image': 'url(' + main.coverImg + ')'}"></div>
+        <p class="mains-title">{{ main.title | trimText: 100 }}</p>
+      </div>
+    </ng-container>
   </div>
 </div>
 
@@ -62,81 +35,13 @@
       </mat-form-field>
     </section>
     <mat-card-content>
-      <div class="subs">
-        <mat-form-field>
-          <input matInput
-            class="input"
-            formControlName="subOne"
-            type="text"
-            placeholder="Bài phụ 1" />
-        </mat-form-field>
-
-        <mat-form-field>
-          <input matInput
-            class="input"
-            formControlName="subTwo"
-            type="text"
-            placeholder="Bài phụ 2" />
-        </mat-form-field>
-
-        <mat-form-field>
-          <input matInput
-            class="input"
-            formControlName="subThree"
-            type="text"
-            placeholder="Bài phụ 3" />
-        </mat-form-field>
-
-        <mat-form-field>
-          <input matInput
-            class="input"
-            formControlName="subFour"
-            type="text"
-            placeholder="Bài phụ 4" />
-        </mat-form-field>
-
-        <mat-form-field>
-          <input matInput
-            class="input"
-            formControlName="subFive"
-            type="text"
-            placeholder="Bài phụ 5" />
-        </mat-form-field>
-
-        <mat-form-field>
-          <input matInput
-            class="input"
-            formControlName="subSix"
-            type="text"
-            placeholder="Bài phụ 6" />
-        </mat-form-field>
-
-        <mat-form-field>
-          <input matInput
-            class="input"
-            formControlName="subSeven"
-            type="text"
-            placeholder="Bài phụ 7" />
-        </mat-form-field>
-      </div>
-
-      <div class="mains">
-        <mat-form-field class="main-one">
-          <input matInput
-            class="input"
-            formControlName="mainOne"
-            type="text"
-            placeholder="Bài chính 1" />
-        </mat-form-field>
-
-        <mat-form-field class="main-two">
-          <input matInput
-            class="input"
-            formControlName="mainTwo"
-            type="text"
-            placeholder="Bài chính 2" />
-        </mat-form-field>
-      </div>
+      <mat-form-field *ngFor="let control of controls; let i = index;">
+        <input matInput
+          class="input"
+          type="text"
+          [formControlName]="i"
+          [placeholder]="'Bài ' + i" />
+      </mat-form-field>
     </mat-card-content>
 
     <mat-card-actions>

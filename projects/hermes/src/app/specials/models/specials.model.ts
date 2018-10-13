@@ -1,27 +1,15 @@
+import { IArticle } from "@app/app/editor/models/article.model";
+
+export const SpecialsAmount = 9;
+
 export interface ISpecials {
   title: string;
-  mainOne: string;
-  mainTwo: string;
-  subOne: string;
-  subTwo: string;
-  subThree: string;
-  subFour: string;
-  subFive: string;
-  subSix: string;
-  subSeven: string;
+  articles: IArticle[];
 }
 
 export function parseSpecials(data: any): ISpecials {
   return {
     title: data.title || "",
-    mainOne: data.mainOne || "",
-    mainTwo: data.mainTwo || "",
-    subOne: data.subOne || "",
-    subTwo: data.subTwo || "",
-    subThree: data.subThree || "",
-    subFour: data.subFour || "",
-    subFive: data.subFive || "",
-    subSix: data.subSix || "",
-    subSeven: data.subSeven || ""
+    articles: data.articles || []
   };
 }

@@ -7,7 +7,8 @@ import { IArticle } from "@app/app/editor/models/article.model";
   styleUrls: ["./tag-results.component.scss"]
 })
 export class TagResultsComponent {
-  @Input() list: { article: IArticle; relevant: number }[];
+  @Input()
+  list: { article: IArticle; relevant: number }[];
 
   constructor() {}
 }

@@ -17,10 +17,10 @@ mat-form-field {
   max-width: 626px;
   background: #323232;
   display: grid;
+  grid-template-columns: 1.2fr 1fr;
   grid-template-areas:
     "title title"
     "subs mains";
-  grid-template-columns: 1.2fr 1fr;
   .title-preview {
     grid-area: title;
     margin: 0;
@@ -38,6 +38,7 @@ mat-form-field {
     .sub-item {
       position: relative;
       font-family: var(--title-font);
+      text-align: justify;
       padding-left: 1rem;
       margin-bottom: 0.7rem;
       color: white;
@@ -66,6 +67,7 @@ mat-form-field {
     }
     .mains-title {
       font-family: var(--title-font);
+      text-align: justify;
       position: absolute;
       left: 5%;
       bottom: -2%;
@@ -79,7 +81,7 @@ mat-form-field {
     border: 0;
     height: 1px;
     background: var(--secondary-color);
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
   }
 }
 
