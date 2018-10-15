@@ -1,0 +1,54 @@
+mat-card {
+  margin: auto;
+  max-width: 650px;
+}
+
+mat-card-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+mat-form-field {
+  padding-right: 2rem;
+}
+
+.title {
+  grid-column: span 2;
+  font-weight: bold;
+}
+
+.video-preview {
+  margin: 1rem auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-gap: 1rem;
+}
+
+.cover-image,
+.youtube-container {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 */
+  padding-top: 25px;
+}
+
+.cover-image {
+  background-size: cover;
+  background-position: 50%;
+}
+
+.youtube iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width: 599px) {
+  mat-card-content {
+    grid-template-columns: 1fr;
+  }
+  .title {
+    grid-column: auto;
+  }
+}

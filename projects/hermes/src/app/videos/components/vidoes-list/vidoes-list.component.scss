@@ -1,0 +1,37 @@
+mat-list {
+  max-width: 500px;
+  margin: auto;
+  margin-bottom: 1rem;
+  mat-list-item {
+    height: 4.5rem;
+  }
+  mat-list-item:hover {
+    background: var(--hover-color);
+  }
+}
+.list-item {
+  display: grid;
+  width: 100%;
+  grid-template-columns: auto 1fr;
+  justify-content: left;
+  align-items: center;
+}
+p {
+  margin: 0;
+}
+.creator {
+  color: var(--secondary-color);
+  font-weight: bold;
+}
+.thumbnail {
+  height: 4rem;
+  width: 4rem;
+  background-position: center;
+  background-size: cover;
+}
+.title {
+  padding: 0 0.5rem;
+}
+.move-buttons {
+  display: flex;
+}

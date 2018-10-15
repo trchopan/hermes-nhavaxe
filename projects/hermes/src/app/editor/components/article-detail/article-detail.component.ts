@@ -9,6 +9,7 @@ import { tap, map } from "rxjs/operators";
 import { Observable } from "rxjs";
 import { ActivatedRoute, Router } from "@angular/router";
 import { LayoutService } from "@app/app/core/services/layout.service";
+import { youtubeParser } from "@app/app/shared/helpers";
 
 @Component({
   selector: "hm-article-detail",
@@ -45,7 +46,7 @@ export class ArticleDetailComponent implements OnInit {
       this.meta$ = this.articles.getArticleData(id).pipe(
         tap(meta => {
           if (meta && meta.video) {
-            let video = this.youtube_parser(meta.video);
+            let video = youtubeParser(meta.video);
             let html = `
               <iframe
                 src="https://www.youtube.com/embed/${video}"
@@ -66,11 +67,5 @@ export class ArticleDetailComponent implements OnInit {
           )
         );
     });
-  }
-
-  youtube_parser(url) {
-    var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
-    var match = url.match(regExp);
-    return match && match[7].length == 11 ? match[7] : false;
   }
 }
