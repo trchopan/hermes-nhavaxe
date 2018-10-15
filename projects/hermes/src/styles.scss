@@ -51,12 +51,18 @@ mat-spinner {
 }
 .container {
   margin: auto;
-  padding: 1rem 0;
+  padding: 0 0 10rem;
   max-width: var(--container-width);
+  position: relative;
 }
 .error {
   color: red;
 }
 .padding-bot {
   padding-bottom: 1rem;
+}
+.fab-button {
+  position: fixed !important;
+  bottom: 10vh;;
+  left: 84vw;
 }

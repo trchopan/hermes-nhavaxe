@@ -2,7 +2,7 @@
   <h1>{{ titleText }}</h1>
 </div>
 <div class="container mat-typography">
-  <div *ngIf="user.isLoggedIn"
+  <div *ngIf="user.isLoggedIn && user.profile"
     class="float-buttons">
     <button *ngFor="let button of buttonList"
       mat-button
@@ -10,6 +10,12 @@
       [routerLink]="button.path">
       <mat-icon>{{ button.icon }}</mat-icon>
     </button>
+    <a mat-button
+      matTooltip="Tài khoản"
+      routerLink="/profile">
+      <img [src]="user.profile.avatar"
+        class="avatar" />
+    </a>
   </div>
   <ng-container *ngIf="!(user.loading$ | async); else loadingUser">
     <router-outlet></router-outlet>

@@ -1,0 +1,51 @@
+<div *ngIf="publishAt"
+  class="center">
+  <p>
+    Videos được cập nhật lần cuối bởi
+    <span class="creator"> {{ creatorName}} </span>
+    lúc
+  </p>
+  <p>{{ publishAt | date: 'dd/MM HH:mm'}}</p>
+</div>
+
+<mat-list>
+  <mat-list-item *ngIf="!videosList || videosList.length <= 0">
+    Không có video nào
+  </mat-list-item>
+  <mat-list-item *ngFor="let video of videosList; let i = index">
+    <div class="list-item"
+      (click)="openDialog(i, video)">
+      <div class="thumbnail"
+        [ngStyle]="{ 'background-image': 'url(' + video.coverImg + ')'}"></div>
+      <p class="title">{{ video.title }}</p>
+    </div>
+    <div class="move-buttons">
+      <button *ngIf="i > 0"
+        mat-icon-button
+        (click)="swap(i, i-1)">
+        <mat-icon>arrow_drop_up</mat-icon>
+      </button>
+      <button *ngIf="i < videosList.length - 1"
+        mat-icon-button
+        (click)="swap(i, i+1)">
+        <mat-icon>arrow_drop_down</mat-icon>
+      </button>
+    </div>
+    <mat-divider></mat-divider>
+  </mat-list-item>
+</mat-list>
+
+<div *ngIf="videosList.length > 0"
+  class="center">
+  <button mat-raised-button
+    color="primary"
+    class="m-auto"
+    (click)="update()">
+    Cập nhật VideosList
+  </button>
+</div>
+
+<button mat-fab
+  class="fab-button"
+  (click)="openDialog(-1)">
+  <mat-icon aria-label="icon-button with a plus icon">add</mat-icon>

@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from "@angular/core";
 import { TypeOptions } from "@app/app/banner/models/banner.model";
 import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
+import { youtubeParser } from "@app/app/shared/helpers";
 
 @Component({
   selector: "hm-banner-display",
@@ -24,7 +25,7 @@ export class BannerDisplayComponent implements OnInit {
     let html = "";
     switch (this.type) {
       case this.typeOptions.youtube.id:
-        let video = this.youtube_parser(this.link);
+        let video = youtubeParser(this.link);
         html = `
         <iframe
           src="https://www.youtube.com/embed/${video}"
@@ -48,11 +49,5 @@ export class BannerDisplayComponent implements OnInit {
         this.safeHtml = this.dom.bypassSecurityTrustHtml(html);
         break;
     }
-  }
-
-  youtube_parser(url) {
-    var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
-    var match = url.match(regExp);
-    return match && match[7].length == 11 ? match[7] : false;
   }
 }

@@ -83,10 +83,6 @@ export class SpecialsFormComponent implements OnInit {
 
   submit() {
     if (this.form.valid) {
-      console.log({
-        title: this.form.value.title,
-        articles: this.articlesData
-      });
       this.onSubmit.emit({
         title: this.form.value.title,
         articles: this.articlesData
