@@ -14,16 +14,15 @@ export class AppComponent {
 
   buttonList = [
     { path: "article", icon: "art_track", text: "Bài viết" },
+    { path: "videos", icon: "ondemand_video", text: "Youtube Videos" },
     { path: "specials", icon: "toc", text: "Bài đặc biệt" },
     { path: "tags", icon: "filter_list", text: "Tags và tìm kiếm" },
     { path: "prices", icon: "format_list_numbered", text: "Bảng giá" },
-    { path: "banner", icon: "monetization_on", text: "Quảng cáo" },
-    { path: "profile", icon: "account_circle", text: "Tài khoản" }
+    { path: "banner", icon: "monetization_on", text: "Quảng cáo" }
   ];
 
   constructor(
     public user: UserService,
-    private router: Router,
     private title: Title
   ) {
     this.title.setTitle(this.titleText);

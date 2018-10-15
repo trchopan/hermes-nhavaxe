@@ -29,72 +29,72 @@ export class UserService {
     private router: Router,
     private aFs: AngularFirestore
   ) {
-    // Stud data
-    // this.authData = {
-    //   id: "nCxyrSBwnLWDV96GcHWhbJc0Lqe2",
-    //   email: "logan1011001@gmail.com"
-    // };
-    // this.profile = {
-    //   avatar:
-    //     "https://pbs.twimg.com/profile_images/644262622234284032/tpm8sb5J_400x400.jpg",
-    //   fullname: "Cờ Toooo",
-    //   phone: "",
-    //   points: 0,
-    //   greeting: ""
-    // };
-    // this.managerProf = {
-    //   avatar:
-    //     "https://pbs.twimg.com/profile_images/644262622234284032/tpm8sb5J_400x400.jpg",
-    //   fullname: "Cờ To Thiệt To",
-    //   phone: "",
-    //   points: 0,
-    //   greeting: ""
-    // };
-    // this.isLoggedIn = true;
-    // this.isManager = true;
-    // this.loading$.next(false)
+    // Stub data
+    this.authData = {
+      id: "nCxyrSBwnLWDV96GcHWhbJc0Lqe2",
+      email: "logan1011001@gmail.com"
+    };
+    this.profile = {
+      avatar:
+        "https://pbs.twimg.com/profile_images/644262622234284032/tpm8sb5J_400x400.jpg",
+      fullname: "Cờ Toooo",
+      phone: "",
+      points: 0,
+      greeting: ""
+    };
+    this.managerProf = {
+      avatar:
+        "https://pbs.twimg.com/profile_images/644262622234284032/tpm8sb5J_400x400.jpg",
+      fullname: "Cờ To Thiệt To",
+      phone: "",
+      points: 0,
+      greeting: ""
+    };
+    this.isLoggedIn = true;
+    this.isManager = true;
+    this.loading$.next(false)
 
-    this.afAuth.authState.subscribe(auth => {
-      if (auth) {
-        console.log(this.className + " authed ", auth.uid);
-        this.isLoggedIn = true;
-        this.authData = { id: auth.uid, email: auth.email };
-        this.loading$.next(true);
-        this.aFs
-          .collection("managers")
-          .doc(auth.uid)
-          .snapshotChanges()
-          .subscribe(snapshot => {
-            if (snapshot.payload.exists) {
-              console.log(
-                this.className + " manager ",
-                snapshot.payload.data()
-              );
-              this.isManager = true;
-              this.managerProf = parseProfile(snapshot.payload.data());
-            } else {
-              this.isManager = false;
-              this.managerProf = null;
-            }
-          });
+    // this.afAuth.authState.subscribe(auth => {
+    //   if (auth) {
+    //     console.log(this.className + " authed ", auth.uid);
+    //     this.isLoggedIn = true;
+    //     this.authData = { id: auth.uid, email: auth.email };
+    //     this.loading$.next(true);
+    //     this.aFs
+    //       .collection("managers")
+    //       .doc(auth.uid)
+    //       .snapshotChanges()
+    //       .subscribe(snapshot => {
+    //         if (snapshot.payload.exists) {
+    //           console.log(
+    //             this.className + " manager ",
+    //             snapshot.payload.data()
+    //           );
+    //           this.isManager = true;
+    //           this.managerProf = parseProfile(snapshot.payload.data());
+    //         } else {
+    //           this.isManager = false;
+    //           this.managerProf = null;
+    //         }
+    //       });
 
-        this.aFs
-          .collection("users")
-          .doc(auth.uid)
-          .snapshotChanges()
-          .subscribe(snapshot => {
-            console.log(this.className + " profile ", snapshot.payload.data());
-            this.profile = snapshot.payload.exists
-              ? parseProfile(snapshot.payload.data())
-              : null;
-            this.loading$.next(false);
-          });
-      } else {
-        this.isLoggedIn = false;
-        this.authData = null;
-        this.loading$.next(false);
-      }
-    });
+    //     this.aFs
+    //       .collection("users")
+    //       .doc(auth.uid)
+    //       .snapshotChanges()
+    //       .subscribe(snapshot => {
+    //         console.log(this.className + " profile ", snapshot.payload.data());
+    //         this.profile = snapshot.payload.exists
+    //           ? parseProfile(snapshot.payload.data())
+    //           : null;
+    //         this.loading$.next(false);
+    //       });
+    //   } else {
+    //     this.isLoggedIn = false;
+    //     this.authData = null;
+    //     this.loading$.next(false);
+    //   }
+    // });
   }
 
   emailpasswordLogin(email: string, password: string) {

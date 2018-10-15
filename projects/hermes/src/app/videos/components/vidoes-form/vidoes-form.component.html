@@ -1,0 +1,42 @@
+<form [formGroup]="form"
+  (ngSubmit)="submit()">
+  <mat-dialog-content>
+    <div class="video-preview">
+      <div *ngIf="coverImg$ | async as coverImg"
+        [ngStyle]="{ 'background-image': 'url(' + coverImg + ')'}"
+        class="cover-image"></div>
+      <div class="youtube-container">
+        <div [innerHtml]="safeYoutube$ | async"
+          class="center youtube">
+        </div>
+      </div>
+    </div>
+
+    <mat-form-field>
+      <input matInput
+        type="text"
+        formControlName="coverImg"
+        placeholder="Ảnh bìa" />
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput
+        type="text"
+        formControlName="title"
+        placeholder="Tiêu đề" />
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput
+        type="text"
+        formControlName="link"
+        placeholder="Link youtube" />
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-raised-button
+      [disabled]="form.pristine || !form.valid"
+      color="primary"
+      type="submit">
+      Cập nhật
+    </button>
+  </mat-dialog-actions>
+</form>

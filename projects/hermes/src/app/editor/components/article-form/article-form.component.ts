@@ -21,6 +21,7 @@ import { IArticle, IArticleBody } from "@app/app/editor/models/article.model";
 import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
 import { ArticlesService } from "@app/app/editor/services/articles.service";
 import { UserService } from "@app/app/auth/services/user.service";
+import { youtubeParser } from "@app/app/shared/helpers";
 
 @Component({
   selector: "article-form",
@@ -129,7 +130,7 @@ export class ArticleFormComponent implements OnInit, OnDestroy, AfterViewInit {
         debounceTime(1000)
       )
       .subscribe(video => {
-        let youtube = this.youtube_parser(video);
+        let youtube = youtubeParser(video);
         if (youtube) {
           let html = `
           <iframe width="350" height="196"
@@ -247,10 +248,4 @@ export class ArticleFormComponent implements OnInit, OnDestroy, AfterViewInit {
       /\w\S*/g,
       (txt: string) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
     );
-
-  youtube_parser(url) {
-    var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
-    var match = url.match(regExp);
-    return match && match[7].length == 11 ? match[7] : false;
-  }
 }

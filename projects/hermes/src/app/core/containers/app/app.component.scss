@@ -12,11 +12,6 @@
   }
 }
 
-.container {
-  padding: 0 0 3rem;
-  position: relative;
-}
-
 .float-buttons {
   position: fixed;
   top: 0;
@@ -29,13 +24,27 @@
   button {
     padding: 5px 16px;
   }
+  a {
+    display: inline-block;
+    padding: 0 16px;
+  }
+  .avatar {
+    height: 2rem;
+    border-radius: 50%;
+  }
   @media (max-width: 825px) {
     width: 100vw;
     right: auto;
+    overflow-x: scroll;
     border-radius: 0;
     display: flex;
     button {
       flex: 1;
+    }
+    a {
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
   }
 }

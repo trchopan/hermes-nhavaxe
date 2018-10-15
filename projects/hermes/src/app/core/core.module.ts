@@ -16,10 +16,26 @@ import { LoadingSpinnerComponent } from "@app/app/core/components/loading-spinne
 
 const routes: Routes = [
   { path: "", pathMatch: "full", redirectTo: "/article" },
-  { path: "tags", loadChildren: "../tags/tags.module#TagsModule" },
-  { path: "prices", loadChildren: "../prices/prices.module#PricesModule" },
-  { path: "banner", loadChildren: "../banner/banner.module#BannerModule" },
-  { path: "specials", loadChildren: "../specials/specials.module#SpecialsModule" },
+  {
+    path: "tags",
+    loadChildren: "../tags/tags.module#TagsModule"
+  },
+  {
+    path: "prices",
+    loadChildren: "../prices/prices.module#PricesModule"
+  },
+  {
+    path: "banner",
+    loadChildren: "../banner/banner.module#BannerModule"
+  },
+  {
+    path: "specials",
+    loadChildren: "../specials/specials.module#SpecialsModule"
+  },
+  {
+    path: "videos",
+    loadChildren: "../videos/videos.module#VideosModule"
+  },
   { path: "**", component: PageNotFoundComponent }
 ];
 
