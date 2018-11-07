@@ -66,4 +66,8 @@ export class VidoesFormComponent implements OnInit {
     if (this.form.valid)
       this.dialogRef.close({ index: this.data.index, video: this.form.value });
   }
+
+  remove() {
+    this.dialogRef.close({ index: this.data.index, video: null });
+  }
 }

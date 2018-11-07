@@ -48,11 +48,21 @@ export class VidoesListComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(data => {
-      if (!data || !data.video) return;
-      if (data.index > 0) {
-        this.videosList[index] = data.video;
-      } else {
+      if (!data) return;
+
+      if (data.index >= 0 && data.video) {
+        this.videosList[data.index] = data.video;
+        return;
+      }
+
+      if (data.index >= 0 && !data.video) {
+        this.videosList.splice(data.index, 1);
+        return;
+      }
+
+      if (data.index < 0) {
         this.videosList.splice(0, 0, data.video);
+        return;
       }
     });
   }
