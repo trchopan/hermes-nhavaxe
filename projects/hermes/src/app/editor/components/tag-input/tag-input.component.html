@@ -9,13 +9,13 @@
     </mat-chip>
     <input placeholder="Tags"
       #tagInput
-      [formControl]="tagControl"
+      [formControl]="tagInputControl"
       [matAutocomplete]="auto"
       [matChipInputFor]="chipList"
       [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
       [matChipInputAddOnBlur]="false"
       (matChipInputTokenEnd)="add($event)">
-    <mat-error *ngIf="tagControl.hasError('mustSelect')">
+    <mat-error *ngIf="tagInputControl.hasError('mustSelect')">
       Vui lòng chọn tag trong danh sách
     </mat-error>
   </mat-chip-list>

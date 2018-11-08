@@ -21,7 +21,7 @@ import { IArticle, IArticleBody } from "@app/app/editor/models/article.model";
 import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
 import { ArticlesService } from "@app/app/editor/services/articles.service";
 import { UserService } from "@app/app/auth/services/user.service";
-import { youtubeParser } from "@app/app/shared/helpers";
+import { youtubeParser, normalizeText } from "@app/app/shared/helpers";
 
 @Component({
   selector: "article-form",
@@ -109,6 +109,7 @@ export class ArticleFormComponent implements OnInit, OnDestroy, AfterViewInit {
       publishAt: [Date.now()],
       note: [""],
       tags: [],
+      tagsNorm: [],
       selectedBodyId: [""],
       bodyData: ["", Validators.required]
     });
@@ -204,6 +205,9 @@ export class ArticleFormComponent implements OnInit, OnDestroy, AfterViewInit {
 
   onTagsChange(tags: string[]) {
     this.form.controls.tags.setValue(tags);
+    this.form.controls.tagsNorm.setValue(
+      tags.map(x => normalizeText(x))
+    );
   }
 
   submit() {
@@ -242,10 +246,4 @@ export class ArticleFormComponent implements OnInit, OnDestroy, AfterViewInit {
       this.onSubmit.emit(article);
     }
   }
-
-  toTitleCase = (str: string) =>
-    str.replace(
-      /\w\S*/g,
-      (txt: string) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
-    );
 }

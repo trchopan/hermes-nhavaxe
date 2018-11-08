@@ -3,12 +3,13 @@ import { COMMA, ENTER } from "@angular/cdk/keycodes";
 import { FormControl } from "@angular/forms";
 import { TagService } from "@app/app/tags/services/tag.service";
 import { Observable, combineLatest, BehaviorSubject, of } from "rxjs";
-import { map, switchMap } from "rxjs/operators";
+import { map, switchMap, distinctUntilChanged, debounceTime } from "rxjs/operators";
 import {
   MatChipInputEvent,
   MatAutocompleteSelectedEvent
 } from "@angular/material";
 import { IArticle } from "@app/app/editor/models/article.model";
+import { normalizeText } from "@app/app/shared/helpers";
 
 @Component({
   selector: "hm-tags-search",
@@ -16,7 +17,7 @@ import { IArticle } from "@app/app/editor/models/article.model";
   styleUrls: ["./tags-search.component.scss"]
 })
 export class TagsSearchComponent implements OnInit {
-  tagControl = new FormControl();
+  tagInputControl = new FormControl();
   selectedTags$: BehaviorSubject<string[]>;
   filteredTags$: Observable<string[]>;
   resultArticles$: Observable<{ article: IArticle; relevant: number }[]>;
@@ -31,13 +32,16 @@ export class TagsSearchComponent implements OnInit {
 
   ngOnInit() {
     this.filteredTags$ = combineLatest(
-      this.tagControl.valueChanges,
-      this.tags.list$
+      this.tags.list$,
+      this.tagInputControl.valueChanges
     ).pipe(
-      map(([tagValue, tagList]) => {
-        return tagValue
-          ? tagList.filter(x => x.indexOf(tagValue) >= 0)
-          : tagList.slice();
+      distinctUntilChanged(),
+      debounceTime(300),
+      map(([list, tagInput]) => {
+        let tag = normalizeText(tagInput);
+        return list.filter(
+          x => normalizeText(x).indexOf(tag.trim().toLowerCase()) >= 0
+        );
       })
     );
 
@@ -73,10 +77,7 @@ export class TagsSearchComponent implements OnInit {
   }
 
   remove(tag: string): void {
-    console.log("removing", tag, this.selectedTags$.value);
-
     const index = this.selectedTags$.value.indexOf(tag);
-
     if (index >= 0) {
       const newSelectedTag = this.selectedTags$.value;
       newSelectedTag.splice(index, 1);
@@ -85,17 +86,14 @@ export class TagsSearchComponent implements OnInit {
   }
 
   selected(event: MatAutocompleteSelectedEvent): void {
-    console.log("selected", event.option.viewValue);
     const selectedTags = this.selectedTags$.value;
     this.selectedTags$.next(selectedTags.concat(event.option.viewValue));
     this.tagInput.nativeElement.value = "";
-    this.tagControl.setValue(null);
-    this.tagControl.setErrors(null);
+    this.tagInputControl.setValue(null);
+    this.tagInputControl.setErrors(null);
   }
 
   add(event: MatChipInputEvent): void {
-    this.tagControl.setErrors({ mustSelect: true });
-    this.tagControl.setValue(null);
-    console.log("does it error?", this.tagControl.hasError("mustSelect"));
+    this.tagInputControl.setErrors({ mustSelect: true });
   }
 }

@@ -11,11 +11,12 @@ import { COMMA, ENTER } from "@angular/cdk/keycodes";
 import { FormControl } from "@angular/forms";
 import { TagService } from "@app/app/tags/services/tag.service";
 import { Observable, combineLatest } from "rxjs";
-import { map } from "rxjs/operators";
+import { map, distinctUntilChanged, debounceTime } from "rxjs/operators";
 import {
   MatChipInputEvent,
   MatAutocompleteSelectedEvent
 } from "@angular/material";
+import { normalizeText } from "@app/app/shared/helpers";
 
 @Component({
   selector: "hm-tag-input",
@@ -25,32 +26,35 @@ import {
 export class TagInputComponent implements OnInit {
   @Input("selectedTags")
   set tagListSetter(selectedTags: string[]) {
-    this.tagControl.setValue(selectedTags);
+    this.tagInputControl.setValue(selectedTags);
     this.tagData = selectedTags;
   }
   @Output()
   outputTags = new EventEmitter();
 
   tagData: string[] = [];
-  tagControl = new FormControl();
+  tagInputControl = new FormControl();
   filteredTags$: Observable<string[]>;
   separatorKeysCodes: number[] = [ENTER, COMMA];
 
   @ViewChild("tagInput")
   tagInput: ElementRef;
 
-  constructor(public tagService: TagService) {}
+  constructor(public tags: TagService) {}
 
   ngOnInit() {
     this.filteredTags$ = combineLatest(
-      this.tagControl.valueChanges,
-      this.tagService.list$
+      this.tags.list$,
+      this.tagInputControl.valueChanges
     ).pipe(
-      map(([tagValue, tagList]) => {
-        this.tagControl.setErrors(null);
-        return tagValue
-          ? tagList.filter(x => x.indexOf(tagValue) >= 0)
-          : tagList.slice();
+      distinctUntilChanged(),
+      debounceTime(300),
+      map(([list, tagInput]) => {
+        let tag = normalizeText(tagInput);
+        return list.filter(
+          x =>
+            normalizeText(x).indexOf(tag.trim().toLowerCase()) >= 0
+        );
       })
     );
   }
@@ -67,12 +71,12 @@ export class TagInputComponent implements OnInit {
     console.log("selected", event.option.viewValue);
     this.tagData.push(event.option.viewValue);
     this.tagInput.nativeElement.value = "";
-    this.tagControl.setValue(null);
+    this.tagInputControl.setValue("");
     this.outputTags.emit(this.tagData);
   }
 
   add(event: MatChipInputEvent): void {
-    this.tagControl.setErrors({ mustSelect: true });
-    this.tagControl.setValue(null);
+    this.tagInputControl.setErrors({ mustSelect: true });
+    this.tagInputControl.setValue("");
   }
 }

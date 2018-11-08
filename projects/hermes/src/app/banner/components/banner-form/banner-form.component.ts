@@ -79,7 +79,7 @@ export class BannerFormComponent implements OnInit {
           });
       }
     } else {
-      this.layout.formError();
+      this.layout.snackWarning("Form chưa hoàn thành");
     }
   }
 
