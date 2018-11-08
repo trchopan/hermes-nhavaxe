@@ -1,8 +1,9 @@
 import { Component, OnInit } from "@angular/core";
 import { TagService } from "@app/app/tags/services/tag.service";
 import { Observable, combineLatest } from "rxjs";
-import { FormControl } from "@angular/forms";
+import { FormControl, Validators } from "@angular/forms";
 import { map, distinctUntilChanged, debounceTime } from "rxjs/operators";
+import { normalizeText } from "@app/app/shared/helpers";
 
 @Component({
   selector: "hm-tags-list",
@@ -16,39 +17,41 @@ export class TagsListComponent implements OnInit {
   tagList: string[];
 
   constructor(public tags: TagService) {
-    this.tagInputControl = new FormControl();
+    this.tagInputControl = new FormControl("", Validators.minLength(3));
   }
 
   ngOnInit() {
     this.filteredTags$ = combineLatest(
-      this.tagInputControl.valueChanges,
-      this.tags.list$
+      this.tags.list$,
+      this.tagInputControl.valueChanges
     ).pipe(
       distinctUntilChanged(),
       debounceTime(300),
-      map(([newTag, list]) => {
-        this.tagList = list;
-        this.tagInputControl.setErrors(null);
-        return list.filter(x => x.indexOf(newTag.trim().toLowerCase()) >= 0);
+      map(([list, tagInput]) => {
+        let tag = normalizeText(tagInput);
+        return list.filter(
+          x => normalizeText(x).indexOf(tag.trim().toLowerCase()) >= 0
+        );
       })
     );
   }
 
-  add() {
-    let newTag = this.tagInputControl.value || "";
-    newTag = newTag.trim().toLowerCase();
-    if (newTag) {
-      this.tagList.push(newTag);
-      this.tagList.sort();
-      this.tags.updateTag(this.tagList);
+  async add() {
+    if (this.tagInputControl.invalid) {
+      return;
+    }
+    this.tagInputControl.disable();
+    if (await this.tags.addTag(this.tagInputControl.value.toLowerCase())) {
       this.tagInputControl.setValue("");
     }
+    this.tagInputControl.enable();
   }
 
-  remove(tag) {
-    let newList = this.tagList.filter(x => x !== tag);
-    console.log(newList);
-    this.tags.updateTag(newList);
-    this.tagInputControl.setValue("");
+  async remove(tag) {
+    this.tagInputControl.disable();
+    if (await this.tags.removeTag(tag)) {
+      this.tagInputControl.setValue("");
+    }
+    this.tagInputControl.enable();
   }
 }

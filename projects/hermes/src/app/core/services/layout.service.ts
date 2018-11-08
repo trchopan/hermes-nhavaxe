@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
 import { MatSnackBar } from "@angular/material";
 import { Router } from "@angular/router";
+import { SnackWarningComponent } from "../components/snack-warning/snack-warning.component";
 
 @Injectable({
   providedIn: "root"
@@ -44,9 +45,10 @@ export class LayoutService {
     this.loading$.next(false);
   }
 
-  formError() {
-    this.snackbar.open("Form chưa hoàn thành", null, {
-      duration: 1000
+  snackWarning(message: string) {
+    this.snackbar.openFromComponent(SnackWarningComponent, {
+      duration: 2000,
+      data: message
     });
   }
 

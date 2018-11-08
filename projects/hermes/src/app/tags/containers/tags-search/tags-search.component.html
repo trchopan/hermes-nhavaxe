@@ -1,34 +1,41 @@
 <div class="center">
   <mat-form-field>
     <mat-chip-list #chipList>
-      <mat-chip *ngFor="let tag of selectedTags$ | async"
+      <mat-chip
+        *ngFor="let tag of (selectedTags$ | async)"
         [selectable]="true"
         [removable]="true"
-        (removed)="remove(tag)">
+        (removed)="remove(tag)"
+      >
         {{ tag }}
         <mat-icon matChipRemove>cancel</mat-icon>
       </mat-chip>
-      <input placeholder="Tìm kiếm theo tags"
+      <input
+        placeholder="Tìm kiếm theo tags"
         #tagInput
-        [formControl]="tagControl"
+        [formControl]="tagInputControl"
         [matAutocomplete]="auto"
         [matChipInputFor]="chipList"
         [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
         [matChipInputAddOnBlur]="false"
-        (matChipInputTokenEnd)="add($event)">
-      <mat-error *ngIf="tagControl.hasError('mustSelect')">Vui lòng chọn tag</mat-error>
+        (matChipInputTokenEnd)="add($event)"
+      />
+      <mat-error *ngIf="tagInputControl.hasError('mustSelect')"
+        >Vui lòng chọn tag</mat-error
+      >
     </mat-chip-list>
-    <mat-autocomplete #auto="matAutocomplete"
-      (optionSelected)="selected($event)">
-      <mat-option *ngFor="let tag of filteredTags$ | async"
-        [value]="tag">
+    <mat-autocomplete
+      #auto="matAutocomplete"
+      (optionSelected)="selected($event)"
+    >
+      <mat-option *ngFor="let tag of (filteredTags$ | async)" [value]="tag">
         {{ tag }}
       </mat-option>
     </mat-autocomplete>
   </mat-form-field>
 </div>
 
-<div *ngIf="resultArticles$ | async as results">
+<div *ngIf="(resultArticles$ | async) as results">
   <p>Amount: {{ results.length }}</p>
   <hm-tag-results [list]="results"></hm-tag-results>
 </div>

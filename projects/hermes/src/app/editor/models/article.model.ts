@@ -19,6 +19,7 @@ export interface IArticle {
   managerName: string;
   note: string;
   tags: string[];
+  tagsNorm: string[];
   bodyData?: IArticleBody;
 }
 
@@ -58,5 +59,6 @@ export const parseArticle = (id: string, articleData: any): IArticle => ({
   managerId: articleData.managerId || null,
   managerName: articleData.managerName || null,
   note: articleData.note || null,
-  tags: articleData.tags || []
+  tags: articleData.tags || [],
+  tagsNorm: articleData.tagsNorm || []
 });
