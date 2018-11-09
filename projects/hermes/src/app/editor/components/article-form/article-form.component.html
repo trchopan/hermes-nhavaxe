@@ -79,7 +79,7 @@
         <mat-form-field>
           <mat-select placeholder="Trạng thái"
             formControlName="status">
-            <mat-option *ngFor="let status of articles.statusMap"
+            <mat-option *ngFor="let status of statusMap"
               [disabled]="(status.value == 'published' || status.value == 'unpublished') && !user.isManager"
               [value]="status.value">{{ status.text }}</mat-option>
           </mat-select>

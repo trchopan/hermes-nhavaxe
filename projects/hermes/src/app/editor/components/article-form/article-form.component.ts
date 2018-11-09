@@ -22,6 +22,7 @@ import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
 import { ArticlesService } from "@app/app/editor/services/articles.service";
 import { UserService } from "@app/app/auth/services/user.service";
 import { youtubeParser, normalizeText } from "@app/app/shared/helpers";
+import { statusMap } from "../../models/query.model";
 
 @Component({
   selector: "article-form",
@@ -53,6 +54,7 @@ export class ArticleFormComponent implements OnInit, OnDestroy, AfterViewInit {
   onSubmit = new EventEmitter();
 
   ngUnsub = new Subject();
+  statusMap = statusMap;
   form: FormGroup;
   articlePublishAt: number = Date.now();
   articleTags: string[] = [];
