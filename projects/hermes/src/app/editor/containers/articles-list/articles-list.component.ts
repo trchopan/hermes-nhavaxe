@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { ArticlesService } from "@app/app/editor/services/articles.service";
 import { FormGroup, FormBuilder } from "@angular/forms";
-import { distinctUntilChanged, takeUntil } from "rxjs/operators";
-import { Router } from "@angular/router";
+import { distinctUntilChanged, takeUntil, switchMap } from "rxjs/operators";
+import { Router, ActivatedRoute } from "@angular/router";
 import { MatSnackBar, PageEvent } from "@angular/material";
 import { IArticle } from "@app/app/editor/models/article.model";
 import { Observable, Subject, BehaviorSubject } from "rxjs";
@@ -28,6 +28,7 @@ export class ArticlesListComponent implements OnInit, OnDestroy {
   constructor(
     public articles: ArticlesService,
     public user: UserService,
+    public route: ActivatedRoute,
     private fb: FormBuilder,
     private router: Router,
     private snackbar: MatSnackBar
@@ -43,6 +44,9 @@ export class ArticlesListComponent implements OnInit, OnDestroy {
         length: list ? list.length : 0
       });
     });
+
+    this.route.paramMap.subscribe(x => console.log("woot", x));
+    console.log(this.route.snapshot);
 
     this.pageEvent$
       .pipe(takeUntil(this.ngUnsub))
