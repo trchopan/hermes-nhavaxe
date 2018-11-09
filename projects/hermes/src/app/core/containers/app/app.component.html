@@ -1,28 +1,24 @@
-<div class="header">
-  <h1>{{ titleText }}</h1>
+<div *ngIf="user.isLoggedIn && user.profile" class="float-buttons">
+  <button
+    *ngFor="let button of buttonList"
+    mat-button
+    [matTooltip]="button.text"
+    [routerLink]="button.path"
+  >
+    <mat-icon>{{ button.icon }}</mat-icon>
+  </button>
+  <a mat-button matTooltip="Tài khoản" routerLink="/profile">
+    <img [src]="user.profile.avatar" class="avatar" />
+  </a>
 </div>
 <div class="container mat-typography">
-  <div *ngIf="user.isLoggedIn && user.profile"
-    class="float-buttons">
-    <button *ngFor="let button of buttonList"
-      mat-button
-      [matTooltip]="button.text"
-      [routerLink]="button.path">
-      <mat-icon>{{ button.icon }}</mat-icon>
-    </button>
-    <a mat-button
-      matTooltip="Tài khoản"
-      routerLink="/profile">
-      <img [src]="user.profile.avatar"
-        class="avatar" />
-    </a>
+  <div class="header">
+    <h1>{{ titleText }}</h1>
   </div>
-  <ng-container *ngIf="!(user.loading$ | async); else loadingUser">
+  <ng-container *ngIf="!(user.loading$ | async); else: loadingUser">
     <router-outlet></router-outlet>
     <hm-loading-spinner></hm-loading-spinner>
   </ng-container>
 </div>
 
-<ng-template #loadingUser>
-  <login-loading></login-loading>
-</ng-template>
+<ng-template #loadingUser> <login-loading></login-loading> </ng-template>

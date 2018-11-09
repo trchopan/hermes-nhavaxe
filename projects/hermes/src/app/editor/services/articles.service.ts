@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { AngularFirestore } from "@angular/fire/firestore";
 import { IQuery } from "@app/app/editor/models/query.model";
 import { BehaviorSubject, of, Observable } from "rxjs";
-import { switchMap, map, catchError, tap, share } from "rxjs/operators";
+import { switchMap, map, catchError, tap } from "rxjs/operators";
 import { firestore } from "firebase/app";
 import { UserService } from "@app/app/auth/services/user.service";
 import {
@@ -16,148 +16,139 @@ import {
   parseArticleBody
 } from "@app/app/editor/models/article.model";
 import { LayoutService } from "@app/app/core/services/layout.service";
+import { logger, error } from "@app/app/shared/helpers";
 
 const ArticlesCollection = "articles";
 const BodyCollection = "body";
 const CategoriesCollection = "categories";
 
-@Injectable({
-  providedIn: "root"
-})
+@Injectable()
 export class ArticlesService {
-  private className = "[Articles] ";
-
-  statusMap = [
-    { value: "draft", text: "Đang soạn" },
-    { value: "pending", text: "Chờ duyệt" },
-    { value: "published", text: "Đã duyệt" },
-    { value: "unpublished", text: "Gở bỏ" }
-  ];
+  private className = "[Aritlces]";
+  private log = logger(this.className);
+  private error = error(this.className);
 
   query$: BehaviorSubject<IQuery>;
-  list$: BehaviorSubject<IArticle[]>;
-  editorList$: Observable<{ id: string; fullname: string }[]>;
-  categories$: Observable<ICategory[]>;
-  error$: BehaviorSubject<any>;
+  list$: BehaviorSubject<IArticle[] | null>;
+  editorList$: BehaviorSubject<{ id: string; fullname: string }[]>;
+  categories$: BehaviorSubject<ICategory[]>;
 
   constructor(
     private afFirestore: AngularFirestore,
     private user: UserService,
     private layout: LayoutService
   ) {
-    this.list$ = new BehaviorSubject<IArticle[]>(null);
     this.query$ = new BehaviorSubject<IQuery>({
       fromDate: new Date().setHours(0, 0, 0, 0),
-      range: "day"
+      range: "day",
+      creatorId: this.user.authData.id,
+      status: null
     });
-    this.error$ = new BehaviorSubject(null);
+    this.list$ = new BehaviorSubject(null);
+    this.editorList$ = new BehaviorSubject(null);
+    this.categories$ = new BehaviorSubject(null);
 
-    this.editorList$ = this.getEditorList();
-
-    // Get the list of Categories
-    this.categories$ = this.afFirestore
-      .collection(CategoriesCollection)
-      .snapshotChanges()
-      .pipe(
-        map(snap =>
-          snap.map(doc =>
-            parseCategory(doc.payload.doc.id, doc.payload.doc.data())
-          )
-        )
-      );
-
-    // Get the list of Meta data
-    this.query$
-      .pipe(
-        tap(() => this.layout.loading$.next(true)),
-        switchMap((query: IQuery) =>
-          this.afFirestore
-            .collection(ArticlesCollection, ref => {
-              let combRef:
-                | firestore.CollectionReference
-                | firestore.Query = ref;
-              console.log(this.className + "current query", query);
-              if (this.user.isManager && query.creatorId) {
-                combRef =
-                  query.creatorId === "ALLEDITOR"
-                    ? combRef
-                    : combRef.where("creatorId", "==", query.creatorId);
-              } else {
-                combRef = combRef.where(
-                  "creatorId",
-                  "==",
-                  this.user.authData.id
-                );
-              }
-              combRef = query.status
-                ? combRef.where("status", "==", query.status)
-                : combRef;
-              combRef = combRef.orderBy("publishAt", "desc");
-              let range =
-                !query.range || query.range === "day"
-                  ? 86400000
-                  : 86400000 * 30;
-              return combRef
-                .startAt(query.fromDate + range)
-                .endAt(query.fromDate);
-            })
-            .snapshotChanges()
-        ),
-        map(
-          snap =>
-            snap.length > 0
-              ? snap.map(doc =>
-                  parseArticle(doc.payload.doc.id, doc.payload.doc.data())
-                )
-              : null
-        ),
-        catchError(error => {
-          console.log(this.className + "error", error);
-          return of(error);
-        })
-      )
-      .subscribe(
-        (articles: IArticle[]) => {
-          this.list$.next(articles);
-          this.layout.loading$.next(false);
-        },
-        error => {
-          this.error$.next(error);
-          this.layout.loading$.next(false);
-        }
-      );
-  }
-
-  getEditorList = () =>
     this.afFirestore
-      .collection("users", ref => ref.orderBy("fullname"))
+      .collection<{ fullname: string }>("users", ref => ref.orderBy("fullname"))
       .snapshotChanges()
       .pipe(
         map(snapshots => {
           if (snapshots.length > 0) {
-            return snapshots.map(snap => {
-              let doc = snap.payload.doc;
-              let data = doc.data() as { fullname: string };
-              return {
-                id: doc.id,
-                fullname: data.fullname
-              };
-            });
+            let editors = snapshots.map(snap => ({
+              id: snap.payload.doc.id,
+              fullname: snap.payload.doc.data().fullname
+            }));
+            this.log("editors", editors);
+            return editors;
           } else {
+            this.log("no editor");
             return null;
           }
         }),
-        tap(editors => console.log(this.className + " editors", editors)),
-        share()
-      );
+        catchError(err => {
+          this.error(err);
+          return of(null);
+        })
+      )
+      .subscribe(result => this.editorList$.next(result));
+
+    // Get the list of Categories
+    this.afFirestore
+      .collection(CategoriesCollection)
+      .snapshotChanges()
+      .pipe(
+        map(snap => {
+          if (snap.length > 0) {
+            let categories = snap.map(doc =>
+              parseCategory(doc.payload.doc.id, doc.payload.doc.data())
+            );
+            this.log("categories", categories);
+            return categories;
+          } else {
+            this.log("no categories");
+            return null;
+          }
+        }),
+        catchError(err => {
+          this.error(err);
+          return of(null);
+        })
+      )
+      .subscribe(result => this.categories$.next(result));
+
+    // Get the list of Meta data
+    this.query$
+      .pipe(
+        switchMap((query: IQuery) =>
+          this.afFirestore
+            .collection(ArticlesCollection, ref => {
+              let range =
+                !query.range || query.range === "day"
+                  ? 86400000
+                  : 86400000 * 30;
+
+              let combRef: firestore.Query = ref
+                .orderBy("publishAt", "desc")
+                .startAt(query.fromDate + range)
+                .endAt(query.fromDate);
+              if (
+                this.user.isManager &&
+                query.creatorId &&
+                query.creatorId !== "ALLEDITOR"
+              ) {
+                combRef = combRef.where("creatorId", "==", query.creatorId);
+              }
+
+              if (query.status) {
+                combRef = combRef.where("status", "==", query.status);
+              }
+
+              return combRef;
+            })
+            .snapshotChanges()
+        ),
+        tap(() => this.layout.loading$.next(false)),
+        map(snap => {
+          if (snap.length > 0) {
+            this.log("query found", snap.length);
+            this.layout.snackDismiss();
+            return snap.map(doc =>
+              parseArticle(doc.payload.doc.id, doc.payload.doc.data())
+            );
+          }
+          this.log("no result found");
+          return null;
+        }),
+        catchError(err => {
+          this.error(err);
+          return of(null);
+        })
+      )
+      .subscribe(result => this.list$.next(result));
+  }
 
   getArticleData(id: string): Observable<IArticle> {
     this.layout.loading$.next(true);
-    console.log(this.className + "get article data " + id);
-    if (!id) {
-      this.layout.handleError(this.className, " get article meta", null);
-      return of(null);
-    }
 
     return this.afFirestore
       .collection(ArticlesCollection)
@@ -165,21 +156,23 @@ export class ArticlesService {
       .snapshotChanges()
       .pipe(
         map(snapshot => {
-          this.layout.loading$.next(false);
           if (!snapshot.payload.exists) {
             return null;
           }
+          this.log("found article", snapshot.payload.id);
           return parseArticle(snapshot.payload.id, snapshot.payload.data());
         }),
+        tap(() => this.layout.loading$.next(false)),
         catchError(err => {
-          console.log(this.className + "getting article data error", err);
-          return of(err);
+          this.error(err);
+          return of(null);
         })
       );
   }
 
   getBodyData(id: string): Observable<IArticleBody[]> {
     this.layout.loading$.next(true);
+
     return this.afFirestore
       .collection(ArticlesCollection)
       .doc(id)
@@ -187,17 +180,20 @@ export class ArticlesService {
       .snapshotChanges()
       .pipe(
         map(snapshot => {
-          console.log(this.className + "get article body " + id);
-          this.layout.loading$.next(false);
-          return snapshot.length > 0
-            ? snapshot.map(snap =>
-                parseArticleBody(snap.payload.doc.id, snap.payload.doc.data())
-              )
-            : null;
+          if (snapshot.length > 0) {
+            this.log("found bodies", snapshot.length);
+            return snapshot.map(snap =>
+              parseArticleBody(snap.payload.doc.id, snap.payload.doc.data())
+            );
+          } else {
+            this.layout.snackWarning("Không tìm thấy nội dung bài viết");
+            return null;
+          }
         }),
+        tap(() => this.layout.loading$.next(false)),
         catchError(err => {
-          console.log(this.className + "getting article body error", err);
-          return of(err);
+          this.error(err);
+          return of(null);
         })
       );
   }
@@ -205,48 +201,55 @@ export class ArticlesService {
   setQuery(query: IQuery) {
     this.layout.loading$.next(true);
     this.query$.next(query);
+    this.log("set query", query);
   }
 
-  create(article: IArticle) {
+  async create(article: IArticle): Promise<boolean> {
     this.layout.loading$.next(true);
-    console.log(this.className + " creating");
     var body = article.bodyData;
     delete article.bodyData;
-    this.afFirestore
-      .collection(ArticlesCollection)
-      .add(article)
-      .then(
-        doc =>
-          body
-            ? doc
-                .collection(BodyCollection)
-                .add(body)
-                .then(() =>
-                  this.layout.handleSuccess(this.className, "/article")
-                )
-            : this.layout.handleSuccess(this.className, "/article")
-      )
-      .catch(err => this.layout.handleError(this.className, "creating", err));
+    try {
+      let doc = await this.afFirestore
+        .collection(ArticlesCollection)
+        .add(article);
+      if (body) {
+        await doc.collection(BodyCollection).add(body);
+      }
+      this.log("created", doc.id);
+      this.layout.snackSuccess("Bài viết đã được tạo");
+      this.layout.loading$.next(false);
+      return true;
+    } catch (err) {
+      this.error(err);
+      this.layout.snackWarning("Lỗi tạo bài viết");
+      this.layout.loading$.next(false);
+      return false;
+    }
   }
 
-  update(article: IArticle) {
+  async update(article: IArticle): Promise<boolean> {
     this.layout.loading$.next(true);
-    console.log(this.className + " updating");
     const articleDoc = this.afFirestore
       .collection(ArticlesCollection)
       .doc(article.id);
 
-    const metaPromise = articleDoc.update({
-      ...article,
-      bodyData: firestore.FieldValue.delete()
-    });
+    const metaPromise = articleDoc.update(article);
     const bodyPromise = article.bodyData
       ? articleDoc.collection(BodyCollection).add(article.bodyData)
       : Promise.resolve(null);
 
-    Promise.all([metaPromise, bodyPromise])
-      .then(() => this.layout.handleSuccess(this.className, "/article"))
-      .catch(err => this.layout.handleError(this.className, "updating", err));
+    try {
+      await Promise.all([metaPromise, bodyPromise]);
+      this.log("updated", article.id);
+      this.layout.snackSuccess("Bài viết đã được cập nhật");
+      this.layout.loading$.next(false);
+      return true;
+    } catch (err) {
+      this.error(err);
+      this.layout.snackWarning("Lỗi cập nhật bài viết");
+      this.layout.loading$.next(false);
+      return false;
+    }
   }
 
   isEditable = (status: string) =>

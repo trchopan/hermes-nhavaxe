@@ -1,37 +1,34 @@
-<div *ngIf="meta$ | async as meta">
-  <div class="article-container">
-    <mat-form-field>
-      <mat-select placeholder="Phiên bản"
-        [(ngModel)]="selectedBodyIndex">
-        <mat-option *ngFor="let body of bodyList$ | async; let i = index"
-          [value]="i">
-          {{ body.modifiedAt | date: "dd/MM HH:mm" }} - {{ body.modifiedBy }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    <h1 class="article-title">
-      {{ meta.title }}
-    </h1>
-    <p class="article-sapo">
-      {{ meta.sapo }}
-    </p>
-    <hr>
-    <div *ngIf="safeYoutube"
-      class="youtube-container">
-      <div [innerHtml]="safeYoutube"
-        class="center youtube">
+<ng-container
+  *ngIf="{ meta: meta$ | async, bodyList: bodyList$ | async } as article"
+>
+  <div *ngIf="article.meta && article.bodyList">
+    <div class="article-container">
+      <mat-form-field>
+        <mat-select placeholder="Phiên bản" [(ngModel)]="selectedBodyIndex">
+          <mat-option
+            *ngFor="let body of article.bodyList; let i = index"
+            [value]="i"
+          >
+            {{ body.modifiedAt | date: "dd/MM HH:mm" }} - {{ body.modifiedBy }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <h1 class="article-title">{{ article.meta.title }}</h1>
+      <p class="article-sapo">{{ article.meta.sapo }}</p>
+      <hr />
+      <div *ngIf="safeYoutube" class="youtube-container">
+        <div [innerHtml]="safeYoutube" class="center youtube"></div>
       </div>
+      <div
+        class="article-body ql-editor"
+        [class.article-style]="article.meta.style === 'article'"
+        [class.picture-style]="article.meta.style === 'picture'"
+        [innerHtml]="article.bodyList[selectedBodyIndex].body"
+      ></div>
+      <p class="article-source">
+        Dẫn nguồn từ <span>{{ article.meta.reference }}</span> &copy;
+        <span>{{ article.meta.publisher }}</span>
+      </p>
     </div>
-    <div *ngIf="bodyList$ | async as body"
-      class="article-body ql-editor"
-      [class.article-style]="meta.style === 'article'"
-      [class.picture-style]="meta.style === 'picture'"
-      [innerHtml]="body[selectedBodyIndex].body">
-    </div>
-    <p class="article-source">
-      Dẫn nguồn từ
-      <span>{{ meta.reference }}</span> &copy;
-      <span>{{ meta.publisher }}</span>
-    </p>
   </div>
-</div>
+</ng-container>

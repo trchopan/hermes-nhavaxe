@@ -14,7 +14,7 @@
       <mat-select placeholder="Trạng thái"
         formControlName="status">
         <mat-option [value]="null">-- Bỏ chọn --</mat-option>
-        <mat-option *ngFor="let status of articles.statusMap"
+        <mat-option *ngFor="let status of statusMap"
           [value]="status.value">{{ status.text }}</mat-option>
       </mat-select>
     </mat-form-field>
@@ -27,7 +27,7 @@
     </mat-form-field>
   </form>
 
-  <ng-container *ngIf="list && articlesList; else emptyBlock">
+  <ng-container *ngIf="articles.list$ | async as list; else emptyBlock">
     <mat-list>
       <mat-list-item *ngFor="let article of list"
         class="list-item">
@@ -38,10 +38,10 @@
           <mat-icon>edit</mat-icon>
         </button>
       </mat-list-item>
-      <mat-paginator [length]="articlesList.length"
+      <!-- <mat-paginator [length]="articlesList.length"
         [pageSize]="pageSize"
         (page)="handlePageChange($event)"
-        hidePageSize></mat-paginator>
+        hidePageSize></mat-paginator> -->
     </mat-list>
   </ng-container>
 
@@ -53,8 +53,6 @@
     <mat-icon aria-label="icon-button with a pencil icon">edit</mat-icon>
   </button>
 </div>
-
-<router-outlet></router-outlet>
 
 <ng-template #emptyBlock>
   Không tìm thấy bài viết. Vui lòng thay đổi bộ lọc ở trên.

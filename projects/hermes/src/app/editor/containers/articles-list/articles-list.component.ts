@@ -1,12 +1,13 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { ArticlesService } from "@app/app/editor/services/articles.service";
 import { FormGroup, FormBuilder } from "@angular/forms";
-import { distinctUntilChanged, takeUntil, switchMap } from "rxjs/operators";
+import { takeUntil } from "rxjs/operators";
 import { Router, ActivatedRoute } from "@angular/router";
 import { MatSnackBar, PageEvent } from "@angular/material";
 import { IArticle } from "@app/app/editor/models/article.model";
 import { Observable, Subject, BehaviorSubject } from "rxjs";
 import { UserService } from "@app/app/auth/services/user.service";
+import { statusMap } from "../../models/query.model";
 
 @Component({
   selector: "hermes-editor-articles-list",
@@ -21,9 +22,8 @@ export class ArticlesListComponent implements OnInit, OnDestroy {
   form: FormGroup;
   queryDate: number;
   articlesList: IArticle[];
-  list: IArticle[];
-  editorList$: Observable<{ id: string; name: string }[]>;
   pageEvent$: BehaviorSubject<PageEvent> = new BehaviorSubject<PageEvent>(null);
+  statusMap = Object.values(statusMap);
 
   constructor(
     public articles: ArticlesService,
@@ -35,33 +35,7 @@ export class ArticlesListComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.articles.list$.pipe(takeUntil(this.ngUnsub)).subscribe(list => {
-      this.articlesList = list;
-      this.pageEvent$.next({
-        previousPageIndex: 0,
-        pageIndex: 0,
-        pageSize: this.pageSize,
-        length: list ? list.length : 0
-      });
-    });
-
-    this.route.paramMap.subscribe(x => console.log("woot", x));
-    console.log(this.route.snapshot);
-
-    this.pageEvent$
-      .pipe(takeUntil(this.ngUnsub))
-      .subscribe(
-        event =>
-          this.articlesList
-            ? (this.list = this.articlesList.slice(
-                event.pageIndex * event.pageSize,
-                (event.pageIndex + 1) * event.pageSize
-              ))
-            : null
-      );
-
-    this.queryDate =
-      this.articles.query$.value.fromDate || new Date().setHours(0, 0, 0, 0);
+    this.queryDate = this.articles.query$.value.fromDate;
 
     this.form = this.fb.group({
       fromDate: [this.queryDate],
@@ -70,12 +44,9 @@ export class ArticlesListComponent implements OnInit, OnDestroy {
       range: [this.articles.query$.value.range]
     });
 
-    this.form.valueChanges
-      .pipe(
-        takeUntil(this.ngUnsub),
-        distinctUntilChanged()
-      )
-      .subscribe(value => this.articles.setQuery(value));
+    this.form.valueChanges.pipe(takeUntil(this.ngUnsub)).subscribe(value => {
+      this.articles.setQuery(value);
+    });
   }
 
   ngOnDestroy() {
