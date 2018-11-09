@@ -143,7 +143,6 @@ export class ArticleFormComponent implements OnInit, OnDestroy, AfterViewInit {
           `;
           this.videoIframe = this.dom.bypassSecurityTrustHtml(html);
         }
-        console.log("video is", youtube);
       });
 
     this.form.controls.categoryId.valueChanges

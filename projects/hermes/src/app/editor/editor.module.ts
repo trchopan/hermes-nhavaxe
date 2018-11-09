@@ -26,18 +26,23 @@ import { ArticleFormComponent } from "@app/app/editor/components/article-form/ar
 import { SharedModule } from "@app/app/shared/shared.module";
 import { QuillModule } from "ngx-quill";
 import { TagInputComponent } from "./components/tag-input/tag-input.component";
+import { ArticlesService } from "./services/articles.service";
+import { ArticleComponent } from './containers/article/article.component';
 
 const routes: Routes = [
+  { path: "article", pathMatch: "full", redirectTo: "article/list" },
   {
     path: "article",
-    component: ArticlesListComponent,
+    component: ArticleComponent,
     canActivate: [AuthGuardService],
     children: [
+      { path: "list", component: ArticlesListComponent },
       { path: "create", component: CreateComponent },
       { path: "edit/:id", component: EditComponent },
       { path: ":id", component: ArticleDetailComponent }
     ]
-  }
+  },
+
 ];
 
 @NgModule({
@@ -62,14 +67,16 @@ const routes: Routes = [
     MatPaginatorModule
   ],
   declarations: [
+    ArticleComponent,
+    ArticlesListComponent,
     CreateComponent,
     EditComponent,
     ArticleFormComponent,
-    ArticlesListComponent,
     ArticleListItemComponent,
     ArticleDetailComponent,
-    TagInputComponent
+    TagInputComponent,
   ],
+  providers: [ArticlesService],
   exports: [RouterModule]
 })
 export class EditorModule {}

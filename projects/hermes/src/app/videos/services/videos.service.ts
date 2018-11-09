@@ -30,7 +30,6 @@ export class VideosService {
       .snapshotChanges()
       .pipe(
         map(snapshot => {
-          console.log("snap", snapshot.payload.data());
           if (!snapshot.payload.exists) return null;
           const data = snapshot.payload.data() as any;
           return {

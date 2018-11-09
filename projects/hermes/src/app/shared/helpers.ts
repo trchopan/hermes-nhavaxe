@@ -1,3 +1,15 @@
+export function logger(className) {
+  return function(...agrs) {
+    console.log(`%c${className}`, "background: black; color: white", ...agrs);
+  }
+}
+
+export function error(className) {
+  return function(...agrs) {
+    console.log(`%c${className}`, "background: red; color: white", ...agrs);
+  }
+}
+
 export function youtubeParser(url): string {
   var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
   var match = url.match(regExp);

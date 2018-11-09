@@ -18,12 +18,14 @@ export class DateTimePickerComponent implements OnDestroy {
   @Input("dateNumber")
   set dateSetter(dateNumber: number) {
     this.form.setValue(this.parseTime(new Date(dateNumber)));
+    this.inited = true;
   }
   @Input()
   showTime: boolean = false;
   @Output()
   onChange = new EventEmitter();
 
+  inited = false;
   ngUnsub = new Subject();
   form: FormGroup;
   dates = Array.apply(null, { length: 31 }).map(Number.call, Number);
@@ -47,7 +49,9 @@ export class DateTimePickerComponent implements OnDestroy {
         let hour = this.form.controls.hour.value;
         let minute = this.form.controls.minute.value;
         let timeString = `${year}-${month}-${date} ${hour}:${minute}`;
-        this.onChange.emit(new Date(timeString).getTime());
+        if (this.inited) {
+          this.onChange.emit(new Date(timeString).getTime());
+        }
       });
   }
 

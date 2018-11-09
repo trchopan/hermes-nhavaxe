@@ -2,7 +2,6 @@ import { Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
 import { MatSnackBar } from "@angular/material";
 import { Router } from "@angular/router";
-import { SnackWarningComponent } from "../components/snack-warning/snack-warning.component";
 
 @Injectable({
   providedIn: "root"
@@ -45,10 +44,19 @@ export class LayoutService {
     this.loading$.next(false);
   }
 
+  snackDismiss() {
+    this.snackbar.dismiss();
+  }
+
+  snackSuccess(message: string) {
+    this.snackbar.open(message, "", {
+      duration: 2000
+    });
+  }
+
   snackWarning(message: string) {
-    this.snackbar.openFromComponent(SnackWarningComponent, {
-      duration: 2000,
-      data: message
+    this.snackbar.open(message, "Đóng", {
+      duration: 10000
     });
   }
 

@@ -1,6 +1,6 @@
 .header {
   h1 {
-    margin: 4rem auto 1rem;
+    margin: 1rem auto; 
     font-family: var(--title-font);
     text-align: center;
   }
@@ -13,14 +13,10 @@
 }
 
 .float-buttons {
-  position: fixed;
-  top: 0;
-  right: 0;
-  z-index: 2;
   padding: 0 0.3rem;
   color: white;
   background: #ff4081;
-  border-radius: 0 0 0 1rem;
+  text-align: center;
   button {
     padding: 5px 16px;
   }
@@ -34,9 +30,8 @@
   }
   @media (max-width: 825px) {
     width: 100vw;
-    right: auto;
     overflow-x: scroll;
-    border-radius: 0;
+    text-align: left;
     display: flex;
     button {
       flex: 1;

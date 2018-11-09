@@ -3,16 +3,9 @@ mat-form-field {
 }
 
 .article-container {
-  position: fixed;
-  top: 0;
+  max-width: calc(var(--container-width) - 56px);
+  margin: 0 auto;
   width: 100%;
-  height: 100vh;
-  overflow: scroll;
-  -webkit-overflow-scrolling: touch;
-  background: white;
-  margin: auto;
-  padding: 3rem 0 8rem;
-  max-width: var(--container-width);
 }
 h1.article-title {
   margin: 1rem 0;
@@ -27,7 +20,6 @@ p.article-sapo {
 .article-body {
   padding: 1rem 1.5rem;
   font-family: var(--text-font);
-  overflow: visible;
 }
 hr {
   border: 0;

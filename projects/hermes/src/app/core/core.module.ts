@@ -13,7 +13,6 @@ import {
   MatSnackBarModule
 } from "@angular/material";
 import { LoadingSpinnerComponent } from "@app/app/core/components/loading-spinner/loading-spinner.component";
-import { SnackWarningComponent } from "./components/snack-warning/snack-warning.component";
 
 const routes: Routes = [
   { path: "", pathMatch: "full", redirectTo: "/article" },
@@ -56,10 +55,8 @@ const routes: Routes = [
     AppComponent,
     PageNotFoundComponent,
     LoginLoadingComponent,
-    LoadingSpinnerComponent,
-    SnackWarningComponent
+    LoadingSpinnerComponent
   ],
-  entryComponents: [SnackWarningComponent],
   exports: [RouterModule]
 })
 export class CoreModule {}
