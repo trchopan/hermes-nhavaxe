@@ -23,7 +23,7 @@ export class ArticlesListComponent implements OnInit, OnDestroy {
   queryDate: number;
   articlesList: IArticle[];
   pageEvent$: BehaviorSubject<PageEvent> = new BehaviorSubject<PageEvent>(null);
-  statusMap = Object.values(statusMap);
+  statusMap = statusMap;
 
   constructor(
     public articles: ArticlesService,

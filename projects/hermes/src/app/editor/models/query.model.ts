@@ -1,9 +1,9 @@
-export const statusMap = {
-  draft: { value: "draft", text: "Đang soạn" },
-  pending: { value: "pending", text: "Chờ duyệt" },
-  published: { value: "published", text: "Đã duyệt" },
-  unpublished: { value: "unpublished", text: "Gở bỏ" }
-};
+export const statusMap = [
+  { value: "draft", text: "Đang soạn" },
+  { value: "pending", text: "Chờ duyệt" },
+  { value: "published", text: "Đã duyệt" },
+  { value: "unpublished", text: "Gở bỏ" }
+];
 
 export interface IQuery {
   fromDate: number;
