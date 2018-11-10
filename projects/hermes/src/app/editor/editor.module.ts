@@ -14,7 +14,6 @@ import {
   MatRadioModule,
   MatCardModule,
   MatInputModule,
-  MatPaginatorModule,
   MatChipsModule,
   MatAutocompleteModule,
   MatFormFieldModule,
@@ -64,7 +63,6 @@ const routes: Routes = [
     MatChipsModule,
     MatAutocompleteModule,
     MatFormFieldModule,
-    MatPaginatorModule
   ],
   declarations: [
     ArticleComponent,

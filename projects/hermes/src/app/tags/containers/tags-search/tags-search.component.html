@@ -11,8 +11,8 @@
         <mat-icon matChipRemove>cancel</mat-icon>
       </mat-chip>
       <input
-        placeholder="Tìm kiếm theo tags"
         #tagInput
+        placeholder="Tìm kiếm theo tags"
         [formControl]="tagInputControl"
         [matAutocomplete]="auto"
         [matChipInputFor]="chipList"
@@ -28,8 +28,11 @@
       #auto="matAutocomplete"
       (optionSelected)="selected($event)"
     >
-      <mat-option *ngFor="let tag of (filteredTags$ | async)" [value]="tag">
-        {{ tag }}
+      <mat-option
+        *ngFor="let tag of (filteredTags$ | async)"
+        [value]="tag.text"
+      >
+        {{ tag.text }}
       </mat-option>
     </mat-autocomplete>
   </mat-form-field>

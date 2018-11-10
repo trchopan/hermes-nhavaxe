@@ -1,0 +1,8 @@
+<h1 mat-dialog-title>Xác nhận</h1>
+<mat-dialog-content> {{ message }} </mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button autofocus (click)="dialogRef.close(false)">Từ chối</button>
+  <button mat-raised-button color="warn" (click)="dialogRef.close(true)">
+    Đồng ý
+  </button>
+</mat-dialog-actions>

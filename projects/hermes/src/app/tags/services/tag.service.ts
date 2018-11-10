@@ -1,57 +1,64 @@
 import { Injectable } from "@angular/core";
 import { AngularFirestore } from "@angular/fire/firestore";
-import { Observable } from "rxjs";
-import { map, tap, share } from "rxjs/operators";
+import { BehaviorSubject, of } from "rxjs";
+import { map, tap, catchError } from "rxjs/operators";
 import { IArticle, parseArticle } from "@app/app/editor/models/article.model";
 import { LayoutService } from "@app/app/core/services/layout.service";
-import { normalizeText } from "@app/app/shared/helpers";
+import { normalizeText, logger, error } from "@app/app/shared/helpers";
+import { ITag } from "../models/tag.model";
 
 const ArticleCollection = "articles";
 const TagsCollection = "tags";
 const TagListDoc = "tagList";
 
-interface ITagList {
-  list: string[];
-}
-
 @Injectable({ providedIn: "root" })
 export class TagService {
-  private className = "[Tags] ";
-  private _tagsList = [];
+  private className = "[Tags]";
+  private log = logger(this.className);
+  private error = error(this.className);
 
-  list$: Observable<string[]>;
+  list$: BehaviorSubject<ITag[]>;
 
   constructor(
     private afFirestore: AngularFirestore,
     private layout: LayoutService
   ) {
-    this.list$ = this.afFirestore
+    this.list$ = new BehaviorSubject(null);
+    this.afFirestore
       .collection(TagsCollection)
       .doc(TagListDoc)
       .valueChanges()
       .pipe(
-        map((value: ITagList) =>
+        map((value: any) =>
           value.list && value.list.length > 0 ? value.list : []
         ),
-        tap(value => {
-          console.log(this.className + " tag list", value.length);
-          this._tagsList = value;
+        tap((value: string[]) => {
+          this.log("list", value.length);
+          let list = value.map(x => ({ text: x, norm: normalizeText(x)}));
+          this.list$.next(list);
         }),
-        share()
-      );
+        catchError(err => {
+          this.error(err);
+          return of([]);
+        })
+      )
+      .subscribe();
   }
 
   addTag = async (tag: string) => {
-    if (this._tagsList.find(x => normalizeText(x) === normalizeText(tag))) {
+    if (this.list$.value.find(x => x.norm === normalizeText(tag))) {
       this.layout.snackWarning("Tag đã có trong danh sách");
       return;
     }
     try {
-      this._tagsList.push(tag);
-      let newList = this._tagsList.sort().filter(function(item, pos, ary) {
+      let list = this.list$.value.map(x => x.text);
+      list.push(tag);
+      list = list.sort().filter(function(item, pos, ary) {
         return !pos || item != ary[pos - 1];
       });
-      await this.updateTag(newList);
+      await this.updateTag(list);
+      this.layout.snackSuccess(`Tag "${tag}" đã được thêm`);
+      this.log("tag added", tag);
       return true;
     } catch (_) {
       return false;
@@ -60,8 +67,10 @@ export class TagService {
 
   removeTag = async (tag: string) => {
     try {
-      let newList = this._tagsList.filter(x => x !== tag);
-      await this.updateTag(newList);
+      let list = this.list$.value.filter(x => x.norm !== normalizeText(tag));
+      await this.updateTag(list.map(x => x.text));
+      this.layout.snackSuccess(`Tag "${tag}" đã được xoá`);
+      this.log("tag removed", tag);
       return true;
     } catch (_) {
       return false;
@@ -73,9 +82,8 @@ export class TagService {
       .collection(TagsCollection)
       .doc(TagListDoc)
       .set({ list: tags })
-      .then(() => this.layout.handleSuccess(this.className, "/tags"))
       .catch(err => {
-        this.layout.handleError(this.className, "update", err);
+        this.error(err);
         throw err;
       });
 
@@ -84,7 +92,7 @@ export class TagService {
       .collection<IArticle>(ArticleCollection, ref =>
         ref
           .where("status", "==", "published")
-          .where("tags", "array-contains", tag)
+          .where("tagsNorm", "array-contains", normalizeText(tag))
           .orderBy("publishAt", "desc")
           .limit(10)
       )

@@ -12,14 +12,21 @@
       Tags phải có hơn 3 ký tự
     </mat-error>
   </mat-form-field>
-  <button mat-raised-button color="primary" type="submit">
+  <button
+    mat-raised-button
+    color="primary"
+    type="submit"
+    [disabled]="tagInputControl.disabled"
+  >
     Thêm
   </button>
 </form>
 
 <mat-chip-list>
   <mat-chip *ngFor="let tag of (filteredTags$ | async)">
-    {{ tag }}
-    <mat-icon matChipRemove (click)="remove(tag)">cancel</mat-icon>
+    {{ tag.text }}
+    <mat-icon matChipRemove (click)="openRemoveConfirmation(tag.text)"
+      >cancel</mat-icon
+    >
   </mat-chip>
 </mat-chip-list>

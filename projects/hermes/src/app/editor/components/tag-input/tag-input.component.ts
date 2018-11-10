@@ -17,6 +17,7 @@ import {
   MatAutocompleteSelectedEvent
 } from "@angular/material";
 import { normalizeText } from "@app/app/shared/helpers";
+import { ITag } from "@app/app/tags/models/tag.model";
 
 @Component({
   selector: "hm-tag-input",
@@ -34,7 +35,7 @@ export class TagInputComponent implements OnInit {
 
   tagData: string[] = [];
   tagInputControl = new FormControl();
-  filteredTags$: Observable<string[]>;
+  filteredTags$: Observable<ITag[]>;
   separatorKeysCodes: number[] = [ENTER, COMMA];
 
   @ViewChild("tagInput")
@@ -52,8 +53,7 @@ export class TagInputComponent implements OnInit {
       map(([list, tagInput]) => {
         let tag = normalizeText(tagInput);
         return list.filter(
-          x =>
-            normalizeText(x).indexOf(tag.trim().toLowerCase()) >= 0
+          x => x.norm.indexOf(tag.trim().toLowerCase()) >= 0
         );
       })
     );

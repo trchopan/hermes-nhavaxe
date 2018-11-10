@@ -15,7 +15,7 @@ import {
 import { LoadingSpinnerComponent } from "@app/app/core/components/loading-spinner/loading-spinner.component";
 
 const routes: Routes = [
-  { path: "", pathMatch: "full", redirectTo: "/article" },
+  { path: "", pathMatch: "full", redirectTo: "/article/list" },
   {
     path: "tags",
     loadChildren: "../tags/tags.module#TagsModule"

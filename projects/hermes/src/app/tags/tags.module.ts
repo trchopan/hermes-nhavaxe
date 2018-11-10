@@ -13,7 +13,8 @@ import {
   MatListModule,
   MatDividerModule,
   MatInputModule,
-  MatButtonModule
+  MatButtonModule,
+  MatDialogModule
 } from "@angular/material";
 import { TagService } from "@app/app/tags/services/tag.service";
 import { TagsListComponent } from "@app/app/tags/containers/tags-list/tags-list.component";
@@ -56,7 +57,8 @@ const routes: Routes = [
     MatInputModule,
     MatButtonModule,
     MatListModule,
-    MatDividerModule
+    MatDividerModule,
+    MatDialogModule
   ],
   declarations: [
     TagsListComponent,
