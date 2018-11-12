@@ -37,16 +37,8 @@ export class TagsSearchComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.filteredTags$ = combineLatest(
-      this.tags.list$,
+    this.filteredTags$ = this.tags.getFilteredTags(
       this.tagInputControl.valueChanges
-    ).pipe(
-      distinctUntilChanged(),
-      debounceTime(300),
-      map(([list, tagInput]) => {
-        let tag = normalizeText(tagInput);
-        return list.filter(x => x.norm.indexOf(tag) >= 0);
-      })
     );
 
     this.resultArticles$ = this.selectedTags$.pipe(
@@ -76,7 +68,6 @@ export class TagsSearchComponent implements OnInit {
               .sort((a, b) => b.article.publishAt - a.article.publishAt)
               .sort((a, b) => b.relevant - a.relevant);
 
-            console.log("Search result", articles);
             return articles;
           })
         )

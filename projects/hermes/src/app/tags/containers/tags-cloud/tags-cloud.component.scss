@@ -1,0 +1,78 @@
+ul {
+  list-style-type: none;
+  li {
+    display: inline;
+  }
+}
+.blacklist {
+  display: flex;
+  justify-content: center;
+  margin: 0 0 16px;
+}
+.x-delete {
+  background: black;
+  color: white;
+}
+.cloud {
+  margin: auto;
+  color: var(--secondary-color);
+  max-width: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  li {
+    padding: 0.5em;
+    white-space: nowrap;
+  }
+  .c0 {
+    font-size: 1.4rem;
+  }
+  .c1 {
+    font-size: 1.3rem;
+  }
+  .c2 {
+    font-size: 1.2rem;
+  }
+  .c3 {
+    font-size: 1.1rem;
+  }
+  .c4 {
+    font-size: 1rem;
+  }
+  .c5 {
+    font-size: 1rem;
+  }
+  .c6 {
+    font-size: 0.9rem;
+  }
+  .c7 {
+    font-size: 0.9rem;
+  }
+  .c8 {
+    font-size: 0.8rem;
+  }
+  .c9 {
+    font-size: 0.8rem;
+  }
+  .c10 {
+    font-size: 0.7rem;
+  }
+  .c11 {
+    font-size: 0.7rem;
+  }
+  .c12,
+  .c13,
+  .c14,
+  .c15,
+  .c16,
+  .c17,
+  .c18,
+  .c19,
+  .c20,
+  .c21,
+  .c22,
+  .c23 {
+    font-size: 0.6rem;
+  }
+}

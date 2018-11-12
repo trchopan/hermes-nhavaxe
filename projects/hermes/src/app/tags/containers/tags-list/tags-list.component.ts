@@ -24,16 +24,8 @@ export class TagsListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.filteredTags$ = combineLatest(
-      this.tag.list$,
+    this.filteredTags$ = this.tag.getFilteredTags(
       this.tagInputControl.valueChanges
-    ).pipe(
-      distinctUntilChanged(),
-      debounceTime(300),
-      map(([list, tagInput]) => {
-        let tag = normalizeText(tagInput);
-        return list.filter(x => x.norm.indexOf(tag.trim().toLowerCase()) >= 0);
-      })
     );
   }
 
@@ -42,7 +34,7 @@ export class TagsListComponent implements OnInit {
       return;
     }
     this.tagInputControl.disable();
-    let tag = this.tagInputControl.value.trim().toLowerCase();
+    let tag = this.tagInputControl.value;
     if (await this.tag.addTag(tag)) {
       this.tagInputControl.setValue("");
     }
@@ -53,13 +45,13 @@ export class TagsListComponent implements OnInit {
     let dialogRef = this.dialog.open(DialogConfirmationComponent, {
       width: "80%",
       data: `Bạn có chắc chắn muốn xoá tag "${tag}"`
-    })
+    });
 
     dialogRef.afterClosed().subscribe(value => {
       if (value) {
         this.remove(tag);
       }
-    })
+    });
   }
 
   async remove(tag: string) {
