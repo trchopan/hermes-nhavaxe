@@ -148,6 +148,10 @@ export class ArticlesService {
   }
 
   getArticleData(id: string): Observable<IArticle> {
+    if (!id) {
+      return of(null);
+    }
+
     this.layout.loading$.next(true);
 
     return this.afFirestore
@@ -157,6 +161,8 @@ export class ArticlesService {
       .pipe(
         map(snapshot => {
           if (!snapshot.payload.exists) {
+            this.log("not found article");
+            this.layout.snackWarning("Không tìm thấy bài viết");
             return null;
           }
           this.log("found article", snapshot.payload.id);
@@ -165,6 +171,7 @@ export class ArticlesService {
         tap(() => this.layout.loading$.next(false)),
         catchError(err => {
           this.error(err);
+          this.layout.snackWarning("Lỗi khi tìm bài viết");
           return of(null);
         })
       );

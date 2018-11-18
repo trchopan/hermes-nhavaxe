@@ -2,89 +2,78 @@
   margin: auto;
   padding: 1rem 1.5rem;
   text-align: justify;
-  font-size: 1.1rem;
-  line-height: 1.7rem;
-  h2,
-  h3 {
-    font-weight: var(--text-font__bold);
-    font-size: 1.3rem;
-  }
   p,
-  h2,
-  h3 {
-    margin-bottom: 1rem;
+  b,
+  strong,
+  em {
+    font-size: 1rem;
+    line-height: 1.62rem;
+    margin: 0.81rem auto;
   }
+  h2,
+  h3,
+  h4,
   b,
   strong {
     font-weight: var(--text-font__bold);
   }
-  blockquote {
-    font-style: italic;
-    display: grid;
-    border-left: solid 2px var(--primary-color-tint);
-    padding: 0 1rem;
-    margin: 0 0 12px;
-    align-self: center;
-    background: rgba(255, 64, 128, 0.09);
+  h2,
+  h3,
+  h4 {
+    font-size: 1.3rem;
   }
-  img {
-    width: calc(100% + 3rem);
-    margin: 0 -24px;
+  h2:nth-child(n + 2),
+  h3:nth-child(n + 2),
+  h4:nth-child(n + 2) {
+    margin-top: 1.5rem;
   }
   .ql-align-center {
-    padding-bottom: 1rem;
-    border-bottom: solid 1px var(--primary-color);
+    border-bottom: solid 1px var(--secondary-color);
     font-style: italic;
     max-width: 600px;
   }
-  .ql-align-right {
-    text-align: left;
-  }
-  li::before {
-    display: none;
-  }
-  ol,
-  ul {
-    padding: 0;
-    margin: 0;
-    list-style: none;
-    li {
-      padding: 0 !important;
-      margin: 0 0 12px;
+  blockquote {
+    position: relative;
+    font-style: italic;
+    padding: 0.5rem 0.5rem 0.5rem 2rem;
+    font-size: 1.1rem;
+    line-height: 1.8rem;
+    em {
+      display: block;
+      font-style: normal;
+    }
+    em::before {
+      content: "- ";
     }
   }
-  @media (max-width: 600px) {
-    font-size: 1rem;
-    line-height: 1.5rem;
-    h2,
-    h3 {
-      font-size: 1.1rem;
-    }
+  blockquote::before {
+    content: open-quote;
+    position: absolute;
+    color: var(--secondary-color);
+    top: 0.7rem;
+    left: -0.7rem;
+    font-size: 2.9rem;
   }
-}
-
-.ql-toolbar {
-  position: sticky;
-  top: 0;
-  background: white;
-  z-index: 1;
+  blockquote::after {
+    content: close-quote;
+    visibility: hidden;
+    position: absolute;
+  }
+  img {
+    width: calc(100% + 48px);
+    margin: 0 -24px;
+    object-fit: cover;
+    padding-bottom: 0.37rem;
+  }
 }
 
 .picture-style {
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  .ql-align-center {
-    margin: 0 auto 1rem;
-  }
   @media (min-width: 600px) {
     img {
       display: block;
       width: 100%;
       max-width: 600px;
-      padding-bottom: 1rem;
       margin: 0 auto;
-      object-fit: cover;
     }
   }
 }
@@ -93,15 +82,12 @@
   @media (min-width: 600px) {
     img {
       float: right;
-      margin: 0 0 0 2rem;
-      padding: 1rem 0;
+      margin-right: 0;
       width: 500px;
     }
     .ql-align-center {
       float: right;
-      text-align: right;
       margin: 0 0 0.5rem 2rem;
-      padding: 0 0 1rem 0;
       width: 490px;
     }
   }

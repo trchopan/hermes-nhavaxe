@@ -1,4 +1,4 @@
-<div class="center">
+<div class="container center">
   <mat-form-field>
     <mat-chip-list #chipList>
       <mat-chip
@@ -36,9 +36,7 @@
       </mat-option>
     </mat-autocomplete>
   </mat-form-field>
-</div>
-
-<div *ngIf="(resultArticles$ | async) as results">
-  <p>Amount: {{ results.length }}</p>
-  <hm-tag-results [list]="results"></hm-tag-results>
+  <div *ngIf="(resultArticles$ | async) as results">
+    <article-list [list]="results"></article-list>
+  </div>
 </div>

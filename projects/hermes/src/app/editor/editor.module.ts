@@ -4,10 +4,7 @@ import { CreateComponent } from "@app/app/editor/containers/create/create.compon
 import { Routes, RouterModule } from "@angular/router";
 import { AuthGuardService } from "@app/app/auth/services/auth-guard.service";
 import { EditComponent } from "@app/app/editor/containers/edit/edit.component";
-import { ArticlesListComponent } from "@app/app/editor/containers/articles-list/articles-list.component";
-import { ArticleListItemComponent } from "@app/app/editor/components/article-list-item/article-list-item.component";
 import {
-  MatListModule,
   MatButtonModule,
   MatSelectModule,
   MatIconModule,
@@ -27,18 +24,20 @@ import { QuillModule } from "ngx-quill";
 import { TagInputComponent } from "./components/tag-input/tag-input.component";
 import { ArticlesService } from "./services/articles.service";
 import { ArticleComponent } from './containers/article/article.component';
+import { ArticlesSearchComponent } from "./containers/articles-search/articles-search.component";
 
 const routes: Routes = [
-  { path: "article", pathMatch: "full", redirectTo: "article/list" },
+  { path: "article", pathMatch: "full", redirectTo: "article/search" },
   {
     path: "article",
     component: ArticleComponent,
     canActivate: [AuthGuardService],
     children: [
-      { path: "list", component: ArticlesListComponent },
+      { path: "search", component: ArticlesSearchComponent },
       { path: "create", component: CreateComponent },
       { path: "edit/:id", component: EditComponent },
-      { path: ":id", component: ArticleDetailComponent }
+      { path: "preview/:id", component: ArticleDetailComponent },
+      { path: "**", redirectTo: "search"}
     ]
   },
 
@@ -54,7 +53,6 @@ const routes: Routes = [
     SharedModule,
     MatInputModule,
     MatCardModule,
-    MatListModule,
     MatButtonModule,
     MatRadioModule,
     MatIconModule,
@@ -66,11 +64,10 @@ const routes: Routes = [
   ],
   declarations: [
     ArticleComponent,
-    ArticlesListComponent,
+    ArticlesSearchComponent,
     CreateComponent,
     EditComponent,
     ArticleFormComponent,
-    ArticleListItemComponent,
     ArticleDetailComponent,
     TagInputComponent,
   ],

@@ -3,15 +3,12 @@ import { CommonModule } from "@angular/common";
 import { Routes, RouterModule } from "@angular/router";
 import { AuthGuardService } from "@app/app/auth/services/auth-guard.service";
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
-import { TagResultsComponent } from "./components/tag-results/tag-results.component";
 import { TagsComponent } from "./containers/tags/tags.component";
 import {
   MatChipsModule,
   MatIconModule,
   MatAutocompleteModule,
   MatFormFieldModule,
-  MatListModule,
-  MatDividerModule,
   MatInputModule,
   MatButtonModule,
   MatDialogModule
@@ -20,6 +17,7 @@ import { TagsListComponent } from "@app/app/tags/containers/tags-list/tags-list.
 import { TagsSearchComponent } from "@app/app/tags/containers/tags-search/tags-search.component";
 import { TagsIdComponent } from "@app/app/tags/containers/tags-id/tags-id.component";
 import { TagsCloudComponent } from "./containers/tags-cloud/tags-cloud.component";
+import { SharedModule } from "../shared/shared.module";
 
 const routes: Routes = [
   { path: "", pathMatch: "full", redirectTo: "/tags/list" },
@@ -54,20 +52,18 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     FormsModule,
     ReactiveFormsModule,
+    SharedModule,
     MatChipsModule,
     MatIconModule,
     MatAutocompleteModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatListModule,
-    MatDividerModule,
     MatDialogModule
   ],
   declarations: [
     TagsListComponent,
     TagsSearchComponent,
-    TagResultsComponent,
     TagsComponent,
     TagsIdComponent,
     TagsCloudComponent

@@ -1,0 +1,51 @@
+<ul *ngIf="list && list.length > 0">
+  <li>Tổng cộng: {{ list.length }} bài</li>
+  <li *ngFor="let article of list" class="list-container">
+    <div class="list-item">
+      <section class="thumbnail" (click)="preview(article)">
+        <div
+          [ngStyle]="{ 'background-image': 'url(' + article.coverImg + ')' }"
+        ></div>
+      </section>
+      <section class="title" (click)="preview(article)">
+        <p>
+          <strong>{{ article.title }}</strong>
+        </p>
+        <p>
+          <em> // {{ article.categoryName }}</em>
+          <span class="author"> &copy; {{ article.creatorName }}</span>
+        </p>
+      </section>
+      <section class="info" (click)="preview(article)">
+        <p>
+          <publish-at-label [publishAt]="article.publishAt"></publish-at-label>
+          <span *ngIf="article.status === 'published'" class="published"
+            >🔒 duyệt bởi {{ article.managerName }}</span
+          >
+          <span *ngIf="article.status === 'unpublished'" class="unpublished"
+            >🔒 gở bài bởi {{ article.managerName }}</span
+          >
+          <span *ngIf="article.status === 'pending'" class="pending"
+            >✓ chờ duyệt</span
+          >
+          <span *ngIf="article.status === 'draft'" class="draft"
+            >✍ đang soạn</span
+          >
+        </p>
+        <p *ngIf="article.note" class="note">
+          <strong>Ghi chú: </strong> <em>&quot;{{ article.note }}&quot;</em>
+          <span *ngIf="article.managerName"> - {{ article.managerName }}</span>
+        </p>
+      </section>
+      <section class="buttons">
+        <button mat-icon-button (click)="edit(article)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button (click)="openExternal(article)">
+          <mat-icon>open_in_new</mat-icon>
+        </button>
+      </section>
+    </div>
+    <mat-divider></mat-divider>
+  </li>
+</ul>

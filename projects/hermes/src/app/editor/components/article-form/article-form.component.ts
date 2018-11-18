@@ -75,12 +75,11 @@ export class ArticleFormComponent implements OnInit, OnDestroy, AfterViewInit {
   ];
   quillModules = {
     toolbar: [
-      ["bold", "italic", "underline"],
+      ["bold", "italic"],
       ["blockquote"],
       [{ align: "center" }],
       [{ align: "right" }],
       [{ header: 2 }],
-      [{ list: "bullet" }],
       ["clean"]
     ]
   };
