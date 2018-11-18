@@ -15,7 +15,7 @@ import {
 import { LoadingSpinnerComponent } from "@app/app/core/components/loading-spinner/loading-spinner.component";
 
 const routes: Routes = [
-  { path: "", pathMatch: "full", redirectTo: "/article/list" },
+  { path: "", pathMatch: "full", redirectTo: "/article/search" },
   {
     path: "tags",
     loadChildren: "../tags/tags.module#TagsModule"
@@ -36,7 +36,7 @@ const routes: Routes = [
     path: "videos",
     loadChildren: "../videos/videos.module#VideosModule"
   },
-  { path: "**", component: PageNotFoundComponent }
+  { path: "**", redirectTo: "/article/search" }
 ];
 
 @NgModule({

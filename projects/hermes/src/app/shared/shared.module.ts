@@ -5,16 +5,19 @@ import {
   MatSelectModule,
   MatInputModule,
   MatButtonModule,
-  MatDialogModule
+  MatDialogModule,
+  MatDividerModule,
+  MatIconModule
 } from "@angular/material";
-import { LeagueImagePipe } from "@app/app/shared/pipes/league-image.pipe";
-import { LeagueProcessPipe } from "@app/app/shared/pipes/league-process.pipe";
-import { LeagueTextPipe } from "@app/app/shared/pipes/league-text.pipe";
-import { DateTimePickerComponent } from "@app/app/shared/components/date-time-picker/date-time-picker.component";
-import { PublishAtLabelComponent } from "@app/app/shared/components/publish-at-label/publish-at-label.component";
-import { FormatNewlineSplashPipe } from "@app/app/shared/pipes/format-newline-splash.pipe";
-import { TrimTextPipe } from "@app/app/shared/pipes/trim-text.pipe";
+import { LeagueImagePipe } from "./pipes/league-image.pipe";
+import { LeagueProcessPipe } from "./pipes/league-process.pipe";
+import { LeagueTextPipe } from "./pipes/league-text.pipe";
+import { DateTimePickerComponent } from "./components/date-time-picker/date-time-picker.component";
+import { PublishAtLabelComponent } from "./components/publish-at-label/publish-at-label.component";
+import { FormatNewlineSplashPipe } from "./pipes/format-newline-splash.pipe";
+import { TrimTextPipe } from "./pipes/trim-text.pipe";
 import { DialogConfirmationComponent } from "./components/dialog-confirmation/dialog-confirmation.component";
+import { ArticleListComponent } from "./components/article-list/article-list.component";
 
 const SHARED_LIST = [
   LeagueImagePipe,
@@ -24,7 +27,8 @@ const SHARED_LIST = [
   FormatNewlineSplashPipe,
   DateTimePickerComponent,
   PublishAtLabelComponent,
-  DialogConfirmationComponent
+  DialogConfirmationComponent,
+  ArticleListComponent
 ];
 
 @NgModule({
@@ -34,7 +38,9 @@ const SHARED_LIST = [
     MatDialogModule,
     MatButtonModule,
     MatSelectModule,
-    MatInputModule
+    MatInputModule,
+    MatDividerModule,
+    MatIconModule
   ],
   declarations: SHARED_LIST,
   entryComponents: [DialogConfirmationComponent],

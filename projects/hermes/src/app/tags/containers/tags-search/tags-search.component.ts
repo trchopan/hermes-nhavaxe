@@ -14,7 +14,6 @@ import {
   MatAutocompleteSelectedEvent
 } from "@angular/material";
 import { IArticle } from "@app/app/editor/models/article.model";
-import { normalizeText } from "@app/app/shared/helpers";
 import { ITag } from "../../models/tag.model";
 
 @Component({
@@ -66,7 +65,8 @@ export class TagsSearchComponent implements OnInit {
                 return acc;
               }, [])
               .sort((a, b) => b.article.publishAt - a.article.publishAt)
-              .sort((a, b) => b.relevant - a.relevant);
+              .sort((a, b) => b.relevant - a.relevant)
+              .map(x => x.article)
 
             return articles;
           })

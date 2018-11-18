@@ -1,3 +1,6 @@
+.container {
+  max-width: var(--container-max-width);
+}
 mat-form-field {
-  width: 80%;
+  width: 100%;
 }
