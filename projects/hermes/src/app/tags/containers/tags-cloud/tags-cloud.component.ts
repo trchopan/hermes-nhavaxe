@@ -1,12 +1,8 @@
-import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { TagService } from "../../services/tag.service";
 import { FormControl } from "@angular/forms";
-import { BehaviorSubject, Observable, combineLatest } from "rxjs";
-import { ENTER, COMMA } from "@angular/cdk/keycodes";
-import {
-  MatAutocompleteSelectedEvent,
-  MatChipInputEvent
-} from "@angular/material";
+import { Observable, combineLatest } from "rxjs";
+import { MatAutocompleteSelectedEvent } from "@angular/material";
 import { ITag } from "../../models/tag.model";
 import { map } from "rxjs/operators";
 import { normalizeText } from "@app/app/shared/helpers";
@@ -21,8 +17,8 @@ export class TagsCloudComponent implements OnInit {
   blackListedCloud$: Observable<ITag[]>;
   tagInputControl = new FormControl();
 
-  _blackList: ITag[];
-  _cloud: ITag[];
+  private _blackList: ITag[];
+  private _cloud: ITag[];
   order: number[];
 
   constructor(public tag: TagService) {

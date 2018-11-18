@@ -22,6 +22,7 @@ export class TagService {
   private className = "[Tags]";
   private log = logger(this.className);
   private error = error(this.className);
+  private CLOUD_SEARCH_LENGTH = 3; // days
 
   list$: BehaviorSubject<ITag[]>;
   cloud$: BehaviorSubject<ITag[]>;
@@ -62,7 +63,9 @@ export class TagService {
         ref
           .where("status", "==", "published")
           .orderBy("publishAt", "desc")
-          .endBefore(Date.now() - 1000 * 60 * 60 * 24 * 3)
+          .endBefore(
+            Date.now() - 1000 * 60 * 60 * 24 * this.CLOUD_SEARCH_LENGTH
+          )
       )
       .valueChanges()
       .pipe(
