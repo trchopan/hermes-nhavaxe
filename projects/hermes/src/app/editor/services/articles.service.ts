@@ -232,10 +232,13 @@ export class ArticlesService {
     const articleDoc = this.afFirestore
       .collection(ArticlesCollection)
       .doc(article.id);
+    
+    const body = article.bodyData;
+    delete article.bodyData;
 
     const metaPromise = articleDoc.update(article);
-    const bodyPromise = article.bodyData
-      ? articleDoc.collection(BodyCollection).add(article.bodyData)
+    const bodyPromise = body
+      ? articleDoc.collection(BodyCollection).add(body)
       : Promise.resolve(null);
 
     try {
