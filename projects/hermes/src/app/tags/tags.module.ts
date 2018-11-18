@@ -13,12 +13,13 @@ import {
   MatListModule,
   MatDividerModule,
   MatInputModule,
-  MatButtonModule
+  MatButtonModule,
+  MatDialogModule
 } from "@angular/material";
-import { TagService } from "@app/app/tags/services/tag.service";
 import { TagsListComponent } from "@app/app/tags/containers/tags-list/tags-list.component";
 import { TagsSearchComponent } from "@app/app/tags/containers/tags-search/tags-search.component";
 import { TagsIdComponent } from "@app/app/tags/containers/tags-id/tags-id.component";
+import { TagsCloudComponent } from "./containers/tags-cloud/tags-cloud.component";
 
 const routes: Routes = [
   { path: "", pathMatch: "full", redirectTo: "/tags/list" },
@@ -38,6 +39,10 @@ const routes: Routes = [
       {
         path: "id",
         component: TagsIdComponent
+      },
+      {
+        path: "cloud",
+        component: TagsCloudComponent
       }
     ]
   }
@@ -56,14 +61,16 @@ const routes: Routes = [
     MatInputModule,
     MatButtonModule,
     MatListModule,
-    MatDividerModule
+    MatDividerModule,
+    MatDialogModule
   ],
   declarations: [
     TagsListComponent,
     TagsSearchComponent,
     TagResultsComponent,
     TagsComponent,
-    TagsIdComponent
+    TagsIdComponent,
+    TagsCloudComponent
   ],
   exports: [RouterModule]
 })

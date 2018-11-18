@@ -1,9 +1,12 @@
 import { Component, OnInit } from "@angular/core";
+import { MatDialog } from "@angular/material";
 import { TagService } from "@app/app/tags/services/tag.service";
 import { Observable, combineLatest } from "rxjs";
 import { FormControl, Validators } from "@angular/forms";
 import { map, distinctUntilChanged, debounceTime } from "rxjs/operators";
 import { normalizeText } from "@app/app/shared/helpers";
+import { ITag } from "../../models/tag.model";
+import { DialogConfirmationComponent } from "@app/app/shared/components/dialog-confirmation/dialog-confirmation.component";
 
 @Component({
   selector: "hm-tags-list",
@@ -11,28 +14,18 @@ import { normalizeText } from "@app/app/shared/helpers";
   styleUrls: ["./tags-list.component.scss"]
 })
 export class TagsListComponent implements OnInit {
-  filteredTags$: Observable<string[]>;
+  filteredTags$: Observable<ITag[]>;
   tagInputControl: FormControl;
 
   tagList: string[];
 
-  constructor(public tags: TagService) {
+  constructor(public tag: TagService, private dialog: MatDialog) {
     this.tagInputControl = new FormControl("", Validators.minLength(3));
   }
 
   ngOnInit() {
-    this.filteredTags$ = combineLatest(
-      this.tags.list$,
+    this.filteredTags$ = this.tag.getFilteredTags(
       this.tagInputControl.valueChanges
-    ).pipe(
-      distinctUntilChanged(),
-      debounceTime(300),
-      map(([list, tagInput]) => {
-        let tag = normalizeText(tagInput);
-        return list.filter(
-          x => normalizeText(x).indexOf(tag.trim().toLowerCase()) >= 0
-        );
-      })
     );
   }
 
@@ -41,15 +34,29 @@ export class TagsListComponent implements OnInit {
       return;
     }
     this.tagInputControl.disable();
-    if (await this.tags.addTag(this.tagInputControl.value.toLowerCase())) {
+    let tag = this.tagInputControl.value;
+    if (await this.tag.addTag(tag)) {
       this.tagInputControl.setValue("");
     }
     this.tagInputControl.enable();
   }
 
-  async remove(tag) {
+  openRemoveConfirmation(tag: string) {
+    let dialogRef = this.dialog.open(DialogConfirmationComponent, {
+      width: "80%",
+      data: `Bạn có chắc chắn muốn xoá tag "${tag}"`
+    });
+
+    dialogRef.afterClosed().subscribe(value => {
+      if (value) {
+        this.remove(tag);
+      }
+    });
+  }
+
+  async remove(tag: string) {
     this.tagInputControl.disable();
-    if (await this.tags.removeTag(tag)) {
+    if (await this.tag.removeTag(tag)) {
       this.tagInputControl.setValue("");
     }
     this.tagInputControl.enable();

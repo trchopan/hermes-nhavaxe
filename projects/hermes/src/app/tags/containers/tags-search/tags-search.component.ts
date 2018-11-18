@@ -3,13 +3,19 @@ import { COMMA, ENTER } from "@angular/cdk/keycodes";
 import { FormControl } from "@angular/forms";
 import { TagService } from "@app/app/tags/services/tag.service";
 import { Observable, combineLatest, BehaviorSubject, of } from "rxjs";
-import { map, switchMap, distinctUntilChanged, debounceTime } from "rxjs/operators";
+import {
+  map,
+  switchMap,
+  distinctUntilChanged,
+  debounceTime
+} from "rxjs/operators";
 import {
   MatChipInputEvent,
   MatAutocompleteSelectedEvent
 } from "@angular/material";
 import { IArticle } from "@app/app/editor/models/article.model";
 import { normalizeText } from "@app/app/shared/helpers";
+import { ITag } from "../../models/tag.model";
 
 @Component({
   selector: "hm-tags-search",
@@ -19,7 +25,7 @@ import { normalizeText } from "@app/app/shared/helpers";
 export class TagsSearchComponent implements OnInit {
   tagInputControl = new FormControl();
   selectedTags$: BehaviorSubject<string[]>;
-  filteredTags$: Observable<string[]>;
+  filteredTags$: Observable<ITag[]>;
   resultArticles$: Observable<{ article: IArticle; relevant: number }[]>;
   separatorKeysCodes: number[] = [ENTER, COMMA];
 
@@ -31,45 +37,38 @@ export class TagsSearchComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.filteredTags$ = combineLatest(
-      this.tags.list$,
+    this.filteredTags$ = this.tags.getFilteredTags(
       this.tagInputControl.valueChanges
-    ).pipe(
-      distinctUntilChanged(),
-      debounceTime(300),
-      map(([list, tagInput]) => {
-        let tag = normalizeText(tagInput);
-        return list.filter(
-          x => normalizeText(x).indexOf(tag.trim().toLowerCase()) >= 0
-        );
-      })
     );
 
     this.resultArticles$ = this.selectedTags$.pipe(
       switchMap(tags =>
-        // Combine all observables
         combineLatest(tags.map(tag => this.tags.searchTag(tag))).pipe(
           map(combined => {
-            const result = combined
-              .reduce((lastResult, nextResult) => {
-                // Find the duplicate
-                nextResult.forEach((result, i) => {
-                  var foundDuplicate = lastResult.findIndex(
-                    x => x.article.id === result.article.id
-                  );
-                  // If found increase the relevant amount
-                  if (foundDuplicate >= 0) {
-                    lastResult[foundDuplicate].relevant++;
-                    nextResult[i] = null;
-                  }
-                });
-                return [...lastResult, ...nextResult.filter(x => x !== null)];
+            let articles = combined
+              .reduce((acc, cur) => acc.concat(cur), []) // flat it
+              .sort((a, b) => {
+                if (a.article.id >= b.article.id) {
+                  return -1;
+                } else {
+                  return 1;
+                }
+              })
+              .reduce((acc, cur) => {
+                if (
+                  acc.length <= 0 ||
+                  acc[acc.length - 1].article.id !== cur.article.id
+                ) {
+                  acc.push(cur);
+                } else {
+                  acc[acc.length - 1].relevant++;
+                }
+                return acc;
               }, [])
               .sort((a, b) => b.article.publishAt - a.article.publishAt)
               .sort((a, b) => b.relevant - a.relevant);
 
-            console.log("Search result", result);
-            return result;
+            return articles;
           })
         )
       )

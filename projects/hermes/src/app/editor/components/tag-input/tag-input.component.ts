@@ -9,14 +9,13 @@ import {
 } from "@angular/core";
 import { COMMA, ENTER } from "@angular/cdk/keycodes";
 import { FormControl } from "@angular/forms";
-import { TagService } from "@app/app/tags/services/tag.service";
-import { Observable, combineLatest } from "rxjs";
-import { map, distinctUntilChanged, debounceTime } from "rxjs/operators";
+import { Observable } from "rxjs";
 import {
   MatChipInputEvent,
   MatAutocompleteSelectedEvent
 } from "@angular/material";
-import { normalizeText } from "@app/app/shared/helpers";
+import { ITag } from "@app/app/tags/models/tag.model";
+import { TagService } from "@app/app/tags/services/tag.service";
 
 @Component({
   selector: "hm-tag-input",
@@ -34,28 +33,17 @@ export class TagInputComponent implements OnInit {
 
   tagData: string[] = [];
   tagInputControl = new FormControl();
-  filteredTags$: Observable<string[]>;
+  filteredTags$: Observable<ITag[]>;
   separatorKeysCodes: number[] = [ENTER, COMMA];
 
   @ViewChild("tagInput")
   tagInput: ElementRef;
 
-  constructor(public tags: TagService) {}
+  constructor(public tag: TagService) {}
 
   ngOnInit() {
-    this.filteredTags$ = combineLatest(
-      this.tags.list$,
+    this.filteredTags$ = this.tag.getFilteredTags(
       this.tagInputControl.valueChanges
-    ).pipe(
-      distinctUntilChanged(),
-      debounceTime(300),
-      map(([list, tagInput]) => {
-        let tag = normalizeText(tagInput);
-        return list.filter(
-          x =>
-            normalizeText(x).indexOf(tag.trim().toLowerCase()) >= 0
-        );
-      })
     );
   }
 

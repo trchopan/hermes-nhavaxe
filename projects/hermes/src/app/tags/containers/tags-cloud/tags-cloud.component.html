@@ -1,0 +1,61 @@
+<form (ngSubmit)="add()" class="center">
+  <mat-form-field>
+    <input
+      [formControl]="tagInputControl"
+      [matAutocomplete]="auto"
+      matInput
+      type="text"
+      placeholder="Tag"
+    />
+    <mat-error *ngIf="tagInputControl.errors && tagInputControl.errors.notTag">
+      Tag không có trong danh sách
+    </mat-error>
+    <mat-error
+      *ngIf="tagInputControl.errors && tagInputControl.errors.blackListed"
+    >
+      Tag đã được blacklist
+    </mat-error>
+    <mat-autocomplete
+      #auto="matAutocomplete"
+      (optionSelected)="selected($event)"
+    >
+      <mat-option
+        *ngFor="let tag of (filteredTags$ | async)"
+        [value]="tag.text"
+      >
+        {{ tag.text }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+  <button
+    mat-raised-button
+    color="primary"
+    type="submit"
+    [disabled]="tagInputControl.disabled"
+  >
+    Blacklist
+  </button>
+</form>
+
+<div class="center">
+  <h3>Blacklist</h3>
+  <div class="blacklist">
+    <mat-chip-list #chipList>
+      <mat-chip
+        *ngFor="let black of (tag.blacklist$ | async)"
+        [selectable]="true"
+        [removable]="true"
+        (removed)="remove(black)"
+      >
+        {{ black.text }}
+        <mat-icon matChipRemove>cancel</mat-icon>
+      </mat-chip>
+    </mat-chip-list>
+  </div>
+  <h3>Cloud</h3>
+  <ul *ngIf="(blackListedCloud$ | async) as cloud" class="cloud">
+    <li *ngFor="let o of order" [ngClass]="['c' + o]">
+      {{ cloud[o] ? cloud[o].text : "" }}
+    </li>
+  </ul>
+</div>
