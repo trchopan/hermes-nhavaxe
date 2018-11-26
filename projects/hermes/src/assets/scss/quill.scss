@@ -60,35 +60,34 @@
     position: absolute;
   }
   img {
-    width: calc(100% + 48px);
-    margin: 0 -24px;
     object-fit: cover;
     padding-bottom: 0.37rem;
   }
 }
-
 .picture-style {
-  @media (min-width: 600px) {
-    img {
-      display: block;
-      width: 100%;
-      max-width: 600px;
-      margin: 0 auto;
-    }
+  img {
+    display: block;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+}
+.article-style {
+  img {
+    float: right;
+    margin-right: 0;
+    width: 500px;
+  }
+  .ql-align-center {
+    float: right;
+    margin: 0 0 0.5rem 2rem;
+    width: 490px;
   }
 }
 
-.article-style {
-  @media (min-width: 600px) {
-    img {
-      float: right;
-      margin-right: 0;
-      width: 500px;
-    }
-    .ql-align-center {
-      float: right;
-      margin: 0 0 0.5rem 2rem;
-      width: 490px;
-    }
+@media (max-width: 600px) {
+  .ql-editor img {
+    width: calc(100% + 48px);
+    margin: 0 -24px;
   }
 }

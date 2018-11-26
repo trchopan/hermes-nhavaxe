@@ -199,7 +199,10 @@ export class TagService {
       await this.afFirestore
         .collection(TagsCollection)
         .doc("cloud")
-        .set({ cloud: data.cloud, timeStamp: Date.now() });
+        .set({
+          cloud: data.cloud,
+          timeStamp: Date.now() + 24 * 60 * 60 * 1000
+        });
       await this.afFirestore
         .collection(TagsCollection)
         .doc("blacklist")
