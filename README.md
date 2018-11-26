@@ -1,1 +1,1 @@
-# hermes backend for nhavaxe.vn
+# Backend CMS for nhavaxe.vn
